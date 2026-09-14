@@ -43,7 +43,7 @@
   text-decoration-color: var(--text);
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 960px) {
 
   .h1 {
     font-size: 52px;

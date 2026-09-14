@@ -18,7 +18,7 @@
   --radius-sm: 16px;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 960px) {
   :root {
     --radius-lg: 40px;
     --radius-md: 32px;
@@ -121,7 +121,8 @@ body {
   border-radius: 1px 1px 0px 0px;
 }
 
-@media (min-width: 1200px) {
+/* desktop: column stretches edge to edge (minus padding) until it caps at 1120px */
+@media (min-width: 960px) {
   .nav-tabs {
     max-width: 1120px;
   }
