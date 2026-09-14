@@ -20,10 +20,7 @@ import { GALLERY } from '../data/gallery';
               const span = shot.col || autoSpan;
               const isVideo = /\.mp4$/i.test(shot.src);
               return (
-                <div
-                  class={`shot-wrap col-${span}${shot.desktopOnly ? ' desktop-only' : ''}`}
-                  data-years={section.years}
-                >
+                <div class={`shot-wrap col-${span}${shot.desktopOnly ? ' desktop-only' : ''}`}>
                   {isVideo
                     ? <video class="shot-img" src={withBase(shot.src)} autoplay muted loop playsinline></video>
                     : <img class="shot-img" src={withBase(shot.src)} alt="" />
@@ -37,70 +34,4 @@ import { GALLERY } from '../data/gallery';
     ))}
   </div>
 
-  <!-- Lightbox -->
-  <div class="shot-lightbox" id="shotLightbox">
-    <div class="shot-lightbox-main">
-      <div class="shot-lightbox-media" id="shotLightboxMedia"></div>
-    </div>
-    <button class="shot-arrow shot-arrow--prev" id="arrowPrev" aria-label="Previous">
-      <svg width="8" height="16" viewBox="0 0 8 16" fill="none"><path d="M7 1L1 8L7 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <button class="shot-arrow shot-arrow--next" id="arrowNext" aria-label="Next">
-      <svg width="8" height="16" viewBox="0 0 8 16" fill="none"><path d="M1 1L7 8L1 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-  </div>
-
 </Base>
-
-<script>
-  const lightbox = document.getElementById('shotLightbox')!;
-  const mediaEl = document.getElementById('shotLightboxMedia')!;
-  const arrowPrev = document.getElementById('arrowPrev')!;
-  const arrowNext = document.getElementById('arrowNext')!;
-  const wraps = Array.from(document.querySelectorAll('.shot-wrap'));
-  let current = -1;
-  let savedScrollY = 0;
-
-  function showShot(index: number) {
-    const isFirstOpen = !lightbox.classList.contains('visible');
-    if (isFirstOpen) {
-      savedScrollY = window.scrollY;
-      document.body.style.overflow = 'hidden';
-    }
-    current = (index + wraps.length) % wraps.length;
-    const wrap = wraps[current] as HTMLElement;
-    const asset = wrap.querySelector('.shot-img') as HTMLElement;
-    const src = (asset as HTMLVideoElement).src || (asset as HTMLImageElement).currentSrc || asset.getAttribute('src') || '';
-    const isVideo = /\.mp4$/i.test(src);
-    mediaEl.innerHTML = isVideo
-      ? `<video src="${src}" autoplay muted loop playsinline></video>`
-      : `<img src="${src}" alt="">`;
-
-    lightbox.offsetHeight;
-    lightbox.classList.add('visible');
-  }
-
-  function close() {
-    lightbox.classList.remove('visible');
-    current = -1;
-    document.body.style.overflow = '';
-    window.scrollTo({ top: savedScrollY, behavior: 'instant' as ScrollBehavior });
-    setTimeout(() => { mediaEl.innerHTML = ''; }, 200);
-  }
-
-  lightbox.addEventListener('click', close);
-
-  arrowPrev.addEventListener('click', (e) => { e.stopPropagation(); if (current > -1) showShot(current - 1); });
-  arrowNext.addEventListener('click', (e) => { e.stopPropagation(); if (current > -1) showShot(current + 1); });
-
-  wraps.forEach((el, i) => {
-    el.addEventListener('click', () => showShot(i));
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (!lightbox.classList.contains('visible')) return;
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); showShot(current + 1); }
-    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); showShot(current - 1); }
-    else if (e.key === 'Escape') close();
-  });
-</script>

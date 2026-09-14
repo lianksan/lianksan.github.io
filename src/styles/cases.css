@@ -28,10 +28,6 @@
   gap: 12px;
 }
 
-.shot-wrap {
-  cursor: zoom-in;
-}
-
 .shot-img {
   width: 100%;
   height: auto;
@@ -40,95 +36,6 @@
   corner-shape: smooth;
   background: var(--surface);
   box-shadow: 0 0 0 1px var(--surface-2);
-}
-
-/* ── SHOT LIGHTBOX ── */
-
-.shot-lightbox {
-  position: fixed;
-  inset: 0;
-  background: var(--bg);
-  display: flex;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-  z-index: 1000;
-}
-
-.shot-lightbox.visible {
-  opacity: 1;
-  pointer-events: auto;
-  cursor: zoom-out;
-}
-
-.shot-lightbox-main {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: none;
-}
-
-.shot-lightbox-media img,
-.shot-lightbox-media video {
-  max-width: calc(100vw - 176px);
-  max-height: 80vh;
-  border-radius: var(--radius-sm);
-  corner-shape: smooth;
-  object-fit: contain;
-  display: block;
-  pointer-events: auto;
-}
-
-/* ── SHOT ARROWS ── */
-
-.shot-arrow {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 72px;
-  height: 48px;
-  border: none;
-  background: var(--surface);
-  border-radius: 40px;
-  corner-shape: smooth;
-  color: var(--text);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1001;
-}
-
-.shot-arrow--prev { left: 16px; }
-.shot-arrow--next { right: 16px; }
-
-.shot-arrow:hover {
-  background: var(--text);
-  color: var(--bg);
-}
-
-.shot-arrow svg {
-  width: 8px;
-  height: 16px;
-  overflow: visible;
-}
-
-@media (max-width: 767px) {
-  .shot-lightbox-media img,
-  .shot-lightbox-media video {
-    max-width: calc(100vw - 32px);
-  }
-
-  .shot-arrow {
-    top: auto;
-    bottom: 24px;
-    transform: none;
-  }
-
-  .shot-arrow--prev { left: auto; right: calc(50% + 4px); }
-  .shot-arrow--next { left: calc(50% + 4px); right: auto; }
 }
 
 @media (max-width: 1199px) {

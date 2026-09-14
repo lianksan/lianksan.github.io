@@ -254,6 +254,31 @@
   transform: translate(12px, 4px) rotate(2deg);
 }
 
+/* ── Below desktop — bigger shots, centred on the card, fanned a little wider.
+   Sizes are relative to the square shots box so they follow the card from
+   phone (335px) up to the 500px tablet card. ── */
+
+@media (max-width: 1199px) {
+  .pcard:not(.pcard--web) .shot {
+    width: 74%;
+    height: 160%;
+    left: calc(13% + var(--shot-offset));
+  }
+
+  .pcard__shots--a .shot--1 { --shot-offset: -7%; }
+  .pcard__shots--a .shot--2 { --shot-offset: 7%; }
+
+  .pcard__shots--b .shot--1 { --shot-offset: 7%; }
+  .pcard__shots--b .shot--2 { --shot-offset: -7%; }
+
+  /* layout C leans right (its back shot is turned 7deg), so its pair sits offset */
+  .pcard__shots--c .shot--1 { --shot-offset: -9%; }
+  .pcard__shots--c .shot--2 { --shot-offset: 3%; }
+
+  .pcard__shots--d .shot--1 { --shot-offset: 7%; }
+  .pcard__shots--d .shot--2 { --shot-offset: -7%; }
+}
+
 @media (min-width: 1200px) {
   .main > * {
     max-width: 1080px;
