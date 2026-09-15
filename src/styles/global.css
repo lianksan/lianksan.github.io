@@ -121,6 +121,21 @@ body {
   border-radius: 1px 1px 0px 0px;
 }
 
+/* language switch sits at the right end of the menu, styled as tabs */
+.nav-langs {
+  display: flex;
+  gap: 16px;
+  margin-left: auto;
+}
+
+button.tab {
+  font-family: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
 @media (min-width: 1200px) {
   .nav-tabs {
     max-width: 1120px;

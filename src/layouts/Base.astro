@@ -12,11 +12,13 @@ interface Props {
 const { title, activeTab = '', hideNavOnScroll = false } = Astro.props;
 
 const tabs = [
-  { href: '/', label: 'About me', id: 'about' },
-  { href: '/cases', label: 'Gallery', id: 'cases' },
+  { href: '/', label: 'Liankevich', id: 'about' },
+  { href: '/cases', label: 'Portfolio', id: 'cases' },
   { href: '/products', label: 'Products', id: 'products' },
-  { href: '/materials', label: 'Saved', id: 'materials' },
 ];
+
+const langs = ['RU', 'EN'];
+const activeLang = 'EN';
 ---
 
 <!DOCTYPE html>
@@ -43,6 +45,11 @@ const tabs = [
       {tabs.map(tab => (
         <a href={withBase(tab.href)} class={`tab h4${activeTab === tab.id ? ' active' : ''}`}>{tab.label}</a>
       ))}
+      <div class="nav-langs">
+        {langs.map(lang => (
+          <button type="button" class={`tab h4${lang === activeLang ? ' active' : ''}`} aria-pressed={lang === activeLang ? 'true' : 'false'}>{lang}</button>
+        ))}
+      </div>
     </div>
   </nav>
 
