@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import { withBase } from '../../lib/base';
+import '../../styles/case.css';
+import { CASES, type Case } from '../../data/cases';
+
+export function getStaticPaths() {
+  return CASES.map(c => ({ params: { slug: c.slug }, props: { c } }));
+}
+
+const { c } = Astro.props as { c: Case };
+---
+
+<Base title={c.title} activeTab="cases" hideNavOnScroll>
+
+  <!-- Draft case page -->
+  <section class="case">
+    <a href={withBase('/cases')} class="case-back">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5H1M1 5L5 1M1 5L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Back
+    </a>
+
+    <h1 class="h1">{c.title}</h1>
+
+    <img class="case-cover" src={withBase(c.preview)} alt="" />
+
+    <p class="body-text">The case study is being written — check back soon.</p>
+  </section>
+
+</Base>

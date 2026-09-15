@@ -1,13 +1,11 @@
-/* ── GALLERY ── */
+/* ── PORTFOLIO: CASES + GALLERY ── */
 
-#gallery {
-  display: flex;
-  flex-direction: column;
+.main:has(#gallery) {
   gap: 48px;
 }
 
 @media (min-width: 1200px) {
-  #gallery {
+  .main:has(#gallery) {
     gap: 60px;
   }
 }
@@ -18,6 +16,72 @@
   display: flex;
   flex-direction: column;
   gap: 28px;
+}
+
+/* ── CASES ── */
+
+.cases-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+/* the preview with the text right under it, on one filled card;
+   background, radius and hover match the product cards */
+.ccard {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  corner-shape: smooth;
+  overflow: hidden;
+  text-decoration: none;
+  color: var(--text);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ccard:hover {
+  background-color: var(--surface-inv);
+  color: var(--text-inv);
+}
+
+/* full-bleed preview, rounded like the card; the image zooms in a little on hover */
+.ccard__media {
+  border-radius: var(--radius-lg);
+  corner-shape: smooth;
+  overflow: hidden;
+}
+
+.ccard__preview {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.ccard:hover .ccard__preview {
+  transform: scale(1.04);
+}
+
+/* title + caption */
+.ccard__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 12px 24px 18px;
+}
+
+.ccard__title {
+  line-height: 30px;
+  letter-spacing: -0.52px;
+}
+
+.ccard__desc {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* ── SHOTS GRID ── */
@@ -41,6 +105,13 @@
 @media (max-width: 1199px) {
   .desktop-only {
     display: none;
+  }
+}
+
+/* 2 case cards per row once the stretched block is wide enough — one per row on phones */
+@media (min-width: 768px) {
+  .cases-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

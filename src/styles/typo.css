@@ -43,6 +43,13 @@
   text-decoration-color: var(--text);
 }
 
+/* narrow phones: smaller h1 so the headings wrap less */
+@media (max-width: 420px) {
+  .h1 {
+    font-size: 40px;
+  }
+}
+
 @media (min-width: 1200px) {
 
   .h1 {

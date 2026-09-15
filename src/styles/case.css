@@ -1,0 +1,46 @@
+/* ── CASE PAGE (draft) ── */
+
+.case {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 28px;
+}
+
+.case-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.4px;
+  color: var(--text);
+  background: var(--surface);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.case-back:hover {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.case-back svg {
+  transition: transform 0.1s ease-in-out;
+}
+
+.case-back:hover svg {
+  transform: translateX(-2px);
+}
+
+.case-cover {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-lg);
+  corner-shape: smooth;
+  background: var(--surface);
+}

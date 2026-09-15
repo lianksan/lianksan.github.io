@@ -90,7 +90,8 @@ body {
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  max-width: 540px;
+  /* same width as the stretched Portfolio / Products blocks: 1024px + paddings */
+  max-width: 1064px;
   margin: 0 auto;
 }
 
@@ -126,6 +127,16 @@ body {
   display: flex;
   gap: 16px;
   margin-left: auto;
+  /* keeps the languages visibly apart from the tabs when the menu is tight */
+  padding-left: 16px;
+}
+
+/* phones: tighter gaps inside each group, so the tabs and languages read as two groups and still fit */
+@media (max-width: 767px) {
+  .nav-tabs,
+  .nav-langs {
+    gap: 12px;
+  }
 }
 
 button.tab {
@@ -134,6 +145,20 @@ button.tab {
   border: none;
   padding: 0;
   cursor: pointer;
+}
+
+/* Portfolio and Products blocks leave the narrow column below desktop and span the screen
+   (20px paddings, up to 1024px), so shots are readable without zooming */
+@media (max-width: 1199px) {
+  .main > .wide {
+    width: min(100vw - 40px, 1024px);
+    align-self: center;
+  }
+
+  /* 100vw counts a desktop scrollbar — clip that sliver instead of scrolling sideways */
+  html:has(.wide) {
+    overflow-x: clip;
+  }
 }
 
 @media (min-width: 1200px) {

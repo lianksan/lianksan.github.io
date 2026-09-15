@@ -21,7 +21,7 @@ import '../styles/home.css';
     </div>
 
     <h1 class="h1">
-      Software designer<br />Paulik Liankevich
+      UX/UI Designer<br />Paulik Liankevich
     </h1>
 
     <p class="body-text">
@@ -226,11 +226,11 @@ import '../styles/home.css';
     const icons = document.querySelectorAll('.skill-icon') as NodeListOf<HTMLElement>;
     if (!train || !timeline || !icons.length) return;
 
-    const ICON_SIZE = 44;
     const GAP = 4;
-    const SLOT = ICON_SIZE + GAP;
 
     function onScroll() {
+      // icons are smaller on narrow phones, so read the size instead of hardcoding it
+      const SLOT = icons[0].offsetHeight + GAP;
       const trainRect = train.getBoundingClientRect();
       const timelineRect = timeline.getBoundingClientRect();
 

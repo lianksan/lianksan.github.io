@@ -76,13 +76,6 @@
   gap: 8px;
   line-height: 30px;
   letter-spacing: -0.52px;
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--text) 30%, transparent);
-  text-underline-offset: 4px;
-}
-
-.pcard:hover .pcard__name {
-  text-decoration-color: var(--text-inv);
 }
 
 .pcard:hover .pcard__shots .shot {
@@ -105,7 +98,11 @@
 
 /* Screenshots area */
 
+/* Shot geometry is authored in px against the desktop card (352px iOS, 534px web);
+   --u scales it with the card, so the composition holds at any card width. */
 .pcard__shots {
+  container-type: inline-size;
+  --u: calc(100cqw / 352);
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
@@ -114,8 +111,8 @@
 
 .pcard__shots .shot {
   position: absolute;
-  width: 220px;
-  height: 476px;
+  width: calc(220 * var(--u));
+  height: calc(476 * var(--u));
   border-radius: var(--radius-sm);
   corner-shape: smooth;
   outline: 6px solid var(--surface-2);
@@ -126,14 +123,14 @@
 /* ── Layout A — 1 shot, centred ── */
 
 .pcard__shots--a .shot--1 {
-  left: 48px;
-  top: -140px;
+  left: calc(48 * var(--u));
+  top: calc(-140 * var(--u));
   rotate: 3deg;
   z-index: 2;
 }
 .pcard__shots--a .shot--2 {
-  left: 80px;
-  top: -168px;
+  left: calc(80 * var(--u));
+  top: calc(-168 * var(--u));
   rotate: -5deg;
   z-index: 1;
 }
@@ -149,14 +146,14 @@
 /* ── Layout B — 1 shot, tilted ── */
 
 .pcard__shots--b .shot--1 {
-  left: 88px;
-  top: -140px;
+  left: calc(88 * var(--u));
+  top: calc(-140 * var(--u));
   rotate: -3deg;
   z-index: 2;
 }
 .pcard__shots--b .shot--2 {
-  left: 48px;
-  top: -152px;
+  left: calc(48 * var(--u));
+  top: calc(-152 * var(--u));
   rotate: 4deg;
   z-index: 1;
 }
@@ -172,15 +169,15 @@
 /* ── Layout C — 2 shots, fan out ── */
 
 .pcard__shots--c .shot--1 {
-  left: 44px;
-  top: 20px;
+  left: calc(44 * var(--u));
+  top: calc(20 * var(--u));
   transform: rotate(-3deg);
   z-index: 2;
 }
 
 .pcard__shots--c .shot--2 {
-  left: 80px;
-  top: 68px;
+  left: calc(80 * var(--u));
+  top: calc(68 * var(--u));
   transform: rotate(7deg);
   z-index: 1;
 }
@@ -196,15 +193,15 @@
 /* ── Layout D — 2 shots, stacked ── */
 
 .pcard__shots--d .shot--1 {
-  left: 84px;
-  top: 24px;
+  left: calc(84 * var(--u));
+  top: calc(24 * var(--u));
   rotate: 3deg;
   z-index: 2;
 }
 
 .pcard__shots--d .shot--2 {
-  left: 44px;
-  top: 48px;
+  left: calc(44 * var(--u));
+  top: calc(48 * var(--u));
   rotate: -4deg;
   z-index: 1;
 }
@@ -220,12 +217,13 @@
 /* ── Web card ── */
 
 .pcard--web .pcard__shots {
+  --u: calc(100cqw / 534);
   aspect-ratio: 1.3 / 1;
 }
 
 .pcard--web .shot {
-  width: 560px;
-  height: 340px;
+  width: calc(560 * var(--u));
+  height: calc(340 * var(--u));
   border-radius: var(--radius-sm);
   corner-shape: smooth;
 }
@@ -233,8 +231,8 @@
 /* Layout A — web, centred */
 
 .pcard--web .pcard__shots--a .shot--1 {
-  top: 8px;
-  left: 92px;
+  top: calc(8 * var(--u));
+  left: calc(92 * var(--u));
   rotate: -4deg;
 }
 
@@ -245,8 +243,8 @@
 /* Layout B — web, tilted */
 
 .pcard--web .pcard__shots--b .shot--1 {
-  top: 24px;
-  left: -92px;
+  top: calc(24 * var(--u));
+  left: calc(-92 * var(--u));
   rotate: -6deg;
 }
 
@@ -254,11 +252,10 @@
   transform: translate(12px, 4px) rotate(2deg);
 }
 
-/* ── Below desktop — bigger shots, centred on the card, fanned a little wider.
-   Sizes are relative to the square shots box so they follow the card from
-   phone (335px) up to the 500px tablet card. ── */
+/* ── Phones (one card per row) — bigger shots, centred on the card, fanned a little wider.
+   Sizes are relative to the square shots box, so they follow the card width. ── */
 
-@media (max-width: 1199px) {
+@media (max-width: 767px) {
   .pcard:not(.pcard--web) .shot {
     width: 74%;
     height: 160%;
@@ -279,16 +276,20 @@
   .pcard__shots--d .shot--2 { --shot-offset: -7%; }
 }
 
+/* columns from tablet up — one card per row on phones, same as Portfolio */
+@media (min-width: 768px) {
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (min-width: 1200px) {
   .main > * {
     max-width: 1080px;
   }
 
-  .pcard {
-    max-width: 352px;
-  }
-
-  .pcard--web {
-    max-width: 534px;
+  .products-grid--ios {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
