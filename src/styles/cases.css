@@ -18,6 +18,13 @@
   gap: 28px;
 }
 
+/* narrow phones: heading sits closer to the cards and shots */
+@media (max-width: 480px) {
+  .portfolio-block {
+    gap: 16px;
+  }
+}
+
 /* ── CASES ── */
 
 .cases-grid {

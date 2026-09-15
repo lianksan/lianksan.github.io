@@ -16,6 +16,22 @@
   --radius-lg: 32px;
   --radius-md: 24px;
   --radius-sm: 16px;
+  /* side padding of the menu and page content */
+  --gutter: 20px;
+}
+
+/* narrow phones: tighter side padding */
+@media (max-width: 480px) {
+  :root {
+    --gutter: 12px;
+  }
+}
+
+/* from tablet, where cases and products go into columns, the side padding doubles */
+@media (min-width: 768px) {
+  :root {
+    --gutter: 40px;
+  }
 }
 
 @media (min-width: 1200px) {
@@ -53,15 +69,23 @@ body {
 
 .main {
   width: 100%;
-  max-width: 540px;
+  /* 500px column + side paddings */
+  max-width: calc(500px + 2 * var(--gutter));
   margin-top: 96px;
   margin-bottom: 64px;
   display: flex;
   flex-direction: column;
   gap: 48px;
-  padding: 0px 20px;
+  padding: 0 var(--gutter);
   margin-left: auto;
   margin-right: auto;
+}
+
+/* narrow phones: the page starts a little higher */
+@media (max-width: 480px) {
+  .main {
+    margin-top: 84px;
+  }
 }
 
 /* ── NAV ── */
@@ -86,12 +110,12 @@ body {
 .nav-tabs {
   display: flex;
   gap: 16px;
-  padding: 0px 20px;
+  padding: 0 var(--gutter);
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
   /* same width as the stretched Portfolio / Products blocks: 1024px + paddings */
-  max-width: 1064px;
+  max-width: calc(1024px + 2 * var(--gutter));
   margin: 0 auto;
 }
 
@@ -148,10 +172,10 @@ button.tab {
 }
 
 /* Portfolio and Products blocks leave the narrow column below desktop and span the screen
-   (20px paddings, up to 1024px), so shots are readable without zooming */
+   (side paddings, up to 1024px), so shots are readable without zooming */
 @media (max-width: 1199px) {
   .main > .wide {
-    width: min(100vw - 40px, 1024px);
+    width: min(100vw - 2 * var(--gutter), 1024px);
     align-self: center;
   }
 
@@ -163,10 +187,10 @@ button.tab {
 
 @media (min-width: 1200px) {
   .nav-tabs {
-    max-width: 1120px;
+    max-width: calc(1080px + 2 * var(--gutter));
   }
 
   .main {
-    max-width: 1120px;
+    max-width: calc(1080px + 2 * var(--gutter));
   }
 }

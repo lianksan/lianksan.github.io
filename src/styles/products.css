@@ -6,6 +6,13 @@
   gap: 28px;
 }
 
+/* narrow phones: heading sits closer to the cards */
+@media (max-width: 480px) {
+  .products-block {
+    gap: 16px;
+  }
+}
+
 .products-grid {
   display: flex;
   flex-wrap: wrap;
