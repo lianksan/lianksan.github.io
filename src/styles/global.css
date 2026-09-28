@@ -143,13 +143,6 @@ body {
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   box-shadow: inset 0em -1px var(--surface-2);
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  transition: transform 0.25s ease;
-}
-
-.nav-hidden {
-  transform: translateY(-100%);
 }
 
 .nav-tabs {
@@ -232,10 +225,10 @@ button.tab {
 
 @media (min-width: 960px) {
   .nav-tabs {
-    max-width: calc(1080px + 2 * var(--gutter));
+    max-width: calc(1280px + 2 * var(--gutter));
   }
 
   .main {
-    max-width: calc(1080px + 2 * var(--gutter));
+    max-width: calc(1280px + 2 * var(--gutter));
   }
 }

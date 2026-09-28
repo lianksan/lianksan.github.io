@@ -293,7 +293,7 @@
 
 @media (min-width: 960px) {
   .main > * {
-    max-width: 1080px;
+    max-width: 1280px;
   }
 
   .products-grid--ios {
