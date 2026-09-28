@@ -31,27 +31,24 @@ import Media from '../components/ShotMedia.astro';
     <div class="gallery-years">
       {GALLERY.map(section => (
         <div class="portfolio-block gallery-section">
-          <h3 class="h2">{section.years}</h3>
+          <h3 class="h2 gallery-year">{section.years}</h3>
           <div class="shot-groups">
             {section.groups.map(group => {
               // the switcher pages through the longest multishot of the group
               const count = Math.max(1, ...group.rows.flat().map(shot => shot.versions?.length ?? 1));
               return (
                 <div class="shot-group" data-count={count}>
-                  <div class="shot-group__meta">
-                    <h4 class="h3">{group.title}</h4>
-                    {count > 1 && (
-                      <div class="shot-pager">
-                        <button type="button" class="shot-pager__btn" data-step="-1" aria-label="Previous version">
-                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5H1M1 5L5 1M1 5L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        </button>
-                        <span class="shot-pager__count h4"><span class="shot-pager__index">1</span> / {count}</span>
-                        <button type="button" class="shot-pager__btn" data-step="1" aria-label="Next version">
-                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5H9M9 5L5 1M9 5L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        </button>
-                      </div>
-                    )}
-                  </div>
+                  {count > 1 && (
+                    <div class="shot-pager">
+                      <button type="button" class="shot-pager__btn" data-step="-1" aria-label="Previous version">
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5H1M1 5L5 1M1 5L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </button>
+                      <span class="shot-pager__count h4"><span class="shot-pager__index">1</span> / {count}</span>
+                      <button type="button" class="shot-pager__btn" data-step="1" aria-label="Next version">
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5H9M9 5L5 1M9 5L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </button>
+                    </div>
+                  )}
 
                   <div class="shots-grid">
                     {group.rows.flatMap(row => {

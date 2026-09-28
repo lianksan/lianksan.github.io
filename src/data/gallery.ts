@@ -1,9 +1,9 @@
 // ── Gallery ──
-// Years → groups → rows of shots. A group is one project: its shots share one
-// title above them. A row fills the 6-column desktop grid: `col` fixes a
-// shot's width, shots without it split what is left evenly.
+// Years → groups → rows of shots. A group is one project: its shots sit close
+// together, groups sit further apart. A row fills the 6-column desktop grid:
+// `col` fixes a shot's width, shots without it split what is left evenly.
 // A multishot lists several `versions` (color themes and the like): they are drawn
-// one at a time and the group gets a switcher next to its title.
+// one at a time and the group gets a switcher above its shots.
 
 export interface Shot {
   src?: string;         // single shot
@@ -13,7 +13,6 @@ export interface Shot {
 }
 
 export interface ShotGroup {
-  title: string;
   rows: Shot[][];
 }
 
@@ -22,13 +21,12 @@ export interface GallerySection {
   groups: ShotGroup[];
 }
 
-// Draft groups — titles are placeholders until real ones exist
 export const GALLERY: GallerySection[] = [
   {
     years: '2026–2025',
     groups: [
       {
-        title: 'World of Tanks',
+        // World of Tanks
         rows: [
           [{ src: '/assets/shots/wot_bg_chapter_ selector.png' }],
           [{ src: '/assets/shots/wot_bg_purchasing.png' }],
@@ -36,13 +34,13 @@ export const GALLERY: GallerySection[] = [
         ],
       },
       {
-        title: 'UFL',
+        // UFL
         rows: [
           [{ src: '/assets/shots/ufl-1.mp4' }, { src: '/assets/shots/ufl-2.mp4' }],
         ],
       },
       {
-        title: 'QR Machine',
+        // QR Machine
         rows: [[{ src: '/assets/shots/qr-machine.mp4' }]],
       },
     ],
@@ -51,33 +49,33 @@ export const GALLERY: GallerySection[] = [
     years: '2024–2022',
     groups: [
       {
-        title: 'Lottie animations',
+        // Lottie animations
         rows: [
           [{ src: '/assets/shots/lottie_eco.mp4' }],
           [{ src: '/assets/shots/lottie_logos.mp4' }, { src: '/assets/shots/lottie_weather.mp4' }],
         ],
       },
       {
-        title: 'Panda',
+        // Panda
         rows: [
           [{ src: '/assets/shots/panda_1.png' }],
           [{ src: '/assets/shots/panda_2.png' }],
         ],
       },
       {
-        title: '3D glass and Math app',
+        // 3D glass and Math app
         rows: [[{ src: '/assets/shots/3d_glass.png', col: 2 }, { src: '/assets/shots/math_app.png' }]],
       },
       {
-        title: 'Unsplash',
+        // Unsplash
         rows: [[{ src: '/assets/shots/unsplash.mp4' }]],
       },
       {
-        title: 'Pixel art',
+        // Pixel art
         rows: [[{ src: '/assets/shots/pixel_donut.gif' }, { src: '/assets/shots/pixel_whale.gif' }]],
       },
       {
-        title: 'Converter',
+        // Converter
         rows: [[{ src: '/assets/shots/converter.mp4' }]],
       },
     ],
@@ -86,12 +84,12 @@ export const GALLERY: GallerySection[] = [
     years: '2021–2019',
     groups: [
       {
-        title: 'China',
+        // China
         // demo multishot — the two China shots as versions of one
         rows: [[{ versions: ['/assets/shots/china1.png', '/assets/shots/china2.png'] }]],
       },
       {
-        title: 'RD app',
+        // RD app
         rows: [[{ src: '/assets/shots/rd-app.png' }]],
       },
     ],

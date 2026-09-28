@@ -99,9 +99,18 @@
   gap: 48px;
 }
 
+/* year headings: h2 weight, a step smaller so they sit under the Shots heading */
+.gallery-year {
+  font-size: 28px;
+}
+
 @media (min-width: 960px) {
   .gallery-years {
     gap: 60px;
+  }
+
+  .gallery-year {
+    font-size: 32px;
   }
 }
 
@@ -118,13 +127,6 @@
   gap: 16px;
 }
 
-/* group title above the shots, with the version switcher on the right */
-.shot-group__meta {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
 
 @media (min-width: 960px) {
   .shot-groups {
@@ -144,8 +146,9 @@
 
 /* ── VERSION SWITCHER ── */
 
+/* sits above the multishot, on the right */
 .shot-pager {
-  flex-shrink: 0;
+  align-self: flex-end;
   display: flex;
   align-items: center;
   gap: 4px;
