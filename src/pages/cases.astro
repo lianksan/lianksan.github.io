@@ -1,30 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
-import { withBase } from '../lib/base';
 import '../styles/cases.css';
-import { CASES } from '../data/cases';
 import { GALLERY } from '../data/gallery';
 import Media from '../components/ShotMedia.astro';
 ---
 
 <Base title="Gallery" activeTab="cases">
-
-  <section id="cases" class="portfolio-block wide">
-    <h2 class="h1">Cases</h2>
-    <div class="cases-grid">
-      {CASES.map(c => (
-        <a href={withBase(`/cases/${c.slug}`)} class="ccard">
-          <div class="ccard__media">
-            <img class="ccard__preview" src={withBase(c.preview)} alt="" />
-          </div>
-          <div class="ccard__text">
-            <h3 class="ccard__title h3">{c.title}</h3>
-            <p class="ccard__desc body-text">{c.desc}</p>
-          </div>
-        </a>
-      ))}
-    </div>
-  </section>
 
   {GALLERY.map(section => (
     <section class="portfolio-block wide gallery-section">
@@ -35,6 +16,24 @@ import Media from '../components/ShotMedia.astro';
           const count = Math.max(1, ...group.rows.flat().map(shot => shot.versions?.length ?? 1));
           return (
             <div class="shot-group" data-count={count}>
+              <div class="shot-group__meta">
+                <div class="shot-group__text">
+                  <h3 class="h3">{group.title}</h3>
+                  {group.desc && <p class="body-text">{group.desc}</p>}
+                </div>
+                {count > 1 && (
+                  <div class="shot-pager">
+                    <button type="button" class="shot-pager__btn" data-step="-1" aria-label="Previous version">
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5H1M1 5L5 1M1 5L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                    <span class="shot-pager__count h4"><span class="shot-pager__index">1</span> / {count}</span>
+                    <button type="button" class="shot-pager__btn" data-step="1" aria-label="Next version">
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5H9M9 5L5 1M9 5L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
+                  </div>
+                )}
+              </div>
+
               <div class="shots-grid">
                 {group.rows.flatMap(row => {
                   const usedCols = row.reduce((s, shot) => s + (shot.col || 0), 0);
@@ -60,23 +59,6 @@ import Media from '../components/ShotMedia.astro';
                 })}
               </div>
 
-              <div class="shot-group__meta">
-                <div class="shot-group__text">
-                  <h3 class="h3">{group.title}</h3>
-                  {group.desc && <p class="body-text">{group.desc}</p>}
-                </div>
-                {count > 1 && (
-                  <div class="shot-pager">
-                    <button type="button" class="shot-pager__btn" data-step="-1" aria-label="Previous version">
-                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5H1M1 5L5 1M1 5L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </button>
-                    <span class="shot-pager__count h4"><span class="shot-pager__index">1</span> / {count}</span>
-                    <button type="button" class="shot-pager__btn" data-step="1" aria-label="Next version">
-                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5H9M9 5L5 1M9 5L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </button>
-                  </div>
-                )}
-              </div>
             </div>
           );
         })}
