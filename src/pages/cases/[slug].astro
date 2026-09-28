@@ -2,29 +2,53 @@
 import Base from '../../layouts/Base.astro';
 import { withBase } from '../../lib/base';
 import '../../styles/case.css';
-import { CASES, type Case } from '../../data/cases';
+import { CASES, type Case, type CaseBlock } from '../../data/cases';
 
 export function getStaticPaths() {
   return CASES.map(c => ({ params: { slug: c.slug }, props: { c } }));
 }
 
 const { c } = Astro.props as { c: Case };
+
+// images take their width from `size`, everything else from `span` (both columns by default)
+const spanOf = (b: CaseBlock) =>
+  b.type === 'image' ? (b.size === 'min' ? 1 : 2) : (b.span ?? 2);
+
+const ARROW_SVG = `<svg class="btn-icon btn-icon--arrow" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 1L1 9M9 1V6.6M9 1H3.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 ---
 
 <Base title={c.title} activeTab="cases" hideNavOnScroll>
 
-  <!-- Draft case page -->
-  <section class="case">
-    <a href={withBase('/cases')} class="case-back">
-      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5H1M1 5L5 1M1 5L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  <article class="case wide">
+    <a href={withBase('/cases')} class="btn case-back">
+      <svg class="btn-icon" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5H1M1 5L5 1M1 5L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Back
     </a>
 
     <h1 class="h1">{c.title}</h1>
 
-    <img class="case-cover" src={withBase(c.preview)} alt="" />
-
-    <p class="body-text">The case study is being written — check back soon.</p>
-  </section>
+    <div class="case-blocks">
+      {c.blocks.map(b => {
+        const cls = `case-block case-block--${b.type} span-${spanOf(b)}`;
+        switch (b.type) {
+          case 'heading':
+            return <h3 class={`${cls} h3`}>{b.text}</h3>;
+          case 'text':
+            return <p class={`${cls} body-text`}>{b.text}</p>;
+          case 'image':
+            return <img class={cls} src={withBase(b.src)} alt={b.alt ?? ''} />;
+          case 'button':
+            return (
+              <div class={cls}>
+                <a href={b.url} target="_blank" rel="noopener" class="btn">
+                  {b.label}
+                  <Fragment set:html={ARROW_SVG} />
+                </a>
+              </div>
+            );
+        }
+      })}
+    </div>
+  </article>
 
 </Base>

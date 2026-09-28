@@ -1,31 +1,10 @@
-/* ── CASE PAGE (draft) ── */
+/* ── CASE PAGE ── */
 
 .case {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 28px;
-}
-
-.case-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border-radius: 999px;
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 24px;
-  letter-spacing: -0.4px;
-  color: var(--text);
-  background: var(--surface);
-  text-decoration: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.case-back:hover {
-  background: var(--text);
-  color: var(--bg);
 }
 
 .case-back svg {
@@ -36,11 +15,49 @@
   transform: translateX(-2px);
 }
 
-.case-cover {
+/* ── BLOCKS ── */
+
+/* one column on phones, two from tablet; blocks take 1 or 2 columns */
+.case-blocks {
+  align-self: stretch;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+/* a heading opens a new part of the story, so it gets extra room above */
+.case-block--heading:not(:first-child) {
+  margin-top: 24px;
+}
+
+.case-block--image {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-sm);
   corner-shape: smooth;
   background: var(--surface);
+  box-shadow: 0 0 0 1px var(--surface-2);
+}
+
+.case-block--button {
+  padding-top: 4px;
+}
+
+@media (min-width: 768px) {
+  .case-blocks {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .case-blocks > .span-2 {
+    grid-column: span 2;
+  }
+}
+
+/* narrow phones: tighter spacing, same as Portfolio and Products */
+@media (max-width: 480px) {
+  .case {
+    gap: 16px;
+  }
 }

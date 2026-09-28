@@ -88,6 +88,48 @@ body {
   }
 }
 
+/* ── BUTTONS (home contacts, case pages) ── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.4px;
+  color: var(--text);
+  background: var(--surface);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:hover {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.btn-icon {
+  flex-shrink: 0;
+}
+
+.btn-icon--arrow {
+  width: 10px;
+  height: 10px;
+  transition: transform 0.1s ease-in-out;
+}
+
+.btn:hover .btn-icon--arrow {
+  transform: translate(2px, -2px);
+}
+
 /* ── NAV ── */
 
 .nav {
@@ -96,7 +138,10 @@ body {
   left: 0;
   right: 0;
   z-index: 100;
-  background: var(--bg);
+  /* slightly see-through, content scrolling under the menu is blurred */
+  background: color-mix(in srgb, var(--bg) 80%, transparent);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   box-shadow: inset 0em -1px var(--surface-2);
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
