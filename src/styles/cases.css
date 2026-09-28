@@ -27,19 +27,29 @@
 
 /* ── CASES ── */
 
-.cases-grid {
-  display: grid;
-  grid-template-columns: 1fr;
+/* one horizontally scrolling row; the next card peeks in at the edge */
+.cases-row {
+  display: flex;
   gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.cases-row::-webkit-scrollbar {
+  display: none;
 }
 
 /* the preview with the text right under it, on one filled card;
-   background, radius and hover match the product cards */
+   background and hover match the product cards, radius matches their icons */
 .ccard {
+  flex: 0 0 min(85%, 480px);
+  scroll-snap-align: start;
   display: flex;
   flex-direction: column;
   background: var(--surface);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-sm);
   corner-shape: smooth;
   overflow: hidden;
   text-decoration: none;
@@ -54,14 +64,14 @@
 
 /* full-bleed preview, rounded like the card; the image zooms in a little on hover */
 .ccard__media {
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-sm);
   corner-shape: smooth;
   overflow: hidden;
 }
 
 .ccard__preview {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
   display: block;
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
@@ -91,29 +101,6 @@
   white-space: nowrap;
 }
 
-/* ── SHOTS BY YEAR ── */
-
-.gallery-years {
-  display: flex;
-  flex-direction: column;
-  gap: 48px;
-}
-
-/* year headings: h2 weight, a step smaller so they sit under the Shots heading */
-.gallery-year {
-  font-size: 28px;
-}
-
-@media (min-width: 960px) {
-  .gallery-years {
-    gap: 60px;
-  }
-
-  .gallery-year {
-    font-size: 32px;
-  }
-}
-
 /* ── SHOTS GRID ── */
 
 .shots-grid {
@@ -135,13 +122,6 @@
 @media (max-width: 959px) {
   .desktop-only {
     display: none;
-  }
-}
-
-/* 2 case cards per row once the stretched block is wide enough — one per row on phones */
-@media (min-width: 768px) {
-  .cases-grid {
-    grid-template-columns: repeat(2, 1fr);
   }
 }
 
