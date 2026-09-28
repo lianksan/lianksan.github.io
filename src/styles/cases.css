@@ -91,7 +91,7 @@
   white-space: nowrap;
 }
 
-/* ── SHOTS: YEARS → GROUPS ── */
+/* ── SHOTS BY YEAR ── */
 
 .gallery-years {
   display: flex;
@@ -114,49 +114,6 @@
   }
 }
 
-/* one project per group; groups follow each other with the same 12px gap as the shots inside them */
-.shot-groups,
-.shot-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* ── VERSION SWITCHER ── */
-
-/* sits above the multishot, on the right */
-.shot-pager {
-  align-self: flex-end;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.shot-pager__btn {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: 999px;
-  color: var(--text);
-  background: var(--surface);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.shot-pager__btn:hover {
-  background: var(--text);
-  color: var(--bg);
-}
-
-.shot-pager__count {
-  min-width: 48px;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-}
-
 /* ── SHOTS GRID ── */
 
 .shots-grid {
@@ -173,27 +130,6 @@
   corner-shape: smooth;
   background: var(--surface);
   box-shadow: 0 0 0 1px var(--surface-2);
-}
-
-/* ── MULTISHOT ──
-   Versions share one cell and only the current one is visible. */
-
-.shot-stack {
-  display: grid;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.shot-layer {
-  grid-area: 1 / 1;
-  height: 100%;
-  object-fit: cover;
-  transition: opacity 0.25s ease;
-}
-
-.shot-layer:not([data-pos="0"]) {
-  opacity: 0;
-  pointer-events: none;
 }
 
 @media (max-width: 959px) {
