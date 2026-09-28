@@ -1,74 +1,94 @@
 ---
 import Base from '../layouts/Base.astro';
+import { withBase } from '../lib/base';
 import '../styles/cases.css';
+import { CASES } from '../data/cases';
 import { GALLERY } from '../data/gallery';
 import Media from '../components/ShotMedia.astro';
 ---
 
-<Base title="Gallery" activeTab="cases">
+<Base title="Portfolio" activeTab="cases">
 
-  {GALLERY.map(section => (
-    <section class="portfolio-block wide gallery-section">
-      <h2 class="h1">{section.years}</h2>
-      <div class="shot-groups">
-        {section.groups.map(group => {
-          // the switcher pages through the longest multishot of the group
-          const count = Math.max(1, ...group.rows.flat().map(shot => shot.versions?.length ?? 1));
-          return (
-            <div class="shot-group" data-count={count}>
-              <div class="shot-group__meta">
-                <div class="shot-group__text">
-                  <h3 class="h3">{group.title}</h3>
-                  {group.desc && <p class="body-text">{group.desc}</p>}
-                </div>
-                {count > 1 && (
-                  <div class="shot-pager">
-                    <button type="button" class="shot-pager__btn" data-step="-1" aria-label="Previous version">
-                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5H1M1 5L5 1M1 5L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </button>
-                    <span class="shot-pager__count h4"><span class="shot-pager__index">1</span> / {count}</span>
-                    <button type="button" class="shot-pager__btn" data-step="1" aria-label="Next version">
-                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5H9M9 5L5 1M9 5L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    </button>
-                  </div>
-                )}
-              </div>
+  <section id="cases" class="portfolio-block wide">
+    <h2 class="h1">Cases</h2>
+    <div class="cases-grid">
+      {CASES.map(c => (
+        <a href={withBase(`/cases/${c.slug}`)} class="ccard">
+          <div class="ccard__media">
+            <img class="ccard__preview" src={withBase(c.preview)} alt="" />
+          </div>
+          <div class="ccard__text">
+            <h3 class="ccard__title h3">{c.title}</h3>
+            <p class="ccard__desc body-text">{c.desc}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
 
-              <div class="shots-grid">
-                {group.rows.flatMap(row => {
-                  const usedCols = row.reduce((s, shot) => s + (shot.col || 0), 0);
-                  const autoCount = row.filter(shot => !shot.col).length;
-                  const autoSpan = autoCount ? (6 - usedCols) / autoCount : 0;
-                  return row.map(shot => {
-                    const span = shot.col || autoSpan;
-                    const srcs = shot.versions ?? [shot.src!];
-                    const multi = srcs.length > 1;
-                    return (
-                      <div class={`shot-wrap col-${span}${multi ? ' multishot' : ''}${shot.desktopOnly ? ' desktop-only' : ''}`}>
-                        {multi
-                          ? (
-                            <div class="shot-stack">
-                              {srcs.map((src, i) => <Media src={src} extra="shot-layer" pos={i} />)}
-                            </div>
-                          )
-                          : <Media src={srcs[0]} />
-                        }
+  <section class="portfolio-block wide">
+    <h2 class="h1">Shots</h2>
+    <div class="gallery-years">
+      {GALLERY.map(section => (
+        <div class="portfolio-block gallery-section">
+          <h3 class="h2">{section.years}</h3>
+          <div class="shot-groups">
+            {section.groups.map(group => {
+              // the switcher pages through the longest multishot of the group
+              const count = Math.max(1, ...group.rows.flat().map(shot => shot.versions?.length ?? 1));
+              return (
+                <div class="shot-group" data-count={count}>
+                  <div class="shot-group__meta">
+                    <h4 class="h3">{group.title}</h4>
+                    {count > 1 && (
+                      <div class="shot-pager">
+                        <button type="button" class="shot-pager__btn" data-step="-1" aria-label="Previous version">
+                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 5H1M1 5L5 1M1 5L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
+                        <span class="shot-pager__count h4"><span class="shot-pager__index">1</span> / {count}</span>
+                        <button type="button" class="shot-pager__btn" data-step="1" aria-label="Next version">
+                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 5H9M9 5L5 1M9 5L5 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </button>
                       </div>
-                    );
-                  });
-                })}
-              </div>
+                    )}
+                  </div>
 
-            </div>
-          );
-        })}
-      </div>
-    </section>
-  ))}
+                  <div class="shots-grid">
+                    {group.rows.flatMap(row => {
+                      const usedCols = row.reduce((s, shot) => s + (shot.col || 0), 0);
+                      const autoCount = row.filter(shot => !shot.col).length;
+                      const autoSpan = autoCount ? (6 - usedCols) / autoCount : 0;
+                      return row.map(shot => {
+                        const span = shot.col || autoSpan;
+                        const srcs = shot.versions ?? [shot.src!];
+                        const multi = srcs.length > 1;
+                        return (
+                          <div class={`shot-wrap col-${span}${multi ? ' multishot' : ''}${shot.desktopOnly ? ' desktop-only' : ''}`}>
+                            {multi
+                              ? (
+                                <div class="shot-stack">
+                                  {srcs.map((src, i) => <Media src={src} extra="shot-layer" pos={i} />)}
+                                </div>
+                              )
+                              : <Media src={srcs[0]} />
+                            }
+                          </div>
+                        );
+                      });
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
 
   <script>
-    // Multishots: the pager (or a click on the stack) brings the next version to the top.
-    // data-pos is a layer's place in the stack: 0 on top, then 1, 2… behind it.
+    // Multishots: the pager (or a click on the shot) shows the next version.
+    // data-pos is a version's place in line: 0 is the one on screen.
     document.querySelectorAll<HTMLElement>('.shot-group[data-count]').forEach(group => {
       const count = Number(group.dataset.count);
       if (count < 2) return;
