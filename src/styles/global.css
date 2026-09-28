@@ -34,7 +34,7 @@
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 960px) {
   :root {
     --radius-lg: 40px;
     --radius-md: 32px;
@@ -218,7 +218,7 @@ button.tab {
 
 /* Portfolio and Products blocks leave the narrow column below desktop and span the screen
    (side paddings, up to 1024px), so shots are readable without zooming */
-@media (max-width: 1199px) {
+@media (max-width: 959px) {
   .main > .wide {
     width: min(100vw - 2 * var(--gutter), 1024px);
     align-self: center;
@@ -230,7 +230,7 @@ button.tab {
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 960px) {
   .nav-tabs {
     max-width: calc(1080px + 2 * var(--gutter));
   }
