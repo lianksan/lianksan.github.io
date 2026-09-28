@@ -114,34 +114,12 @@
   }
 }
 
-/* one project per group — groups sit well apart so each reads as its own piece */
-.shot-groups {
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-}
-
+/* one project per group; groups follow each other with the same 12px gap as the shots inside them */
+.shot-groups,
 .shot-group {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-}
-
-
-@media (min-width: 960px) {
-  .shot-groups {
-    gap: 60px;
-  }
-}
-
-@media (max-width: 480px) {
-  .shot-groups {
-    gap: 32px;
-  }
-
-  .shot-group {
-    gap: 12px;
-  }
+  gap: 12px;
 }
 
 /* ── VERSION SWITCHER ── */
