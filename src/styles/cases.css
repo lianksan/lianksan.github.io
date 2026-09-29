@@ -79,7 +79,9 @@
   corner-shape: smooth;
   overflow: hidden;
   background: var(--surface);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--text) 20%, transparent);
+  /* drawn inside the edge and over the image, so the card's clipping can't hide it */
+  outline: 1px solid rgb(255 255 255 / 0.2);
+  outline-offset: -1px;
   /* a tilted rectangle falls short of the card edges, so the top layer is scaled up
      just enough to still span the full card width */
   --scale: 1.05;
