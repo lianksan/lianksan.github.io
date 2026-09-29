@@ -11,12 +11,12 @@ import { GALLERY } from '../data/gallery';
   <section id="cases" class="cases-grid wide">
     {CASES.map(c => (
       <a href={withBase(`/cases/${c.slug}`)} class="ccard">
+        <div class="ccard__media">
+          <img class="ccard__preview" src={withBase(c.preview)} alt="" />
+        </div>
         <div class="ccard__text">
           <h3 class="ccard__title h3">{c.title}</h3>
           <p class="ccard__desc body-text">{c.desc}</p>
-        </div>
-        <div class="ccard__media">
-          <img class="ccard__preview" src={withBase(c.preview)} alt="" />
         </div>
       </a>
     ))}

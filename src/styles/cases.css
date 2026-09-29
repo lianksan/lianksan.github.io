@@ -27,45 +27,41 @@
 
 /* ── CASES ── */
 
-/* one card per row below desktop, where two would leave too little room for the text */
+/* one card per row on phones, two from 600px, three on desktop */
 .cases-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 12px;
 }
 
-@media (min-width: 960px) {
+@media (min-width: 600px) {
   .cases-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* text on the left, pinned to the top, preview on the right;
-   padding, radii and hover match the product cards (the preview is rounded like their icons) */
+@media (min-width: 960px) {
+  .cases-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* preview on top, filled text block under it; no fill or padding on the card itself */
 .ccard {
   display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 16px;
-  background: var(--surface);
-  border-radius: var(--radius-lg);
-  corner-shape: smooth;
+  flex-direction: column;
+  gap: 8px;
   text-decoration: none;
   color: var(--text);
   -webkit-tap-highlight-color: transparent;
 }
 
-.ccard:hover {
-  background-color: var(--surface-inv);
-  color: var(--text-inv);
-}
-
-/* the image zooms in a little on hover */
+/* rounded like the shots; the image zooms in a little on hover */
 .ccard__media {
-  flex: 0 0 55%;
   border-radius: var(--radius-sm);
   corner-shape: smooth;
   overflow: hidden;
+  box-shadow: 0 0 0 1px var(--surface-2);
 }
 
 .ccard__preview {
@@ -80,37 +76,27 @@
   transform: scale(1.04);
 }
 
-/* title + caption */
+/* title + caption on their own filled block; fill and hover match the product cards */
 .ccard__text {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 2px;
   min-width: 0;
+  padding: 16px 20px 18px;
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  corner-shape: smooth;
+}
+
+.ccard:hover .ccard__text {
+  background-color: var(--surface-inv);
+  color: var(--text-inv);
 }
 
 .ccard__title {
   line-height: 30px;
   letter-spacing: -0.52px;
-}
-
-/* narrow phones: no room beside the preview, so the text goes under it */
-@media (max-width: 480px) {
-  .ccard {
-    flex-direction: column-reverse;
-    align-items: stretch;
-    gap: 12px;
-    padding: 12px;
-  }
-
-  .ccard__media,
-  .ccard__text {
-    flex: none;
-  }
-
-  .ccard__text {
-    padding: 0 4px 4px;
-  }
 }
 
 /* ── SHOTS GRID ── */
