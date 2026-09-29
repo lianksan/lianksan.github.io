@@ -17,25 +17,29 @@ import { GALLERY } from '../data/gallery';
           const autoSpan = autoCount ? (6 - usedCols) / autoCount : 0;
           return row.map(shot => {
             const span = shot.col || autoSpan;
-            const isVideo = /\.mp4$/i.test(shot.src);
-            const media = isVideo
-              ? <video class="shot-img" src={withBase(shot.src)} autoplay muted loop playsinline></video>
-              : <img class="shot-img" src={withBase(shot.src)} alt="" />;
+            // the shot and its variants; the first lies on top of the pile
+            const variants = [shot.src, ...(shot.stack || [])];
+            const media = (src: string, cls: string, pos?: number) => /\.mp4$/i.test(src)
+              ? <video class={cls} data-pos={pos} src={withBase(src)} autoplay muted loop playsinline></video>
+              : <img class={cls} data-pos={pos} src={withBase(src)} alt="" />;
             return (
-              <div class={`shot-wrap col-${span}${shot.desktopOnly ? ' desktop-only' : ''}`}>
+              <div class={`shot-wrap col-${span}${shot.desktopOnly ? ' desktop-only' : ''}`} data-stack={shot.stack ? '' : undefined}>
                 {shot.stack
-                  ? (
-                    <div class="shot-stack">
-                      {/* back to front: the last variant lies at the bottom of the pile */}
-                      {[...shot.stack].reverse().map((src, i) => (
-                        <img class={`shot-img shot-stack__under shot-stack__under--${shot.stack!.length - i}`} src={withBase(src)} alt="" />
-                      ))}
-                      {media}
-                    </div>
-                  )
-                  : media
+                  ? <div class="shot-stack">{variants.map((src, i) => media(src, 'shot-img shot-stack__layer', i))}</div>
+                  : media(shot.src, 'shot-img')
                 }
-                {shot.desc && <p class="body-text shot-desc" set:html={shot.desc} />}
+                {(shot.desc || shot.stack) && (
+                  <div class="shot-caption">
+                    {shot.desc && <p class="body-text shot-desc" set:html={shot.desc} />}
+                    {shot.stack && (
+                      <div class="shot-pager">
+                        {variants.map((_, i) => (
+                          <button type="button" class="shot-pager__dot" aria-label={`Variant ${i + 1}`} aria-current={i === 0 ? 'true' : 'false'}></button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             );
           });
@@ -45,3 +49,22 @@ import { GALLERY } from '../data/gallery';
   ))}
 
 </Base>
+
+<script>
+  // stacked shots: a dot (or a click on the pile) brings its variant on top;
+  // the rest keep their order after it, so the pile turns like a carousel
+  document.querySelectorAll<HTMLElement>('[data-stack]').forEach(wrap => {
+    const layers = [...wrap.querySelectorAll<HTMLElement>('.shot-stack__layer')];
+    const dots = [...wrap.querySelectorAll<HTMLElement>('.shot-pager__dot')];
+    let current = 0;
+    const show = (n: number) => {
+      current = (n + layers.length) % layers.length;
+      layers.forEach((layer, i) => {
+        layer.dataset.pos = String((i - current + layers.length) % layers.length);
+      });
+      dots.forEach((dot, i) => dot.setAttribute('aria-current', String(i === current)));
+    };
+    dots.forEach((dot, i) => dot.addEventListener('click', () => show(i)));
+    wrap.querySelector('.shot-stack')!.addEventListener('click', () => show(current + 1));
+  });
+</script>
