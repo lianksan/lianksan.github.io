@@ -6,7 +6,8 @@ import { CASES } from '../data/cases';
 import { GALLERY } from '../data/gallery';
 
 // Small tilts for the stacked previews, "random" but stable per case (seeded by the slug),
-// so a rebuild doesn't reshuffle them. The top preview leans one way, the two under it the other.
+// so a rebuild doesn't reshuffle them. The top preview sits straight and leans one way on hover,
+// the two under it lean the other way and turn further on hover.
 const tilts = (slug: string) => {
   let seed = [...slug].reduce((h, ch) => Math.imul(h ^ ch.charCodeAt(0), 16777619), 2166136261);
   const rand = () => {
@@ -32,11 +33,11 @@ const tilts = (slug: string) => {
           <div class="ccard__stack">
             {/* placeholder layers: the same preview under filters until real versions exist */}
             {t.under.map((a, i) => (
-              <div class={`ccard__layer ccard__layer--under-${i + 1}`} style={`--tilt: ${a}deg`}>
+              <div class={`ccard__layer ccard__layer--under-${i + 1}`} style={`--tilt: ${a}deg; --tilt-hover: ${a * 2}deg`}>
                 <img class="ccard__img" src={withBase(c.preview)} alt="" />
               </div>
             ))}
-            <div class="ccard__layer" style={`--tilt: ${t.top}deg`}>
+            <div class="ccard__layer" style={`--tilt-hover: ${t.top}deg`}>
               <img class="ccard__img" src={withBase(c.preview)} alt="" />
             </div>
           </div>
