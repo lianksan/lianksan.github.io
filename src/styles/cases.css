@@ -72,14 +72,14 @@
   display: grid;
 }
 
-/* each layer carries the shot outline; filters go on the image inside, so they don't tint the outline */
+/* each layer carries the outline; filters go on the image inside, so they don't tint the outline */
 .ccard__layer {
   grid-area: 1 / 1;
   border-radius: var(--radius-sm);
   corner-shape: smooth;
   overflow: hidden;
   background: var(--surface);
-  box-shadow: 0 0 0 1px var(--surface-2);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--text) 20%, transparent);
   /* a tilted rectangle falls short of the card edges, so the top layer is scaled up
      just enough to still span the full card width */
   --scale: 1.05;

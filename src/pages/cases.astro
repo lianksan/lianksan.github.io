@@ -17,7 +17,7 @@ const tilts = (slug: string) => {
   const angle = (min: number, max: number) => (min + rand() * (max - min)).toFixed(2);
   return {
     top: dir * +angle(1, 2.5),
-    under: [-dir * +angle(1.5, 3), -dir * +angle(3, 5)],
+    under: [-dir * +angle(3, 5), -dir * +angle(5, 7)],
   };
 };
 ---
