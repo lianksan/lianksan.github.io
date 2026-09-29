@@ -27,31 +27,29 @@
 
 /* ── CASES ── */
 
-/* one horizontally scrolling row; the next card peeks in at the edge */
-.cases-row {
-  display: flex;
+/* one card per row below desktop, where two would leave too little room for the text */
+.cases-grid {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 12px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
 }
 
-.cases-row::-webkit-scrollbar {
-  display: none;
+@media (min-width: 960px) {
+  .cases-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-/* the preview with the text right under it, on one filled card;
-   background and hover match the product cards, radius matches their icons */
+/* text on the left, pinned to the top, preview on the right;
+   padding, radii and hover match the product cards (the preview is rounded like their icons) */
 .ccard {
-  flex: 0 0 min(85%, 480px);
-  scroll-snap-align: start;
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
   background: var(--surface);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-lg);
   corner-shape: smooth;
-  overflow: hidden;
   text-decoration: none;
   color: var(--text);
   -webkit-tap-highlight-color: transparent;
@@ -62,8 +60,9 @@
   color: var(--text-inv);
 }
 
-/* full-bleed preview, rounded like the card; the image zooms in a little on hover */
+/* the image zooms in a little on hover */
 .ccard__media {
+  flex: 0 0 55%;
   border-radius: var(--radius-sm);
   corner-shape: smooth;
   overflow: hidden;
@@ -83,11 +82,11 @@
 
 /* title + caption */
 .ccard__text {
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 2px;
   min-width: 0;
-  padding: 12px 24px 18px;
 }
 
 .ccard__title {
@@ -95,10 +94,23 @@
   letter-spacing: -0.52px;
 }
 
-.ccard__desc {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+/* narrow phones: no room beside the preview, so the text goes under it */
+@media (max-width: 480px) {
+  .ccard {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .ccard__media,
+  .ccard__text {
+    flex: none;
+  }
+
+  .ccard__text {
+    padding: 0 4px 4px;
+  }
 }
 
 /* ── SHOTS GRID ── */
