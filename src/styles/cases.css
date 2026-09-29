@@ -27,29 +27,52 @@
 
 /* ── CASES ── */
 
-/* one card per row on phones, two from 600px */
-/* extra room above each row for the preview pile peeking out over the cards (up to 19px on hover) */
-.cases-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 40px 12px;
-  padding-top: 16px;
+/* One horizontally scrolling row. It runs past the container to both screen edges,
+   while its padding keeps the first card lined up with the content column
+   (cqw = the content column, the #cases section). */
+#cases {
+  container-type: inline-size;
+}
+
+.cases-row {
+  display: flex;
+  gap: 12px;
+  margin-inline: calc(50cqw - 50vw);
+  padding-inline: calc(50vw - 50cqw);
+  scroll-padding-inline: calc(50vw - 50cqw);
+  /* room above for the preview pile peeking out over the cards (up to 19px on hover) —
+     a scrolling box clips vertically too */
+  padding-top: 20px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.cases-row::-webkit-scrollbar {
+  display: none;
+}
+
+/* 100vw counts a desktop scrollbar — clip that sliver instead of scrolling the page sideways */
+html:has(.cases-row) {
+  overflow-x: clip;
+}
+
+/* card widths in container units (cqw = the content column):
+   phones most of the column, so the next card peeks in; tablet half; desktop 5 of 12 columns */
+.ccard {
+  flex: 0 0 85cqw;
+  scroll-snap-align: start;
 }
 
 @media (min-width: 600px) {
-  .cases-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .ccard {
+    flex-basis: calc((100cqw - 12px) / 2);
   }
 }
 
-/* desktop: the block is a 12-column grid and each case takes 5 columns */
 @media (min-width: 960px) {
-  .cases-grid {
-    grid-template-columns: repeat(12, 1fr);
-  }
-
   .ccard {
-    grid-column: span 5;
+    flex-basis: calc((100cqw - 11 * 12px) / 12 * 5 + 4 * 12px);
   }
 }
 
