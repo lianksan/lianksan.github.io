@@ -95,7 +95,7 @@ html:has(.cases-row) {
 }
 
 /* a small pile of previews: two smaller, dimmer copies peek out above the top one;
-   on hover the top one grows a little and the copies rise a little higher. The pile may spill past the card and stays
+   on hover they all grow a little and the copies rise a little higher. The pile may spill past the card and stays
    above the neighbouring cards. */
 .ccard__stack {
   position: relative;
@@ -126,9 +126,9 @@ html:has(.cases-row) {
   pointer-events: none;
 }
 
-/* the top preview grows a little on hover */
+/* every layer grows by 1.5% on hover */
 .ccard:hover .ccard__layer:not(.ccard__layer--under) {
-  transform: scale(1.03);
+  transform: scale(1.015);
 }
 
 .ccard__img {
@@ -146,7 +146,7 @@ html:has(.cases-row) {
 }
 
 .ccard:hover .ccard__layer--under {
-  transform: translateY(calc(var(--lift) * 1.6)) scale(var(--scale));
+  transform: translateY(calc(var(--lift) * 1.6)) scale(calc(var(--scale) * 1.015));
 }
 
 /* each layer further back is dimmer */
