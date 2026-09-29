@@ -10,7 +10,7 @@ import { GALLERY } from '../data/gallery';
 
   <section id="cases" class="portfolio-block wide">
     <h2 class="h1">Cases</h2>
-    <div class="cases-row">
+    <div class="cases-grid">
       {CASES.map(c => (
         <a href={withBase(`/cases/${c.slug}`)} class="ccard">
           <div class="ccard__stack">
