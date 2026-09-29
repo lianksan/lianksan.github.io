@@ -106,6 +106,9 @@ html:has(.cases-row) {
 /* each layer carries the outline; filters go on the image inside, so they don't tint the outline */
 .ccard__layer {
   grid-area: 1 / 1;
+  /* all layers grow from their top edge, so on hover the gaps between the peeking
+     edges widen by the same amount and every layer moves in step */
+  transform-origin: 50% 0;
   border-radius: var(--radius-sm);
   corner-shape: smooth;
   overflow: hidden;
@@ -141,7 +144,6 @@ html:has(.cases-row) {
 /* layers under the top one: straight, smaller and shifted up, so their top edges
    peek out above it; scaled from the top edge, so the shift alone sets how much shows */
 .ccard__layer--under {
-  transform-origin: 50% 0;
   transform: translateY(var(--lift)) scale(var(--scale));
 }
 
