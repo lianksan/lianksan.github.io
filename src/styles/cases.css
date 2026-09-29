@@ -78,15 +78,25 @@
   border-radius: var(--radius-sm);
   corner-shape: smooth;
   overflow: hidden;
+  position: relative;
   background: var(--surface);
-  /* drawn inside the edge and over the image, so the card's clipping can't hide it */
-  outline: 1px solid rgb(255 255 255 / 0.2);
-  outline-offset: -1px;
   /* a tilted rectangle falls short of the card edges, so the top layer is scaled up
      just enough to still span the full card width */
   --scale: 1.05;
   transform: rotate(var(--tilt, 0deg)) scale(var(--scale));
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* the outline is a border on an overlay inside the edge, over the image,
+   so the card's clipping can't hide it and it stays see-through */
+.ccard__layer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  border-radius: inherit;
+  corner-shape: inherit;
+  pointer-events: none;
 }
 
 .ccard:hover .ccard__layer {
