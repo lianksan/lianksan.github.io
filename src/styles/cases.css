@@ -54,6 +54,8 @@
   background: var(--surface);
   border-radius: var(--radius-lg);
   corner-shape: smooth;
+  /* the tilted pile is cut to the card's rounded shape */
+  overflow: hidden;
   text-decoration: none;
   color: var(--text);
   -webkit-tap-highlight-color: transparent;
@@ -78,12 +80,15 @@
   overflow: hidden;
   background: var(--surface);
   box-shadow: 0 0 0 1px var(--surface-2);
-  transform: rotate(var(--tilt, 0deg)) scale(var(--scale, 1));
+  /* a tilted rectangle falls short of the card edges, so the top layer is scaled up
+     just enough to still span the full card width */
+  --scale: 1.05;
+  transform: rotate(var(--tilt, 0deg)) scale(var(--scale));
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .ccard:hover .ccard__layer {
-  transform: rotate(calc(var(--tilt, 0deg) * 2)) scale(var(--scale, 1));
+  transform: rotate(calc(var(--tilt, 0deg) * 2)) scale(var(--scale));
 }
 
 .ccard__img {
@@ -95,7 +100,7 @@
 
 /* layers under the top one are a touch smaller, so mostly their corners peek out */
 .ccard__layer--under-1 {
-  --scale: 0.96;
+  --scale: 1.01;
 }
 
 .ccard__layer--under-1 .ccard__img {
@@ -103,7 +108,7 @@
 }
 
 .ccard__layer--under-2 {
-  --scale: 0.92;
+  --scale: 0.97;
 }
 
 .ccard__layer--under-2 .ccard__img {
