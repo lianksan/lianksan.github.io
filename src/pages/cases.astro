@@ -5,7 +5,7 @@ import '../styles/cases.css';
 import { GALLERY } from '../data/gallery';
 ---
 
-<Base title="Portfolio" activeTab="cases">
+<Base title="Gallery" activeTab="cases">
 
   {GALLERY.map(section => (
     <section class="portfolio-block gallery-section wide">
@@ -51,7 +51,8 @@ import { GALLERY } from '../data/gallery';
 </Base>
 
 <script>
-  // shot carousels: swiped by hand or scrolled one slide at a time by the arrows;
+  // shot carousels: swiped by hand, scrolled one slide at a time by the arrows
+  // or by a click on a slide peeking from the side;
   // the counter and the arrows follow whatever slide is in view
   document.querySelectorAll<HTMLElement>('[data-carousel]').forEach(wrap => {
     const track = wrap.querySelector<HTMLElement>('.shot-carousel')!;
@@ -68,13 +69,16 @@ import { GALLERY } from '../data/gallery';
     const sync = () => {
       const i = current();
       counter.textContent = String(i + 1);
+      slides.forEach((slide, n) => slide.classList.toggle('is-current', n === i));
       prev.disabled = i === 0;
       next.disabled = i === slides.length - 1;
     };
-    const go = (step: number) => {
-      const i = Math.min(Math.max(current() + step, 0), slides.length - 1);
-      track.scrollTo({ left: offset(i), behavior: 'smooth' });
-    };
+    const goTo = (i: number) => track.scrollTo({ left: offset(i), behavior: 'smooth' });
+    const go = (step: number) => goTo(Math.min(Math.max(current() + step, 0), slides.length - 1));
+    // a click on a slide peeking from the side brings it into view
+    slides.forEach((slide, i) => slide.addEventListener('click', () => {
+      if (i !== current()) goTo(i);
+    }));
     // let the track run out to the window edges on both sides of the shot
     const bleed = () => {
       const { left, right } = wrap.getBoundingClientRect();
@@ -84,6 +88,7 @@ import { GALLERY } from '../data/gallery';
     };
     bleed();
     addEventListener('resize', bleed);
+    sync();
     prev.addEventListener('click', () => go(-1));
     next.addEventListener('click', () => go(1));
     track.addEventListener('scroll', sync, { passive: true });

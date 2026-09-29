@@ -145,6 +145,11 @@ body {
   box-shadow: inset 0em -1px var(--surface-2);
 }
 
+/* coming back on scroll up: quick, while hiding follows the scroll with no easing */
+.nav--returning {
+  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
 .nav-tabs {
   display: flex;
   gap: 16px;
@@ -152,7 +157,7 @@ body {
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  /* same width as the stretched Portfolio / Products blocks: 1024px + paddings */
+  /* same width as the stretched Gallery / Products blocks: 1024px + paddings */
   max-width: calc(1024px + 2 * var(--gutter));
   margin: 0 auto;
 }
@@ -209,7 +214,7 @@ button.tab {
   cursor: pointer;
 }
 
-/* Portfolio and Products blocks leave the narrow column below desktop and span the screen
+/* Gallery and Products blocks leave the narrow column below desktop and span the screen
    (side paddings, up to 1024px), so shots are readable without zooming */
 @media (max-width: 959px) {
   .main > .wide {

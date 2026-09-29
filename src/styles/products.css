@@ -283,7 +283,7 @@
   .pcard__shots--d .shot--2 { --shot-offset: -7%; }
 }
 
-/* columns from tablet up — one card per row on phones, same as Portfolio */
+/* columns from tablet up — one card per row on phones, same as Gallery */
 @media (min-width: 768px) {
   .products-grid {
     display: grid;

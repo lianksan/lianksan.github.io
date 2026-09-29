@@ -1,4 +1,4 @@
-/* ── PORTFOLIO PAGE: SHOTS BY YEAR ── */
+/* ── GALLERY PAGE: SHOTS BY YEAR ── */
 
 .main:has(.gallery-section) {
   gap: 48px;
@@ -96,6 +96,13 @@
   min-width: 0;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+  transition: opacity 0.3s;
+}
+
+/* slides peeking from the sides are dimmed and turn the carousel on click */
+.shot-carousel__slide:not(.is-current) {
+  opacity: 0.4;
+  cursor: pointer;
 }
 
 /* ── PAGER: ARROWS AROUND A COUNTER ── */
