@@ -143,6 +143,16 @@
   min-width: 0;
 }
 
+/* underlined like the timeline links, but in the text colour; the whole card hovers as one link */
+.ccard__text > * {
+  /* line only — the shorthand would reset the 30% underline colour from typo.css */
+  text-decoration-line: underline;
+}
+
+.ccard:hover .ccard__text > * {
+  text-decoration-color: var(--text);
+}
+
 /* ── GALLERY: SHOTS BY YEAR ── */
 
 .gallery-years {

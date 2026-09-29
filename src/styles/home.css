@@ -255,6 +255,16 @@
   text-decoration-color: var(--link);
 }
 
+/* same underline in the text colour, for links that shouldn't stand out in blue */
+.text-link--plain {
+  color: var(--text);
+  text-decoration-color: color-mix(in srgb, var(--text) 30%, transparent);
+}
+
+.text-link--plain:hover {
+  text-decoration-color: var(--text);
+}
+
 .timeline-item .body-text p {
   margin-bottom: 4px;
 }
