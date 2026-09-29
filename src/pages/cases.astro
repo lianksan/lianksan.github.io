@@ -20,51 +20,59 @@ const hoverTilt = (slug: string) => {
 
 <Base title="Portfolio" activeTab="cases">
 
-  <section id="cases" class="cases-grid wide">
-    {CASES.map(c => (
-      <a href={withBase(`/cases/${c.slug}`)} class="ccard">
-        <div class="ccard__stack">
-          {/* placeholder layers: the same preview under filters until real versions exist */}
-          {[2, 1].map(n => (
-            <div class={`ccard__layer ccard__layer--under ccard__layer--under-${n}`}>
+  <section id="cases" class="portfolio-block wide">
+    <h2 class="h1">Cases</h2>
+    <div class="cases-grid">
+      {CASES.map(c => (
+        <a href={withBase(`/cases/${c.slug}`)} class="ccard">
+          <div class="ccard__stack">
+            {/* placeholder layers: the same preview under filters until real versions exist */}
+            {[2, 1].map(n => (
+              <div class={`ccard__layer ccard__layer--under ccard__layer--under-${n}`}>
+                <img class="ccard__img" src={withBase(c.preview)} alt="" />
+              </div>
+            ))}
+            <div class="ccard__layer" style={`--tilt-hover: ${hoverTilt(c.slug)}deg`}>
               <img class="ccard__img" src={withBase(c.preview)} alt="" />
             </div>
-          ))}
-          <div class="ccard__layer" style={`--tilt-hover: ${hoverTilt(c.slug)}deg`}>
-            <img class="ccard__img" src={withBase(c.preview)} alt="" />
           </div>
-        </div>
-        <div class="ccard__text">
-          <h3 class="h4">{c.title}</h3>
-          <p class="body-text">{c.desc}</p>
-        </div>
-      </a>
-    ))}
+          <div class="ccard__text">
+            <h3 class="h4">{c.title}</h3>
+            <p class="body-text">{c.desc}</p>
+          </div>
+        </a>
+      ))}
+    </div>
   </section>
 
-  {GALLERY.map(section => (
-    <section class="portfolio-block wide gallery-section">
-      <h2 class="h1">{section.years}</h2>
-      <div class="shots-grid">
-        {section.rows.flatMap(row => {
-          const usedCols = row.reduce((s, shot) => s + (shot.col || 0), 0);
-          const autoCount = row.filter(shot => !shot.col).length;
-          const autoSpan = autoCount ? (6 - usedCols) / autoCount : 0;
-          return row.map(shot => {
-            const span = shot.col || autoSpan;
-            const isVideo = /\.mp4$/i.test(shot.src);
-            return (
-              <div class={`shot-wrap col-${span}${shot.desktopOnly ? ' desktop-only' : ''}`}>
-                {isVideo
-                  ? <video class="shot-img" src={withBase(shot.src)} autoplay muted loop playsinline></video>
-                  : <img class="shot-img" src={withBase(shot.src)} alt="" />
-                }
-              </div>
-            );
-          });
-        })}
-      </div>
-    </section>
-  ))}
+  <section class="portfolio-block wide">
+    <h2 class="h1">Gallery</h2>
+    <div class="gallery-years">
+      {GALLERY.map(section => (
+        <div class="portfolio-block gallery-section">
+          <h3 class="h2 gallery-year">{section.years}</h3>
+          <div class="shots-grid">
+            {section.rows.flatMap(row => {
+              const usedCols = row.reduce((s, shot) => s + (shot.col || 0), 0);
+              const autoCount = row.filter(shot => !shot.col).length;
+              const autoSpan = autoCount ? (6 - usedCols) / autoCount : 0;
+              return row.map(shot => {
+                const span = shot.col || autoSpan;
+                const isVideo = /\.mp4$/i.test(shot.src);
+                return (
+                  <div class={`shot-wrap col-${span}${shot.desktopOnly ? ' desktop-only' : ''}`}>
+                    {isVideo
+                      ? <video class="shot-img" src={withBase(shot.src)} autoplay muted loop playsinline></video>
+                      : <img class="shot-img" src={withBase(shot.src)} alt="" />
+                    }
+                  </div>
+                );
+              });
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
 
 </Base>

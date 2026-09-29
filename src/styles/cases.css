@@ -28,10 +28,12 @@
 /* ── CASES ── */
 
 /* one card per row on phones, two from 600px, three on desktop */
+/* extra room above each row for the preview pile peeking out over the cards (up to 32px on hover) */
 .cases-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 40px 12px;
+  padding-top: 16px;
 }
 
 @media (min-width: 600px) {
@@ -143,6 +145,29 @@
   gap: 4px;
   min-width: 0;
   padding: 16px 24px 24px;
+}
+
+/* ── GALLERY: SHOTS BY YEAR ── */
+
+.gallery-years {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+/* year headings: h2 weight, a step smaller so they sit under the Gallery heading */
+.gallery-year {
+  font-size: 28px;
+}
+
+@media (min-width: 960px) {
+  .gallery-years {
+    gap: 60px;
+  }
+
+  .gallery-year {
+    font-size: 32px;
+  }
 }
 
 /* ── SHOTS GRID ── */
