@@ -4,18 +4,6 @@ import { withBase } from '../lib/base';
 import '../styles/cases.css';
 import { CASES } from '../data/cases';
 import { GALLERY } from '../data/gallery';
-
-// Hover tilt for the top preview, "random" but stable per case (seeded by the slug),
-// so a rebuild doesn't reshuffle it.
-const hoverTilt = (slug: string) => {
-  let seed = [...slug].reduce((h, ch) => Math.imul(h ^ ch.charCodeAt(0), 16777619), 2166136261);
-  const rand = () => {
-    seed = Math.imul(seed ^ (seed >>> 15), 2246822507) ^ Math.imul(seed ^ (seed >>> 13), 3266489909);
-    return ((seed ^= seed >>> 16) >>> 0) / 4294967296;
-  };
-  const dir = rand() < 0.5 ? -1 : 1;
-  return +(dir * (1 + rand() * 1.5)).toFixed(2);
-};
 ---
 
 <Base title="Portfolio" activeTab="cases">
@@ -32,7 +20,7 @@ const hoverTilt = (slug: string) => {
                 <img class="ccard__img" src={withBase(c.preview)} alt="" />
               </div>
             ))}
-            <div class="ccard__layer" style={`--tilt-hover: ${hoverTilt(c.slug)}deg`}>
+            <div class="ccard__layer">
               <img class="ccard__img" src={withBase(c.preview)} alt="" />
             </div>
           </div>

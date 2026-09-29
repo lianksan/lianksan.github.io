@@ -27,8 +27,8 @@
 
 /* ── CASES ── */
 
-/* one card per row on phones, two from 600px, three on desktop */
-/* extra room above each row for the preview pile peeking out over the cards (up to 32px on hover) */
+/* one card per row on phones, two from 600px */
+/* extra room above each row for the preview pile peeking out over the cards (up to 19px on hover) */
 .cases-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -42,9 +42,14 @@
   }
 }
 
+/* desktop: the block is a 12-column grid and each case takes 5 columns */
 @media (min-width: 960px) {
   .cases-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(12, 1fr);
+  }
+
+  .ccard {
+    grid-column: span 5;
   }
 }
 
@@ -66,9 +71,9 @@
   color: var(--text-inv);
 }
 
-/* a small pile of previews: two smaller copies peek out above the top one;
-   on hover the top one leans and the copies rise a little higher. The pile may spill
-   past the card and stays above the neighbouring cards. */
+/* a small pile of previews: two smaller, dimmer copies peek out above the top one
+   and rise a little higher on hover. The pile may spill past the card and stays
+   above the neighbouring cards. */
 .ccard__stack {
   position: relative;
   z-index: 1;
@@ -98,10 +103,6 @@
   pointer-events: none;
 }
 
-.ccard:hover .ccard__layer {
-  transform: rotate(var(--tilt-hover, 0deg));
-}
-
 .ccard__img {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -120,22 +121,23 @@
   transform: translateY(calc(var(--lift) * 1.6)) scale(var(--scale));
 }
 
+/* each layer further back is dimmer */
 .ccard__layer--under-1 {
-  --scale: 0.92;
-  --lift: -10px;
+  --scale: 0.94;
+  --lift: -6px;
 }
 
 .ccard__layer--under-1 .ccard__img {
-  filter: hue-rotate(60deg) saturate(0.8);
+  filter: hue-rotate(60deg) saturate(0.8) brightness(0.6);
 }
 
 .ccard__layer--under-2 {
-  --scale: 0.84;
-  --lift: -20px;
+  --scale: 0.88;
+  --lift: -12px;
 }
 
 .ccard__layer--under-2 .ccard__img {
-  filter: grayscale(1) brightness(0.7);
+  filter: grayscale(1) brightness(0.35);
 }
 
 /* title + caption, styled like the small timeline items on the home page */
