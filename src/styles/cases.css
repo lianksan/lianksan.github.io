@@ -46,12 +46,11 @@
   }
 }
 
-/* filled, rounded card: preview pile on top, text under it; fill, radius and hover match the product cards */
+/* filled, rounded card: preview pile edge to edge on top, text under it;
+   fill, radius and hover match the product cards */
 .ccard {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 16px;
   background: var(--surface);
   border-radius: var(--radius-lg);
   corner-shape: smooth;
@@ -117,7 +116,7 @@
   flex-direction: column;
   gap: 4px;
   min-width: 0;
-  padding: 0 8px 8px;
+  padding: 16px 24px 24px;
 }
 
 /* ── SHOTS GRID ── */
