@@ -30,7 +30,7 @@
 .shots-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: 32px 12px;
 }
 
 .shot-img {
@@ -67,9 +67,9 @@
 
 /* ── STACKED SHOT: VARIANTS PILED UNDER THE TOP ONE ── */
 
-/* the variants lie right under the top shot, shifted only sideways, so their side
-   edges stick out: the first to the right, the second to the left. The shift is in %
-   of the width, so it stays inside the page's side padding on phones */
+/* the variants lie right under the top shot, shifted sideways and slightly turned,
+   so their edges stick out: the first to the right, the second to the left. The shift
+   is in % of the width, so it stays inside the page's side padding on phones */
 .shot-stack {
   display: grid;
   cursor: pointer;
@@ -87,47 +87,49 @@
 
 .shot-stack__layer[data-pos="1"] {
   z-index: 2;
-  transform: translateX(1.5%);
+  transform: translateX(0.8%) rotate(0.6deg);
   filter: brightness(0.6);
 }
 
 .shot-stack__layer[data-pos="2"] {
   z-index: 1;
-  transform: translateX(-1.5%);
+  transform: translateX(-0.8%) rotate(-0.6deg);
   filter: brightness(0.4);
 }
 
-/* ── PAGER: ONE DOT PER VARIANT ── */
+/* ── PAGER: ARROWS AROUND A COUNTER ── */
 
 .shot-pager {
   display: flex;
+  align-items: center;
+  gap: 8px;
   flex-shrink: 0;
 }
 
-/* a 24px hit area around an 8px dot */
-.shot-pager__dot {
-  width: 24px;
-  height: 24px;
+/* round buttons in the style of .btn */
+.shot-pager__btn {
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
   border: none;
-  background: none;
+  border-radius: 50%;
+  color: var(--text);
+  background: var(--surface);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 
-.shot-pager__dot::before {
-  content: '';
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--text) 30%, transparent);
-  transition: background 0.2s;
+.shot-pager__btn:hover {
+  background: var(--text);
+  color: var(--bg);
 }
 
-.shot-pager__dot:hover::before,
-.shot-pager__dot[aria-current="true"]::before {
-  background: var(--text);
+/* fixed width, so the arrows don't jump when the number changes */
+.shot-pager__count {
+  min-width: 3.5ch;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
 }
 
 @media (max-width: 959px) {
@@ -139,6 +141,7 @@
 @media (min-width: 960px) {
   .shots-grid {
     grid-template-columns: repeat(6, 1fr);
+    row-gap: 40px;
   }
 
   .col-1 { grid-column: span 1; }

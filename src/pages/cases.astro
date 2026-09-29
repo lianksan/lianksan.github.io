@@ -33,9 +33,9 @@ import { GALLERY } from '../data/gallery';
                     {shot.desc && <p class="body-text shot-desc" set:html={shot.desc} />}
                     {shot.stack && (
                       <div class="shot-pager">
-                        {variants.map((_, i) => (
-                          <button type="button" class="shot-pager__dot" aria-label={`Variant ${i + 1}`} aria-current={i === 0 ? 'true' : 'false'}></button>
-                        ))}
+                        <button type="button" class="shot-pager__btn" data-step="-1" aria-label="Previous variant"><svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 1L1.5 6L6.5 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                        <span class="body-text shot-pager__count"><span data-current>1</span> / {variants.length}</span>
+                        <button type="button" class="shot-pager__btn" data-step="1" aria-label="Next variant"><svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.5 1L6.5 6L1.5 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
                       </div>
                     )}
                   </div>
@@ -51,20 +51,21 @@ import { GALLERY } from '../data/gallery';
 </Base>
 
 <script>
-  // stacked shots: a dot (or a click on the pile) brings its variant on top;
+  // stacked shots: the arrows (or a click on the pile) bring the next variant on top;
   // the rest keep their order after it, so the pile turns like a carousel
   document.querySelectorAll<HTMLElement>('[data-stack]').forEach(wrap => {
     const layers = [...wrap.querySelectorAll<HTMLElement>('.shot-stack__layer')];
-    const dots = [...wrap.querySelectorAll<HTMLElement>('.shot-pager__dot')];
+    const counter = wrap.querySelector<HTMLElement>('[data-current]')!;
     let current = 0;
     const show = (n: number) => {
       current = (n + layers.length) % layers.length;
       layers.forEach((layer, i) => {
         layer.dataset.pos = String((i - current + layers.length) % layers.length);
       });
-      dots.forEach((dot, i) => dot.setAttribute('aria-current', String(i === current)));
+      counter.textContent = String(current + 1);
     };
-    dots.forEach((dot, i) => dot.addEventListener('click', () => show(i)));
+    wrap.querySelectorAll<HTMLElement>('.shot-pager__btn').forEach(btn =>
+      btn.addEventListener('click', () => show(current + Number(btn.dataset.step))));
     wrap.querySelector('.shot-stack')!.addEventListener('click', () => show(current + 1));
   });
 </script>
