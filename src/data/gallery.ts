@@ -2,7 +2,7 @@ export interface Shot {
   src: string;
   col?: number;
   desktopOnly?: boolean;
-  stack?: string[];  // more variants of the shot, piled under it (first one right under)
+  stack?: string[];  // more variants of the shot, to its right in a swipeable carousel
   desc?: string;     // caption under the shot; HTML, so it may hold <a class="text-link"> links
 }
 
