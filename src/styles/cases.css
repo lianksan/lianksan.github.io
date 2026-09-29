@@ -28,12 +28,13 @@
 /* ── CASES ── */
 
 /* one case per row on phones, two from 600px, three on desktop;
-   extra room above each row for the preview pile peeking out over the cards (up to 19px on hover) */
+   the top padding equals how far the back layer peeks out (--lift of under-2),
+   so at rest the pile's top edge sits exactly on the padding edge */
 .cases-grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: 40px 12px;
-  padding-top: 20px;
+  padding-top: 12px;
 }
 
 @media (min-width: 600px) {
