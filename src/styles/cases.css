@@ -147,6 +147,9 @@
 .ccard__text > * {
   /* line only — the shorthand would reset the 30% underline colour from typo.css */
   text-decoration-line: underline;
+  /* thickness and offset of the timeline links (.text-link), not the typo.css defaults */
+  text-decoration-thickness: auto;
+  text-underline-offset: 4px;
 }
 
 .ccard:hover .ccard__text > * {
