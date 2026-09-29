@@ -55,7 +55,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* preview and text block read as one piece: only the outer corners are rounded, like the shots;
+/* the preview's bottom corners stay square, so it sits right on the rounded text block;
    the image zooms in a little on hover */
 .ccard__media {
   border-radius: var(--radius-sm) var(--radius-sm) 0 0;
@@ -84,9 +84,9 @@
   flex-direction: column;
   gap: 4px;
   min-width: 0;
-  padding: 12px 16px 16px;
+  padding: 20px 24px 24px;
   background: var(--surface);
-  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  border-radius: var(--radius-sm);
   corner-shape: smooth;
 }
 
