@@ -43,6 +43,43 @@
   box-shadow: 0 0 0 1px var(--surface-2);
 }
 
+/* shot with a caption: text right under the image */
+.shot-wrap:has(.shot-desc) {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ── STACKED SHOT: VARIANTS PILED UNDER THE MAIN ONE ── */
+
+/* each variant turns around one of its bottom corners, so the bottom edge stays put
+   and only the opposite top corner lifts and sticks out from behind the main shot,
+   plus a small sideways shift. The lift grows with the width, so the room above is
+   a padding in % (of the width too) */
+.shot-stack {
+  display: grid;
+  padding-top: 1.6%;
+}
+
+.shot-stack > * {
+  grid-area: 1 / 1;
+  position: relative;
+}
+
+/* right under the main shot: its right top corner lifts */
+.shot-stack__under--1 {
+  transform-origin: 0 100%;
+  transform: translateX(6px) rotate(-0.8deg);
+  filter: brightness(0.6);
+}
+
+/* bottom of the pile: its left top corner lifts */
+.shot-stack__under--2 {
+  transform-origin: 100% 100%;
+  transform: translateX(-6px) rotate(0.8deg);
+  filter: brightness(0.4);
+}
+
 @media (max-width: 959px) {
   .desktop-only {
     display: none;

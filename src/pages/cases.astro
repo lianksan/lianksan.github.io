@@ -18,12 +18,24 @@ import { GALLERY } from '../data/gallery';
           return row.map(shot => {
             const span = shot.col || autoSpan;
             const isVideo = /\.mp4$/i.test(shot.src);
+            const media = isVideo
+              ? <video class="shot-img" src={withBase(shot.src)} autoplay muted loop playsinline></video>
+              : <img class="shot-img" src={withBase(shot.src)} alt="" />;
             return (
               <div class={`shot-wrap col-${span}${shot.desktopOnly ? ' desktop-only' : ''}`}>
-                {isVideo
-                  ? <video class="shot-img" src={withBase(shot.src)} autoplay muted loop playsinline></video>
-                  : <img class="shot-img" src={withBase(shot.src)} alt="" />
+                {shot.stack
+                  ? (
+                    <div class="shot-stack">
+                      {/* back to front: the last variant lies at the bottom of the pile */}
+                      {[...shot.stack].reverse().map((src, i) => (
+                        <img class={`shot-img shot-stack__under shot-stack__under--${shot.stack!.length - i}`} src={withBase(src)} alt="" />
+                      ))}
+                      {media}
+                    </div>
+                  )
+                  : media
                 }
+                {shot.desc && <p class="body-text shot-desc" set:html={shot.desc} />}
               </div>
             );
           });
