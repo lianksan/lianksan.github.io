@@ -32,9 +32,13 @@ const tilts = (slug: string) => {
           <div class="ccard__stack">
             {/* placeholder layers: the same preview under filters until real versions exist */}
             {t.under.map((a, i) => (
-              <img class={`ccard__preview ccard__preview--under ccard__preview--under-${i + 1}`} style={`--tilt: ${a}deg`} src={withBase(c.preview)} alt="" />
+              <div class={`ccard__layer ccard__layer--under-${i + 1}`} style={`--tilt: ${a}deg`}>
+                <img class="ccard__img" src={withBase(c.preview)} alt="" />
+              </div>
             ))}
-            <img class="ccard__preview" style={`--tilt: ${t.top}deg`} src={withBase(c.preview)} alt="" />
+            <div class="ccard__layer" style={`--tilt: ${t.top}deg`}>
+              <img class="ccard__img" src={withBase(c.preview)} alt="" />
+            </div>
           </div>
           <div class="ccard__text">
             <h3 class="h4">{c.title}</h3>

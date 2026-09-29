@@ -46,69 +46,78 @@
   }
 }
 
-/* preview on top, filled text block right under it; no fill or padding on the card itself */
+/* filled, rounded card: preview pile on top, text under it; fill, radius and hover match the product cards */
 .ccard {
   display: flex;
   flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  corner-shape: smooth;
   text-decoration: none;
   color: var(--text);
   -webkit-tap-highlight-color: transparent;
 }
 
+.ccard:hover {
+  background-color: var(--surface-inv);
+  color: var(--text-inv);
+}
+
 /* a small pile of previews: the top one tilted one way, two more under it tilted the other way;
    on hover every layer turns a little further in its own direction */
 .ccard__stack {
-  position: relative;
-  z-index: 1;
   display: grid;
 }
 
-.ccard__preview {
+/* each layer carries the shot outline; filters go on the image inside, so they don't tint the outline */
+.ccard__layer {
   grid-area: 1 / 1;
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  display: block;
   border-radius: var(--radius-sm);
   corner-shape: smooth;
+  overflow: hidden;
   background: var(--surface);
   box-shadow: 0 0 0 1px var(--surface-2);
   transform: rotate(var(--tilt, 0deg)) scale(var(--scale, 1));
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.ccard:hover .ccard__preview {
+.ccard:hover .ccard__layer {
   transform: rotate(calc(var(--tilt, 0deg) * 2)) scale(var(--scale, 1));
 }
 
+.ccard__img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+}
+
 /* layers under the top one are a touch smaller, so mostly their corners peek out */
-.ccard__preview--under-1 {
+.ccard__layer--under-1 {
   --scale: 0.96;
+}
+
+.ccard__layer--under-1 .ccard__img {
   filter: hue-rotate(60deg) saturate(0.8);
 }
 
-.ccard__preview--under-2 {
+.ccard__layer--under-2 {
   --scale: 0.92;
+}
+
+.ccard__layer--under-2 .ccard__img {
   filter: grayscale(1) brightness(0.7);
 }
 
-/* title + caption, styled like the small timeline items on the home page;
-   fill and hover match the product cards */
+/* title + caption, styled like the small timeline items on the home page */
 .ccard__text {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 4px;
   min-width: 0;
-  padding: 20px 24px 24px;
-  background: var(--surface);
-  border-radius: var(--radius-sm);
-  corner-shape: smooth;
-}
-
-.ccard:hover .ccard__text {
-  background-color: var(--surface-inv);
-  color: var(--text-inv);
+  padding: 0 8px 8px;
 }
 
 /* ── SHOTS GRID ── */
