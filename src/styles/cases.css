@@ -55,25 +55,41 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* the preview's bottom corners stay square, so it sits right on the rounded text block;
-   the image zooms in a little on hover */
-.ccard__media {
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-  corner-shape: smooth;
-  overflow: hidden;
-  box-shadow: 0 0 0 1px var(--surface-2);
+/* a small pile of previews: the top one tilted one way, two more under it tilted the other way;
+   on hover every layer turns a little further in its own direction */
+.ccard__stack {
+  position: relative;
+  z-index: 1;
+  display: grid;
 }
 
 .ccard__preview {
+  grid-area: 1 / 1;
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
   display: block;
+  border-radius: var(--radius-sm);
+  corner-shape: smooth;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--surface-2);
+  transform: rotate(var(--tilt, 0deg)) scale(var(--scale, 1));
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .ccard:hover .ccard__preview {
-  transform: scale(1.04);
+  transform: rotate(calc(var(--tilt, 0deg) * 2)) scale(var(--scale, 1));
+}
+
+/* layers under the top one are a touch smaller, so mostly their corners peek out */
+.ccard__preview--under-1 {
+  --scale: 0.96;
+  filter: hue-rotate(60deg) saturate(0.8);
+}
+
+.ccard__preview--under-2 {
+  --scale: 0.92;
+  filter: grayscale(1) brightness(0.7);
 }
 
 /* title + caption, styled like the small timeline items on the home page;

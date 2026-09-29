@@ -4,22 +4,45 @@ import { withBase } from '../lib/base';
 import '../styles/cases.css';
 import { CASES } from '../data/cases';
 import { GALLERY } from '../data/gallery';
+
+// Small tilts for the stacked previews, "random" but stable per case (seeded by the slug),
+// so a rebuild doesn't reshuffle them. The top preview leans one way, the two under it the other.
+const tilts = (slug: string) => {
+  let seed = [...slug].reduce((h, ch) => Math.imul(h ^ ch.charCodeAt(0), 16777619), 2166136261);
+  const rand = () => {
+    seed = Math.imul(seed ^ (seed >>> 15), 2246822507) ^ Math.imul(seed ^ (seed >>> 13), 3266489909);
+    return ((seed ^= seed >>> 16) >>> 0) / 4294967296;
+  };
+  const dir = rand() < 0.5 ? -1 : 1;
+  const angle = (min: number, max: number) => (min + rand() * (max - min)).toFixed(2);
+  return {
+    top: dir * +angle(1, 2.5),
+    under: [-dir * +angle(1.5, 3), -dir * +angle(3, 5)],
+  };
+};
 ---
 
 <Base title="Portfolio" activeTab="cases">
 
   <section id="cases" class="cases-grid wide">
-    {CASES.map(c => (
-      <a href={withBase(`/cases/${c.slug}`)} class="ccard">
-        <div class="ccard__media">
-          <img class="ccard__preview" src={withBase(c.preview)} alt="" />
-        </div>
-        <div class="ccard__text">
-          <h3 class="h4">{c.title}</h3>
-          <p class="body-text">{c.desc}</p>
-        </div>
-      </a>
-    ))}
+    {CASES.map(c => {
+      const t = tilts(c.slug);
+      return (
+        <a href={withBase(`/cases/${c.slug}`)} class="ccard">
+          <div class="ccard__stack">
+            {/* placeholder layers: the same preview under filters until real versions exist */}
+            {t.under.map((a, i) => (
+              <img class={`ccard__preview ccard__preview--under ccard__preview--under-${i + 1}`} style={`--tilt: ${a}deg`} src={withBase(c.preview)} alt="" />
+            ))}
+            <img class="ccard__preview" style={`--tilt: ${t.top}deg`} src={withBase(c.preview)} alt="" />
+          </div>
+          <div class="ccard__text">
+            <h3 class="h4">{c.title}</h3>
+            <p class="body-text">{c.desc}</p>
+          </div>
+        </a>
+      );
+    })}
   </section>
 
   {GALLERY.map(section => (
