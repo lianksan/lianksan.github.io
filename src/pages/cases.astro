@@ -75,6 +75,15 @@ import { GALLERY } from '../data/gallery';
       const i = Math.min(Math.max(current() + step, 0), slides.length - 1);
       track.scrollTo({ left: offset(i), behavior: 'smooth' });
     };
+    // let the track run out to the window edges on both sides of the shot
+    const bleed = () => {
+      const { left, right } = wrap.getBoundingClientRect();
+      track.style.setProperty('--bleed-left', `${left}px`);
+      track.style.setProperty('--bleed-right', `${document.documentElement.clientWidth - right}px`);
+      track.scrollLeft = offset(current());
+    };
+    bleed();
+    addEventListener('resize', bleed);
     prev.addEventListener('click', () => go(-1));
     next.addEventListener('click', () => go(1));
     track.addEventListener('scroll', sync, { passive: true });

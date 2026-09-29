@@ -67,19 +67,23 @@
 
 /* ── CAROUSEL: THE SHOT AND ITS VARIANTS SIDE BY SIDE ── */
 
-/* one slide per view, the rest to the right, swiped or scrolled by the pager;
+/* one slide per shot width, the rest to the right, swiped or scrolled by the pager;
    the gap between slides is the gap between shots side by side in a row.
-   The 1px padding (taken back by the margin) keeps the shots' 1px outline from being
-   clipped by the scrolling track */
+   The track runs out to the window edges (--bleed-left/right, measured by the script),
+   while its padding and scroll padding keep the slides snapping to the shot's column.
+   The 1px top and bottom padding (taken back by the margin) keeps the shots' 1px
+   outline from being clipped by the scrolling track */
 .shot-carousel {
+  --bleed-left: 0px;
+  --bleed-right: 0px;
   display: flex;
   gap: 12px;
-  padding: 1px;
-  margin: -1px;
+  margin: -1px calc(-1 * var(--bleed-right)) -1px calc(-1 * var(--bleed-left));
+  padding: 1px var(--bleed-right) 1px var(--bleed-left);
+  scroll-padding-inline: var(--bleed-left) var(--bleed-right);
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
-  scroll-padding: 1px;
   scrollbar-width: none;
 }
 
