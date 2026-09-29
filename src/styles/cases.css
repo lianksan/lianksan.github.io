@@ -94,8 +94,8 @@ html:has(.cases-row) {
   color: var(--text-inv);
 }
 
-/* a small pile of previews: two smaller, dimmer copies peek out above the top one
-   and rise a little higher on hover. The pile may spill past the card and stays
+/* a small pile of previews: two smaller, dimmer copies peek out above the top one;
+   on hover the top one grows a little and the copies rise a little higher. The pile may spill past the card and stays
    above the neighbouring cards. */
 .ccard__stack {
   position: relative;
@@ -124,6 +124,11 @@ html:has(.cases-row) {
   border-radius: inherit;
   corner-shape: inherit;
   pointer-events: none;
+}
+
+/* the top preview grows a little on hover */
+.ccard:hover .ccard__layer:not(.ccard__layer--under) {
+  transform: scale(1.03);
 }
 
 .ccard__img {
