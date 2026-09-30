@@ -32,14 +32,19 @@ export const GALLERY: GallerySection[] = [
         desc: 'Updated and optimised the chapter selection screen in the PC game World of Tanks, making it more scalable, cheaper and juicier',
       },
       [{ src: '/assets/shots/wot_bg_purchasing.png' }],
-      [{ src: '/assets/shots/wot_lb_3.png' }],
-      [{ src: '/assets/shots/wot_lb_1.png' }, { src: '/assets/shots/wot_lb_2.png' }],
       {
-        rows: [[
-          { src: '/assets/shots/wot_umg_2.mp4' },
-          { src: '/assets/shots/wot_umg_3.mp4' },
-          { src: '/assets/shots/wot_umg_4.mp4' },
-        ]],
+        rows: [
+          [{ src: '/assets/shots/wot_lb_3.png' }],
+          [{ src: '/assets/shots/wot_lb_1.png' }, { src: '/assets/shots/wot_lb_2.png' }],
+        ],
+        desc: 'Designed the lootboxes feature in the PC game World of Tanks',
+      },
+      {
+        rows: [
+          [{ src: '/assets/shots/wot_umg_2.mp4' }],
+          [{ src: '/assets/shots/wot_umg_3.mp4' }],
+          [{ src: '/assets/shots/wot_umg_4.mp4' }],
+        ],
         desc: 'Created some simple VFX animations in World of Tanks PC game',
       },
       [{ src: '/assets/shots/ufl-1.mp4' }, { src: '/assets/shots/ufl-2.mp4' }],
