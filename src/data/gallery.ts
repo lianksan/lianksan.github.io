@@ -31,6 +31,7 @@ export const GALLERY: GallerySection[] = [
       }],
       [{ src: '/assets/shots/wot_bg_purchasing.png' }],
       [{ src: '/assets/shots/wot_lootboxes.png' }],
+      [{ src: '/assets/shots/wot_lb_1.png' }, { src: '/assets/shots/wot_lb_2.png' }],
       {
         shots: [
           { src: '/assets/shots/wot_umg_1.mp4' },
