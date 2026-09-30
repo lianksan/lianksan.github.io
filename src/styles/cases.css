@@ -27,14 +27,18 @@
 
 /* ── SHOTS GRID ── */
 
+/* --shot-gap: between shots in a row, rows of one block and a block and its caption;
+   --block-gap: between blocks of shots, so each block reads as one piece */
 .shots-grid {
+  --shot-gap: 8px;
+  --block-gap: 48px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px 12px;
+  gap: var(--block-gap) var(--shot-gap);
 }
 
 .shots-grid--tight {
-  row-gap: 12px;
+  row-gap: var(--shot-gap);
 }
 
 .shot-img {
@@ -48,11 +52,10 @@
 }
 
 /* shot with a caption: text right under the image */
-/* shot with a caption: text right under the image */
 .shot-wrap:has(.shot-caption) {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--shot-gap);
 }
 
 /* description on the left, pager on the right */
@@ -69,7 +72,7 @@
   grid-column: 1 / -1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--shot-gap);
 }
 
 @media (min-width: 960px) {
@@ -90,7 +93,7 @@
   --bleed-left: 0px;
   --bleed-right: 0px;
   display: flex;
-  gap: 12px;
+  gap: var(--shot-gap);
   margin: -1px calc(-1 * var(--bleed-right)) -1px calc(-1 * var(--bleed-left));
   padding: 1px var(--bleed-right) 1px var(--bleed-left);
   scroll-padding-inline: var(--bleed-left) var(--bleed-right);
@@ -167,17 +170,12 @@
 
 @media (min-width: 960px) {
   .shots-grid {
+    --block-gap: 64px;
     grid-template-columns: repeat(12, 1fr);
-    row-gap: 40px;
   }
 
   /* --span comes from the page: the shot's share of the row in 12 columns */
   .shot-wrap {
     grid-column: span var(--span, 12);
-  }
-
-  /* rows inside a block keep the 12px gap both ways */
-  .shots-grid--tight {
-    row-gap: 12px;
   }
 }
