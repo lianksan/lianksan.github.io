@@ -6,9 +6,12 @@ export interface Shot {
   desc?: string;     // caption under the shot; HTML, so it may hold <a class="text-link"> links
 }
 
+// a row is its shots, or its shots with a caption shared by the whole row
+export type GalleryRow = Shot[] | { shots: Shot[]; desc: string };
+
 export interface GallerySection {
   years: string;
-  rows: Shot[][];
+  rows: GalleryRow[];
 }
 
 // Rows of the gallery grid, top to bottom, split by years. A row fills the
@@ -28,6 +31,15 @@ export const GALLERY: GallerySection[] = [
       }],
       [{ src: '/assets/shots/wot_bg_purchasing.png' }],
       [{ src: '/assets/shots/wot_lootboxes.png' }],
+      {
+        shots: [
+          { src: '/assets/shots/wot_umg_1.mp4' },
+          { src: '/assets/shots/wot_umg_2.mp4' },
+          { src: '/assets/shots/wot_umg_3.mp4' },
+          { src: '/assets/shots/wot_umg_4.mp4' },
+        ],
+        desc: 'Created some simple VFX animations in World of Tanks PC game',
+      },
       [{ src: '/assets/shots/ufl-1.mp4' }, { src: '/assets/shots/ufl-2.mp4' }],
       [{ src: '/assets/shots/qr-machine.mp4' }],
     ],

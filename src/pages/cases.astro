@@ -11,19 +11,21 @@ import { GALLERY } from '../data/gallery';
     <section class="portfolio-block gallery-section wide">
       <h2 class="h1">{section.years}</h2>
       <div class="shots-grid">
-        {section.rows.flatMap(row => {
+        {section.rows.flatMap(entry => {
+          const { shots: row, desc: rowDesc } = Array.isArray(entry) ? { shots: entry, desc: undefined } : entry;
           const usedCols = row.reduce((s, shot) => s + (shot.col || 0), 0);
           const autoCount = row.filter(shot => !shot.col).length;
           const autoSpan = autoCount ? (6 - usedCols) / autoCount : 0;
-          return row.map(shot => {
-            const span = shot.col || autoSpan;
+          const cells = row.map(shot => {
+            // `col` counts in the 6 columns of the data; the grid has 12, so 4 shots fit a row too
+            const span = Math.round((shot.col || autoSpan) * 2);
             // the shot and its variants, left to right in the carousel
             const variants = [shot.src, ...(shot.stack || [])];
             const media = (src: string, cls: string) => /\.mp4$/i.test(src)
               ? <video class={cls} src={withBase(src)} autoplay muted loop playsinline></video>
               : <img class={cls} src={withBase(src)} alt="" />;
             return (
-              <div class={`shot-wrap col-${span}${shot.desktopOnly ? ' desktop-only' : ''}`} data-carousel={shot.stack ? '' : undefined}>
+              <div class={`shot-wrap${shot.desktopOnly ? ' desktop-only' : ''}`} style={`--span: ${span}`} data-carousel={shot.stack ? '' : undefined}>
                 {shot.stack
                   ? <div class="shot-carousel">{variants.map(src => media(src, 'shot-img shot-carousel__slide'))}</div>
                   : media(shot.src, 'shot-img')
@@ -43,6 +45,9 @@ import { GALLERY } from '../data/gallery';
               </div>
             );
           });
+          return rowDesc
+            ? [...cells, <div class="shot-caption row-caption"><p class="body-text shot-desc" set:html={rowDesc} /></div>]
+            : cells;
         })}
       </div>
     </section>

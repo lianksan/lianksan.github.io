@@ -59,6 +59,13 @@
   gap: 24px;
 }
 
+/* caption of a whole row: across the grid, pulled up from the row gap to the
+   caption's own 12px, so it sits with its row */
+.row-caption {
+  grid-column: 1 / -1;
+  margin-top: -20px;
+}
+
 @media (min-width: 960px) {
   .shot-desc {
     max-width: 660px;
@@ -154,14 +161,16 @@
 
 @media (min-width: 960px) {
   .shots-grid {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(12, 1fr);
     row-gap: 40px;
   }
 
-  .col-1 { grid-column: span 1; }
-  .col-2 { grid-column: span 2; }
-  .col-3 { grid-column: span 3; }
-  .col-4 { grid-column: span 4; }
-  .col-5 { grid-column: span 5; }
-  .col-6 { grid-column: span 6; }
+  /* --span comes from the page: the shot's share of the row in 12 columns */
+  .shot-wrap {
+    grid-column: span var(--span, 12);
+  }
+
+  .row-caption {
+    margin-top: -28px;
+  }
 }
