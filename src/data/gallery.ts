@@ -40,11 +40,11 @@ export const GALLERY: GallerySection[] = [
         desc: 'Designed the lootboxes feature in the PC game World of Tanks',
       },
       {
-        rows: [
-          [{ src: '/assets/shots/wot_umg_2.mp4' }],
-          [{ src: '/assets/shots/wot_umg_3.mp4' }],
-          [{ src: '/assets/shots/wot_umg_4.mp4' }],
-        ],
+        rows: [[
+          { src: '/assets/shots/wot_umg_2.mp4' },
+          { src: '/assets/shots/wot_umg_3.mp4' },
+          { src: '/assets/shots/wot_umg_4.mp4' },
+        ]],
         desc: 'Created some simple VFX animations in World of Tanks PC game',
       },
       [{ src: '/assets/shots/ufl-1.mp4' }, { src: '/assets/shots/ufl-2.mp4' }],
