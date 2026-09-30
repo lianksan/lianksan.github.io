@@ -18,8 +18,12 @@ export const GALLERY: GallerySection[] = [
     years: '2026–2025',
     rows: [
       [{
-        src: '/assets/shots/wot_bg_chapter_ selector.png',
-        stack: ['/assets/shots/wot_bg_chapter_selector_2.webp', '/assets/shots/wot_bg_chapter_selector_3.webp'],
+        src: '/assets/shots/wot_bp_selector_19.mp4',
+        stack: [
+          '/assets/shots/wot_bg_selector_20.png',
+          '/assets/shots/wot_bg_selector_21.png',
+          '/assets/shots/wot_bg_selector_duke.png',
+        ],
         desc: 'Updated and optimised the chapter selection screen in the PC game World of Tanks, making it more scalable, cheaper and juicier',
       }],
       [{ src: '/assets/shots/wot_bg_purchasing.png' }],
