@@ -33,6 +33,10 @@
   gap: 32px 12px;
 }
 
+.shots-grid--tight {
+  row-gap: 12px;
+}
+
 .shot-img {
   width: 100%;
   height: auto;
@@ -59,11 +63,13 @@
   gap: 24px;
 }
 
-/* caption of a whole row: across the grid, pulled up from the row gap to the
-   caption's own 12px, so it sits with its row */
-.row-caption {
+/* a block of rows read as one piece: across the grid, with rows as close as the shots
+   in a row and the caption under the whole block */
+.shot-group {
   grid-column: 1 / -1;
-  margin-top: -20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 @media (min-width: 960px) {
@@ -170,7 +176,8 @@
     grid-column: span var(--span, 12);
   }
 
-  .row-caption {
-    margin-top: -28px;
+  /* rows inside a block keep the 12px gap both ways */
+  .shots-grid--tight {
+    row-gap: 12px;
   }
 }
