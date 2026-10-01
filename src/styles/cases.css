@@ -27,7 +27,7 @@
 
 /* ── SHOTS GRID ── */
 
-/* --shot-gap: between shots in a row, rows of one block and a block and its caption;
+/* --shot-gap: between shots in a row and rows of one block (the caption adds a bit more);
    --block-gap: between blocks of shots, so each block reads as one piece */
 .shots-grid {
   --shot-gap: 8px;
@@ -58,8 +58,10 @@
   gap: var(--shot-gap);
 }
 
-/* description on the left, pager on the right */
+/* description on the left, pager on the right; a little further from the shots
+   than they are from each other, 16px in all */
 .shot-caption {
+  margin-top: 8px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
