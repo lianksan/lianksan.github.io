@@ -1,4 +1,4 @@
-/* ── PORTFOLIO PAGE: CASES + SHOTS BY YEAR ── */
+/* ── GALLERY PAGE: SHOTS BY YEAR ── */
 
 .main:has(.gallery-section) {
   gap: 48px;
@@ -18,196 +18,27 @@
   gap: 28px;
 }
 
-/* narrow phones: heading sits closer to the cards and shots */
+/* narrow phones: year heading sits closer to the shots */
 @media (max-width: 480px) {
   .portfolio-block {
     gap: 16px;
   }
 }
 
-/* ── CASES ── */
-
-/* One horizontally scrolling row. It runs past the container to both screen edges,
-   while its padding keeps the first card lined up with the content column
-   (cqw = the content column, the #cases section). */
-#cases {
-  container-type: inline-size;
-}
-
-.cases-row {
-  display: flex;
-  gap: 12px;
-  margin-inline: calc(50cqw - 50vw);
-  padding-inline: calc(50vw - 50cqw);
-  scroll-padding-inline: calc(50vw - 50cqw);
-  /* room above for the preview pile peeking out over the cards (up to 19px on hover) —
-     a scrolling box clips vertically too */
-  padding-top: 20px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-}
-
-.cases-row::-webkit-scrollbar {
-  display: none;
-}
-
-/* 100vw counts a desktop scrollbar — clip that sliver instead of scrolling the page sideways */
-html:has(.cases-row) {
-  overflow-x: clip;
-}
-
-/* card widths in container units (cqw = the content column):
-   phones most of the column, so the next card peeks in; tablet half; desktop 5 of 12 columns */
-.ccard {
-  flex: 0 0 85cqw;
-  scroll-snap-align: start;
-}
-
-@media (min-width: 600px) {
-  .ccard {
-    flex-basis: calc((100cqw - 12px) / 2);
-  }
-}
-
-@media (min-width: 960px) {
-  .ccard {
-    flex-basis: calc((100cqw - 11 * 12px) / 12 * 5 + 4 * 12px);
-  }
-}
-
-/* filled, rounded card: preview pile edge to edge on top, text under it;
-   fill, radius and hover match the product cards */
-.ccard {
-  display: flex;
-  flex-direction: column;
-  background: var(--surface);
-  border-radius: var(--radius-lg);
-  corner-shape: smooth;
-  text-decoration: none;
-  color: var(--text);
-  -webkit-tap-highlight-color: transparent;
-}
-
-.ccard:hover {
-  background-color: var(--surface-inv);
-  color: var(--text-inv);
-}
-
-/* a small pile of previews: two smaller, dimmer copies peek out above the top one;
-   on hover they all grow a little and the copies rise a little higher. The pile may spill past the card and stays
-   above the neighbouring cards. */
-.ccard__stack {
-  position: relative;
-  z-index: 1;
-  display: grid;
-}
-
-/* each layer carries the outline; filters go on the image inside, so they don't tint the outline */
-.ccard__layer {
-  grid-area: 1 / 1;
-  /* all layers grow from their top edge, so on hover the gaps between the peeking
-     edges widen by the same amount and every layer moves in step */
-  transform-origin: 50% 0;
-  border-radius: var(--radius-sm);
-  corner-shape: smooth;
-  overflow: hidden;
-  position: relative;
-  background: var(--surface);
-  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-/* the outline is a border on an overlay inside the edge, over the image,
-   so it stays see-through and is never covered by the image */
-.ccard__layer::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border: 1px solid rgb(255 255 255 / 0.2);
-  border-radius: inherit;
-  corner-shape: inherit;
-  pointer-events: none;
-}
-
-/* every layer grows by 1.5% on hover */
-.ccard:hover .ccard__layer:not(.ccard__layer--under) {
-  transform: scale(1.015);
-}
-
-.ccard__img {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  display: block;
-}
-
-/* layers under the top one: straight, smaller and shifted up, so their top edges
-   peek out above it; scaled from the top edge, so the shift alone sets how much shows */
-.ccard__layer--under {
-  transform: translateY(var(--lift)) scale(var(--scale));
-}
-
-.ccard:hover .ccard__layer--under {
-  transform: translateY(calc(var(--lift) * 1.6)) scale(calc(var(--scale) * 1.015));
-}
-
-/* each layer further back is dimmer */
-.ccard__layer--under-1 {
-  --scale: 0.94;
-  --lift: -6px;
-}
-
-.ccard__layer--under-1 .ccard__img {
-  filter: hue-rotate(60deg) saturate(0.8) brightness(0.6);
-}
-
-.ccard__layer--under-2 {
-  --scale: 0.88;
-  --lift: -12px;
-}
-
-.ccard__layer--under-2 .ccard__img {
-  filter: grayscale(1) brightness(0.35);
-}
-
-/* title + caption, styled like the small timeline items on the home page */
-.ccard__text {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-  padding: 16px 24px 24px;
-}
-
-/* ── GALLERY: SHOTS BY YEAR ── */
-
-.gallery-years {
-  display: flex;
-  flex-direction: column;
-  gap: 48px;
-}
-
-/* year headings: h2 weight, a step smaller so they sit under the Gallery heading */
-.gallery-year {
-  font-size: 28px;
-}
-
-@media (min-width: 960px) {
-  .gallery-years {
-    gap: 60px;
-  }
-
-  .gallery-year {
-    font-size: 32px;
-  }
-}
-
 /* ── SHOTS GRID ── */
 
+/* --shot-gap: between shots in a row and rows of one block (the caption adds a bit more);
+   --block-gap: between blocks of shots, so each block reads as one piece */
 .shots-grid {
+  --shot-gap: 8px;
+  --block-gap: 48px;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 12px;
+  gap: var(--block-gap) var(--shot-gap);
+}
+
+.shots-grid--tight {
+  row-gap: var(--shot-gap);
 }
 
 .shot-img {
@@ -220,6 +51,119 @@ html:has(.cases-row) {
   box-shadow: 0 0 0 1px var(--surface-2);
 }
 
+/* shot with a caption: text right under the image */
+.shot-wrap:has(.shot-caption) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--shot-gap);
+}
+
+/* description on the left, pager on the right; a little further from the shots
+   than they are from each other, 16px in all */
+.shot-caption {
+  margin-top: 8px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* a block of rows read as one piece: across the grid, with rows as close as the shots
+   in a row and the caption under the whole block */
+.shot-group {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--shot-gap);
+}
+
+@media (min-width: 960px) {
+  .shot-desc {
+    max-width: 660px;
+  }
+}
+
+/* ── CAROUSEL: THE SHOT AND ITS VARIANTS SIDE BY SIDE ── */
+
+/* one slide per shot width, the rest to the right, swiped or scrolled by the pager;
+   the gap between slides is the gap between shots side by side in a row.
+   The track runs out to the window edges (--bleed-left/right, measured by the script),
+   while its padding and scroll padding keep the slides snapping to the shot's column.
+   The 1px top and bottom padding (taken back by the margin) keeps the shots' 1px
+   outline from being clipped by the scrolling track */
+.shot-carousel {
+  --bleed-left: 0px;
+  --bleed-right: 0px;
+  display: flex;
+  gap: var(--shot-gap);
+  margin: -1px calc(-1 * var(--bleed-right)) -1px calc(-1 * var(--bleed-left));
+  padding: 1px var(--bleed-right) 1px var(--bleed-left);
+  scroll-padding-inline: var(--bleed-left) var(--bleed-right);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.shot-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.shot-carousel__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  transition: opacity 0.3s;
+}
+
+/* slides peeking from the sides are dimmed and turn the carousel on click */
+.shot-carousel__slide:not(.is-current) {
+  opacity: 0.4;
+  cursor: pointer;
+}
+
+/* ── PAGER: ARROWS AROUND A COUNTER ── */
+
+.shot-pager {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* round buttons in the style of .btn */
+.shot-pager__btn {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  color: var(--text);
+  background: var(--surface);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.shot-pager__btn:hover:not(:disabled) {
+  background: var(--text);
+  color: var(--bg);
+}
+
+/* first or last slide: nowhere to go that way */
+.shot-pager__btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* fixed width, so the arrows don't jump when the number changes */
+.shot-pager__count {
+  min-width: 3.5ch;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
 @media (max-width: 959px) {
   .desktop-only {
     display: none;
@@ -228,13 +172,12 @@ html:has(.cases-row) {
 
 @media (min-width: 960px) {
   .shots-grid {
-    grid-template-columns: repeat(6, 1fr);
+    --block-gap: 64px;
+    grid-template-columns: repeat(12, 1fr);
   }
 
-  .col-1 { grid-column: span 1; }
-  .col-2 { grid-column: span 2; }
-  .col-3 { grid-column: span 3; }
-  .col-4 { grid-column: span 4; }
-  .col-5 { grid-column: span 5; }
-  .col-6 { grid-column: span 6; }
+  /* --span comes from the page: the shot's share of the row in 12 columns */
+  .shot-wrap {
+    grid-column: span var(--span, 12);
+  }
 }

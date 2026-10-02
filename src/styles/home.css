@@ -244,17 +244,6 @@
   bottom: -33px;
 }
 
-.text-link {
-  color: var(--link);
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, var(--link) 30%, transparent);
-  text-underline-offset: 4px;
-}
-
-.text-link:hover {
-  text-decoration-color: var(--link);
-}
-
 .timeline-item .body-text p {
   margin-bottom: 4px;
 }
