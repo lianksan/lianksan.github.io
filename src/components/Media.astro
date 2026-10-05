@@ -1,0 +1,97 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image, getImage } from 'astro:assets';
+
+interface Props {
+  /** Картинка из src/assets или URL видео (импорт mp4). */
+  src: ImageMetadata | string;
+  ratio: string;
+  alt: string;
+  sizes: string;
+  style?: string;
+}
+
+const { src, ratio, alt, sizes, style = '' } = Astro.props;
+const isImage = typeof src === 'object';
+const widths = isImage && [400, 900, 1800].filter((w) => w < src.width).concat(Math.min(src.width, 1800));
+
+// Для полноэкранного просмотра (Lightbox.astro): картинка в исходном размере, GIF как есть.
+// Видео в оверлей переносится тем же элементом, поэтому URL не нужен.
+const full = !isImage ? 'video' : src.format === 'gif' ? src.src : (await getImage({ src, format: 'webp', quality: 90 })).src;
+const size = isImage ? { 'data-width': src.width, 'data-height': src.height } : {};
+---
+
+<!-- Любая плитка открывается на весь экран по клику, поэтому это кнопка -->
+<button
+  type="button"
+  class="media"
+  style={`aspect-ratio: ${ratio}; ${style}`}
+  data-lightbox={full}
+  {...size}
+  aria-label={`Open ${alt || 'shot'} fullscreen`}
+>
+  {
+    typeof src === 'string' ? (
+      // Видео грузится и играет, только когда видно на экране (см. скрипт ниже)
+      <video src={src} muted loop playsinline preload="none" data-inview-play aria-label={alt} />
+    ) : src.format === 'gif' ? (
+      // GIF не пропускаем через оптимизацию, иначе пропадёт анимация
+      <img src={src.src} width={src.width} height={src.height} alt={alt} loading="lazy" decoding="async" />
+    ) : (
+      <Image src={src} alt={alt} widths={widths || undefined} sizes={sizes} />
+    )
+  }
+</button>
+
+<script>
+  let observer: IntersectionObserver | undefined;
+  const visible = new Set<HTMLVideoElement>();
+
+  function setup() {
+    observer?.disconnect();
+    visible.clear();
+    observer = new IntersectionObserver(
+      (entries) => {
+        for (const { target, isIntersecting } of entries) {
+          const video = target as HTMLVideoElement;
+          if (isIntersecting) {
+            visible.add(video);
+            video.play().catch(() => {});
+          } else {
+            visible.delete(video);
+            video.pause();
+          }
+        }
+      },
+      { rootMargin: '200px 0px' },
+    );
+    document.querySelectorAll('video[data-inview-play]').forEach((v) => observer!.observe(v));
+  }
+
+  // Срабатывает и при первой загрузке, и после клиентских переходов
+  document.addEventListener('astro:page-load', setup);
+
+  // Браузер ставит видео на паузу в скрытой вкладке — при возвращении запускаем видимые
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) visible.forEach((v) => v.play().catch(() => {}));
+  });
+</script>
+
+<style>
+  .media {
+    display: block;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--color-tile-border);
+    border-radius: var(--radius-tile);
+    background: var(--color-placeholder);
+    cursor: zoom-in;
+  }
+
+  .media :is(img, video) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>

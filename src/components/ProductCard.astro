@@ -1,0 +1,111 @@
+---
+import { Image } from 'astro:assets';
+import type { products } from '../data/site';
+
+interface Props {
+  product: (typeof products)[number];
+  /** large — иконка 100px над текстом (iOS), row — иконка 64px слева (веб и ресурсы) */
+  variant: 'large' | 'row';
+}
+
+const { product, variant } = Astro.props;
+const size = variant === 'large' ? 100 : 64;
+const icon = product.appIcon;
+// Без ссылки — ещё не вышедший продукт: полупрозрачный и некликабельный
+const Tag = product.href ? 'a' : 'div';
+const linkProps = product.href ? { href: product.href, target: '_blank', rel: 'noopener' } : {};
+---
+
+<Tag class:list={['card', `card--${variant}`, { 'card--soon': !product.href, 'external-hover': product.href }]} {...linkProps}>
+  {
+    typeof icon === 'string' ? (
+      <img class="card__icon card__icon--vector" src={icon} alt="" width={size} height={size} />
+    ) : (
+      <Image
+        class="card__icon"
+        src={icon}
+        alt=""
+        widths={[size, Math.min(size * 2, icon.width)]}
+        sizes={`${size}px`}
+      />
+    )
+  }
+  <span class="card__texts">
+    <span class:list={['card__name', { 'link external external--large': product.href }]}>{product.name}</span>
+    <span class="card__description body">{product.description}</span>
+  </span>
+</Tag>
+
+<style>
+  .card {
+    display: flex;
+    text-decoration: none;
+  }
+
+  .card--large {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .card--row {
+    align-items: center;
+    gap: 16px;
+  }
+
+  .card--soon {
+    opacity: 0.3;
+  }
+
+  .card__icon {
+    display: block;
+    flex: none;
+    border: 1px solid var(--color-tile-border);
+    transition: transform var(--motion-hover) !important;
+  }
+
+  .card--large .card__icon {
+    width: 100px;
+    height: 100px;
+    border-radius: 28px;
+  }
+
+  .card--row .card__icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+  }
+
+  /* Векторная иконка уже со своим фоном и скруглением — без обводки */
+  .card__icon--vector {
+    border: none;
+  }
+
+  /* Иконка наклоняется при наведении, как аватар в сайдбаре */
+  a.card:hover .card__icon {
+    transform: rotate(-3deg);
+  }
+
+  .card__texts {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .card__name {
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.21;
+    white-space: nowrap;
+  }
+
+  .card:hover .card__name {
+    text-decoration-color: currentColor;
+  }
+
+  .card__description {
+    color: var(--color-secondary);
+    white-space: nowrap;
+  }
+</style>

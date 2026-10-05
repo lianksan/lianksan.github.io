@@ -1,0 +1,35 @@
+---
+import { contacts, person } from '../data/site';
+
+const [coffee, ...socials] = contacts;
+---
+
+<ul class="contacts body">
+  <li class="contacts__row"><a class="link link--secondary external" href={coffee.href}>{coffee.label}</a></li>
+  {socials.map((c) => <li><a class="link link--secondary external" href={c.href}>{c.label}</a></li>)}
+  <li class="contacts__row"><a class="link link--secondary" href={`mailto:${person.email}`}>{person.email}</a></li>
+</ul>
+
+<style>
+  .contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Кликабельна вся строка высотой 36px, как в Figma */
+  .contacts a {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    height: 36px;
+  }
+
+  /* Строки как в макете: кофе / Telegram + GitHub / почта */
+  .contacts__row {
+    flex-basis: 100%;
+  }
+</style>

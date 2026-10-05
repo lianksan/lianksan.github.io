@@ -1,0 +1,123 @@
+---
+import Base from '../layouts/Base.astro';
+import Media from '../components/Media.astro';
+import Lightbox from '../components/Lightbox.astro';
+import { shotSections } from '../data/shots';
+
+const COLUMNS = 6;
+const CONTENT_WIDTH = 960;
+---
+
+<Base
+  title="Gallery — Paulik"
+  description="Shots of product design work by Paulik Liankevich."
+  current="shots"
+>
+  <div class="content" style={`--content-width: ${CONTENT_WIDTH}px`}>
+    {
+      shotSections.map((section) => (
+        <details class="section" open>
+          <summary class="section__title">
+            <img src="/icons/chevron.svg" alt="" width="20" height="20" class="chevron" />
+            <h2 class="underline h2">{section.title}</h2>
+          </summary>
+
+          <div class="section__shots">
+            {section.shots.map((shot) => (
+              <figure class="shot">
+                {shot.rows.map((row) => (
+                  <div class="row">
+                    {row.map((m) => {
+                      const span = m.span ?? COLUMNS;
+                      return (
+                        <Media
+                          {...m}
+                          sizes={`${Math.round((span / COLUMNS) * CONTENT_WIDTH)}px`}
+                          style={`grid-column: span ${span}`}
+                        />
+                      );
+                    })}
+                  </div>
+                ))}
+                {typeof shot.caption === 'string' && <figcaption class="body">{shot.caption}</figcaption>}
+                {Array.isArray(shot.caption) && (
+                  <figcaption class="row">
+                    {shot.caption.map((c) => (
+                      <span class="body" style={`grid-column: span ${c.span}`}>
+                        {c.text}
+                      </span>
+                    ))}
+                  </figcaption>
+                )}
+              </figure>
+            ))}
+          </div>
+        </details>
+      ))
+    }
+  </div>
+  <Lightbox />
+</Base>
+
+<style>
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    /* Контент не шире --content-width + поля по 52px, по центру области */
+    max-width: calc(var(--content-width) + 2 * 52px);
+    margin: 0 auto;
+    padding: 40px 52px 49px;
+  }
+
+  .section__title {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 8px;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .section__title::-webkit-details-marker {
+    display: none;
+  }
+
+  .section__title:hover h2 {
+    text-decoration-color: currentColor;
+  }
+
+  .section:not([open]) .chevron {
+    transform: rotate(-90deg);
+  }
+
+  .section__shots {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-top: 32px;
+  }
+
+  .shot {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+    align-items: start;
+  }
+
+  figcaption {
+    max-width: 600px;
+    color: var(--color-secondary);
+  }
+
+  figcaption.row {
+    max-width: none;
+  }
+</style>

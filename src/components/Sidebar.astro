@@ -1,0 +1,135 @@
+---
+import Avatar from './Avatar.astro';
+import ContactLinks from './ContactLinks.astro';
+import { nav, person, products } from '../data/site';
+
+export type Page = 'home' | 'shots' | 'cases' | 'products';
+
+interface Props {
+  current: Page;
+}
+
+const { current } = Astro.props;
+const here = (page: Page) => (current === page ? 'page' : undefined);
+---
+
+<aside class="sidebar">
+  <a class="home link h3" href={nav.home} aria-current={here('home')}>
+    <Avatar />
+    <span>{person.firstName}<br />{person.lastName}</span>
+  </a>
+
+  <nav class="sidebar__nav" aria-label="Main">
+    <ul class="links">
+      <li><a class="link h3" href={nav.shots} aria-current={here('shots')}>Shots gallery</a></li>
+      <li><a class="link h3" href={nav.cases} aria-current={here('cases')}>Projects cases</a></li>
+    </ul>
+
+    <ul class="links">
+      <li><a class="link h3" href={nav.products} aria-current={here('products')}>Products</a></li>
+      {
+        products
+          .filter((p) => p.sidebarIcon)
+          .map((p) => (
+            <li>
+              <a class="product link link--secondary body external" href={p.href} target="_blank" rel="noopener">
+                <img
+                  class:list={['product__icon', { 'product__icon--wide': p.wideIcon }]}
+                  src={p.sidebarIcon}
+                  alt=""
+                  width={p.wideIcon ? 26 : 20}
+                  height="20"
+                />
+                {p.name}
+              </a>
+            </li>
+          ))
+      }
+    </ul>
+  </nav>
+
+  <div class="sidebar__contacts">
+    <ContactLinks />
+  </div>
+</aside>
+
+<style>
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 40px 40px 34px;
+    overflow-y: auto;
+  }
+
+  .home {
+    display: flex;
+    flex: none;
+    align-items: center;
+    gap: 16px;
+    height: 64px;
+    text-decoration-line: none;
+  }
+
+  /* Подчёркиваем только имя, цвет линии берём у ссылки (.link) */
+  .home span {
+    text-decoration: underline;
+    text-decoration-color: inherit;
+    text-decoration-thickness: inherit;
+    text-underline-position: from-font;
+  }
+
+  .sidebar__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Отступ над Shots gallery, как в Figma */
+  .sidebar__nav .links:first-child {
+    padding-top: 6px;
+  }
+
+  .links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Кликабельна вся строка, как в Figma: 44px у разделов, 36px у продуктов */
+  .links a {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    height: 44px;
+  }
+
+  .links .product {
+    gap: 8px;
+    height: 36px;
+  }
+
+  .product__icon {
+    flex: none;
+  }
+
+  /* У эмодзи-иконки рамка на 15% шире с каждой стороны — не сдвигаем текст */
+  .product__icon--wide {
+    margin: 0 -3px;
+  }
+
+  /* Аватар наклонён на главной и при наведении */
+  .home[aria-current='page'] :global(.avatar),
+  .home:hover :global(.avatar) {
+    transform: rotate(-3deg);
+  }
+
+  /* В Figma между блоками и распоркой по 20px с каждой стороны — минимум 40px до контактов */
+  .sidebar__contacts {
+    margin-top: auto;
+    padding-top: 20px;
+  }
+</style>

@@ -1,0 +1,124 @@
+---
+import { timeline } from '../data/site';
+---
+
+<ol class="timeline">
+  {
+    timeline.map((entry) => (
+      <li class:list={['row', `row--${entry.kind}`]}>
+        <span class="date">{entry.date}</span>
+        <span class="marker" aria-hidden="true" />
+        {entry.kind === 'minor' ? (
+          <p class="content body">{entry.text}</p>
+        ) : (
+          <div class="content">
+            <h3 class="h3">{entry.title}</h3>
+            <div class="body">
+              {entry.text.map((t) => (
+                <p>{t}</p>
+              ))}
+            </div>
+          </div>
+        )}
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .timeline {
+    --row-gap: 28px;
+    /* Центр точки от верха строки: по первой строке текста 18px и заголовка 24px */
+    --dot-minor: 11px;
+    --dot-major: 15px;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--row-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .row {
+    --dot: var(--dot-minor);
+
+    display: grid;
+    grid-template-columns: 126px 12px 1fr;
+    column-gap: 8px;
+    align-items: start;
+    color: var(--color-secondary);
+  }
+
+  .row--major {
+    --dot: var(--dot-major);
+  }
+
+  .date {
+    font-family: var(--font-mono);
+    font-weight: 300;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .row--minor .date {
+    font-size: 16px;
+    line-height: 20px;
+    padding-top: 1px;
+  }
+
+  .row--major .date {
+    font-size: 24px;
+    line-height: 29px;
+    letter-spacing: -0.02em;
+  }
+
+  .row--major .content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .row--major h3 {
+    color: var(--color-primary);
+  }
+
+  /* Точка и линия до следующей точки */
+  .marker {
+    position: relative;
+    align-self: stretch;
+  }
+
+  .marker::before {
+    content: '';
+    position: absolute;
+    top: calc(var(--dot) - 2px);
+    left: 4px;
+    width: 4px;
+    height: 4px;
+    border: 1px solid var(--color-secondary);
+    border-radius: 50%;
+  }
+
+  .row--major .marker::before {
+    background: var(--color-secondary);
+  }
+
+  .marker::after {
+    content: '';
+    position: absolute;
+    top: calc(var(--dot) + 6px);
+    left: 5.5px;
+    width: 1px;
+    bottom: calc(var(--dot-minor) - 6px - var(--row-gap));
+    background: var(--color-line);
+  }
+
+  .row:has(+ .row--major) .marker::after {
+    bottom: calc(var(--dot-major) - 6px - var(--row-gap));
+  }
+
+  .row:last-child .marker::after {
+    display: none;
+  }
+</style>

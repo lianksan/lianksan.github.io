@@ -1,83 +1,54 @@
 ---
 import '../styles/global.css';
-import '../styles/typo.css';
-import { withBase } from '../lib/base';
+import { ClientRouter } from 'astro:transitions';
+import interUrl from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import dmMonoUrl from '@fontsource/dm-mono/files/dm-mono-latin-300-normal.woff2?url';
+import Sidebar, { type Page } from '../components/Sidebar.astro';
 
 interface Props {
   title: string;
-  activeTab?: string;
+  description: string;
+  current: Page;
 }
 
-const { title, activeTab = '' } = Astro.props;
-
-const tabs = [
-  { href: '/', label: 'Liankevich', id: 'about' },
-  { href: '/cases', label: 'Gallery', id: 'cases' },
-  { href: '/products', label: 'Products', id: 'products' },
-];
-
-const langs = ['RU', 'EN'];
-const activeLang = 'EN';
+const { title, description, current } = Astro.props;
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="icon" type="image/png" href={withBase('/assets/favicon.png')} />
-  <script is:inline>
-    (function(){
-      var t = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      document.documentElement.setAttribute('data-theme', t);
-    })();
-  </script>
-  <title>{title}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-</head>
-<body>
-
-  <nav class="nav">
-    <div class="nav-tabs">
-      {tabs.map(tab => (
-        <a href={withBase(tab.href)} class={`tab h4${activeTab === tab.id ? ' active' : ''}`}>{tab.label}</a>
-      ))}
-      <div class="nav-langs">
-        {langs.map(lang => (
-          <button type="button" class={`tab h4${lang === activeLang ? ' active' : ''}`} aria-pressed={lang === activeLang ? 'true' : 'false'}>{lang}</button>
-        ))}
-      </div>
-    </div>
-  </nav>
-
-  <main class="main">
-    <slot />
-  </main>
-
-  <slot name="after-main" />
-
-  <script>
-    // the menu slides up with the page as it scrolls down (by the same distance, until
-    // it's fully gone) and comes back quickly as soon as the page scrolls up
-    const nav = document.querySelector<HTMLElement>('.nav')!;
-    let lastY = Math.max(scrollY, 0);
-    let hidden = 0;
-    addEventListener('scroll', () => {
-      const y = Math.max(scrollY, 0);  // ignore iOS overscroll at the top
-      const dy = y - lastY;
-      lastY = y;
-      if (dy > 0) {
-        hidden = Math.min(hidden + dy, nav.offsetHeight);
-        nav.classList.remove('nav--returning');
-      } else if (dy < 0 && hidden > 0) {
-        hidden = 0;
-        nav.classList.add('nav--returning');
-      }
-      nav.style.transform = hidden ? `translateY(${-hidden}px)` : '';
-    }, { passive: true });
-  </script>
-
-</body>
+<!doctype html>
+<html lang="en" transition:animate="none">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Шрифты грузим сразу, иначе текст при загрузке успевает мигнуть системным шрифтом -->
+    <link rel="preload" href={interUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={dmMonoUrl} as="font" type="font/woff2" crossorigin />
+    <!-- Переходы между страницами без перезагрузки и без анимации -->
+    <ClientRouter fallback="swap" />
+    <!-- Фавикон — фото из сайдбара со скруглением, как у аватара -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/icon-192.png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+  </head>
+  <body>
+    <Sidebar current={current} />
+    <main class="main">
+      <slot />
+    </main>
+  </body>
 </html>
+
+<style>
+  /* Пока только десктоп: ширина не меньше макета */
+  body {
+    min-width: 1280px;
+  }
+
+  .main {
+    margin-left: var(--sidebar-width);
+  }
+</style>

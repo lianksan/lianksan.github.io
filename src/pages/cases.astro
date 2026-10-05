@@ -1,108 +1,135 @@
 ---
 import Base from '../layouts/Base.astro';
-import { withBase } from '../lib/base';
-import '../styles/cases.css';
-import { GALLERY, type Shot } from '../data/gallery';
 ---
 
-<Base title="Gallery" activeTab="cases">
-
-  {GALLERY.map(section => (
-    <section class="portfolio-block gallery-section wide">
-      <h2 class="h1">{section.years}</h2>
-      <div class="shots-grid">
-        {section.rows.flatMap(entry => {
-          const group = Array.isArray(entry) ? undefined : entry;
-          const cells = (group ? group.rows : [entry as Shot[]]).flatMap(row => {
-            const usedCols = row.reduce((s, shot) => s + (shot.col || 0), 0);
-            const autoCount = row.filter(shot => !shot.col).length;
-            const autoSpan = autoCount ? (6 - usedCols) / autoCount : 0;
-            return row.map(shot => {
-              // `col` counts in the 6 columns of the data; the grid has 12, so 4 shots fit a row too
-              const span = Math.round((shot.col || autoSpan) * 2);
-              // the shot and its variants, left to right in the carousel
-              const variants = [shot.src, ...(shot.stack || [])];
-              const media = (src: string, cls: string) => /\.mp4$/i.test(src)
-                ? <video class={cls} src={withBase(src)} autoplay muted loop playsinline></video>
-                : <img class={cls} src={withBase(src)} alt="" />;
-              return (
-                <div class={`shot-wrap${shot.desktopOnly ? ' desktop-only' : ''}`} style={`--span: ${span}`} data-carousel={shot.stack ? '' : undefined}>
-                  {shot.stack
-                    ? <div class="shot-carousel">{variants.map(src => media(src, 'shot-img shot-carousel__slide'))}</div>
-                    : media(shot.src, 'shot-img')
-                  }
-                  {(shot.desc || shot.stack) && (
-                    <div class="shot-caption">
-                      {shot.desc && <p class="body-text shot-desc" set:html={shot.desc} />}
-                      {shot.stack && (
-                        <div class="shot-pager">
-                          <button type="button" class="shot-pager__btn" data-step="-1" aria-label="Previous variant" disabled><svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.5 1L1.5 6L6.5 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                          <span class="body-text shot-pager__count"><span data-current>1</span> / {variants.length}</span>
-                          <button type="button" class="shot-pager__btn" data-step="1" aria-label="Next variant"><svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1.5 1L6.5 6L1.5 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              );
-            });
-          });
-          return group
-            ? [(
-              <div class="shot-group">
-                <div class="shots-grid shots-grid--tight">{cells}</div>
-                {group.desc && <div class="shot-caption"><p class="body-text shot-desc" set:html={group.desc} /></div>}
-              </div>
-            )]
-            : cells;
-        })}
-      </div>
-    </section>
-  ))}
-
+<Base
+  title="Cases — Paulik"
+  description="Project cases by Paulik Liankevich are in development."
+  current="cases"
+>
+  <!--
+    Пустое состояние: логотип EMPTY летает внутри рамки и отскакивает от стенок, как DVD-заставка.
+    Логотип — маска из SVG, поэтому его цвет можно менять через --logo-color.
+  -->
+  <div class="empty" data-bounce-box>
+    <div class="empty__logo" role="img" aria-label="Oops, empty: cases are in development" data-bounce-item></div>
+  </div>
 </Base>
 
 <script>
-  // shot carousels: swiped by hand, scrolled one slide at a time by the arrows
-  // or by a click on a slide peeking from the side;
-  // the counter and the arrows follow whatever slide is in view
-  document.querySelectorAll<HTMLElement>('[data-carousel]').forEach(wrap => {
-    const track = wrap.querySelector<HTMLElement>('.shot-carousel')!;
-    const slides = [...track.children] as HTMLElement[];
-    const counter = wrap.querySelector<HTMLElement>('[data-current]')!;
-    const [prev, next] = wrap.querySelectorAll<HTMLButtonElement>('.shot-pager__btn');
-    // slide offsets are measured from the first one, so the track's padding doesn't count
-    const offset = (i: number) => slides[i].offsetLeft - slides[0].offsetLeft;
-    const current = () => {
-      const x = track.scrollLeft;
-      return slides.reduce((best, _, i) =>
-        Math.abs(offset(i) - x) < Math.abs(offset(best) - x) ? i : best, 0);
+  /** Скорость полёта, px/с */
+  const SPEED = 226;
+
+  /** Цвета логотипа: приглушённая радуга и чёрный. После каждого отскока — случайный другой */
+  const COLORS = ['#111111', '#c0625a', '#cf8a4f', '#c9a645', '#6c9a5e', '#5b9aae', '#5571b0', '#8566a8'];
+
+  let cleanup: (() => void) | undefined;
+
+  function start() {
+    cleanup?.();
+    cleanup = undefined;
+
+    const box = document.querySelector<HTMLElement>('[data-bounce-box]');
+    const item = box?.querySelector<HTMLElement>('[data-bounce-item]');
+    if (!box || !item) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let maxX = 0;
+    let maxY = 0;
+    const measure = () => {
+      maxX = Math.max(0, box.clientWidth - item.offsetWidth);
+      maxY = Math.max(0, box.clientHeight - item.offsetHeight);
     };
-    const sync = () => {
-      const i = current();
-      counter.textContent = String(i + 1);
-      slides.forEach((slide, n) => slide.classList.toggle('is-current', n === i));
-      prev.disabled = i === 0;
-      next.disabled = i === slides.length - 1;
+    measure();
+
+    // Стартуем из центра (там же логотип стоит без JS) под случайным углом 0–360°
+    let x = maxX / 2;
+    let y = maxY / 2;
+    const angle = Math.random() * 2 * Math.PI;
+    let vx = SPEED * Math.cos(angle);
+    let vy = SPEED * Math.sin(angle);
+    let last = performance.now();
+    let frame = 0;
+
+    item.dataset.moving = '';
+    const place = () => (item.style.transform = `translate(${x}px, ${y}px)`);
+    place();
+
+    let color = COLORS[0];
+    const recolor = () => {
+      const others = COLORS.filter((c) => c !== color);
+      color = others[Math.floor(Math.random() * others.length)];
+      item.style.setProperty('--logo-color', color);
     };
-    const goTo = (i: number) => track.scrollTo({ left: offset(i), behavior: 'smooth' });
-    const go = (step: number) => goTo(Math.min(Math.max(current() + step, 0), slides.length - 1));
-    // a click on a slide peeking from the side brings it into view
-    slides.forEach((slide, i) => slide.addEventListener('click', () => {
-      if (i !== current()) goTo(i);
-    }));
-    // let the track run out to the window edges on both sides of the shot
-    const bleed = () => {
-      const { left, right } = wrap.getBoundingClientRect();
-      track.style.setProperty('--bleed-left', `${left}px`);
-      track.style.setProperty('--bleed-right', `${document.documentElement.clientWidth - right}px`);
-      track.scrollLeft = offset(current());
+
+    const tick = (now: number) => {
+      // Ограничиваем шаг, чтобы после неактивной вкладки логотип не «телепортировался»
+      const dt = Math.min(now - last, 50) / 1000;
+      last = now;
+      x += vx * dt;
+      y += vy * dt;
+      let bounced = false;
+      // Если рамка по оси не больше логотипа (очень низкое окно) — стоим, а не отскакиваем каждый кадр
+      if (maxX === 0) x = 0;
+      else if (x <= 0) (x = 0), (vx = Math.abs(vx)), (bounced = true);
+      else if (x >= maxX) (x = maxX), (vx = -Math.abs(vx)), (bounced = true);
+      if (maxY === 0) y = 0;
+      else if (y <= 0) (y = 0), (vy = Math.abs(vy)), (bounced = true);
+      else if (y >= maxY) (y = maxY), (vy = -Math.abs(vy)), (bounced = true);
+      // Удар в угол — одна смена цвета, а не две
+      if (bounced) recolor();
+      place();
+      frame = requestAnimationFrame(tick);
     };
-    bleed();
-    addEventListener('resize', bleed);
-    sync();
-    prev.addEventListener('click', () => go(-1));
-    next.addEventListener('click', () => go(1));
-    track.addEventListener('scroll', sync, { passive: true });
+    frame = requestAnimationFrame(tick);
+
+    const resize = new ResizeObserver(() => {
+      measure();
+      x = Math.min(x, maxX);
+      y = Math.min(y, maxY);
+    });
+    resize.observe(box);
+    resize.observe(item);
+
+    cleanup = () => {
+      cancelAnimationFrame(frame);
+      resize.disconnect();
+    };
+  }
+
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:before-swap', () => {
+    cleanup?.();
+    cleanup = undefined;
   });
 </script>
+
+<style>
+  .empty {
+    position: relative;
+    height: calc(100dvh - 2 * 40px);
+    margin: 40px;
+    overflow: hidden;
+    border: 1px solid var(--color-frame-border);
+    border-radius: var(--radius-tile);
+    background: var(--color-surface);
+  }
+
+  /* Пропорции ровно по SVG (150×68), чтобы логотип касался стенок самим рисунком; масштаб ×1.7 */
+  .empty__logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: calc(150px * 1.7);
+    height: calc(68px * 1.7);
+    background-color: var(--logo-color, var(--color-primary));
+    mask: url('/icons/empty.svg') no-repeat center / contain;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Во время полёта позиция задаётся из скрипта через transform */
+  .empty__logo[data-moving] {
+    top: 0;
+    left: 0;
+  }
+</style>

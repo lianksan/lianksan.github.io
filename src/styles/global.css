@@ -1,239 +1,158 @@
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+@import '@fontsource-variable/inter';
+@import '@fontsource/dm-mono/300.css';
 
+/* Токены из стилей Figma-файла liankevich.com */
 :root {
-  --bg: #FFFFFF;
-  --surface: #F1F1F1;
-  --surface-2: #E6E6E6;
-  --surface-inv: #292929;
-  --surface-2-inv: #A9A9A9;
-  --text: #444444;
-  --text-inv: #EEEEEE;
-  --link: #3E7DDB;
-  --radius-lg: 32px;
-  --radius-md: 24px;
-  --radius-sm: 16px;
-  /* side padding of the menu and page content */
-  --gutter: 20px;
+  --color-primary: #111;
+  --color-secondary: #444;
+  --color-line: #ddd;
+  --color-placeholder: #ddd;
+  --color-surface: #f1f1f1;
+  --color-tile-border: rgba(17, 17, 17, 0.1);
+  --color-frame-border: rgba(17, 17, 17, 0.2);
+  --color-bg: #f9f9f9;
+
+  --underline-primary: rgba(17, 17, 17, 0.1);
+  --underline-thickness: 8%;
+
+  --font-sans: 'Inter Variable', Inter, system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+
+  --sidebar-width: 283px;
+  --radius-tile: 16px;
+  --column-width: 760px;
+
+  /* Единственные плавные переходы на сайте: стрелки ↗ и наклон аватара/иконок */
+  --motion-hover: 0.14s ease-out;
 }
 
-/* narrow phones: tighter side padding */
-@media (max-width: 480px) {
-  :root {
-    --gutter: 12px;
-  }
-}
-
-/* from tablet, where products go into columns, the side padding doubles */
-@media (min-width: 768px) {
-  :root {
-    --gutter: 40px;
-  }
-}
-
-@media (min-width: 960px) {
-  :root {
-    --radius-lg: 40px;
-    --radius-md: 32px;
-    --radius-sm: 24px;
-  }
-}
-
-[data-theme="dark"] {
-  --bg: #151515;
-  --surface: #292929;
-  --surface-2: #353535;
-  --surface-inv: #F1F1F1;
-  --surface-2-inv: #CCCCCC;
-  --text: #EEEEEE;
-  --text-inv: #333333;
-  --link: #7CB3FA;
-}
-
-html {
-  background-color: var(--bg);
+/* Все анимации и переходы — мгновенные */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  transition: none !important;
+  animation: none !important;
+  scroll-behavior: auto !important;
 }
 
 body {
-  font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
-  background-color: var(--bg);
-  color: var(--text);
-  min-height: 100dvh;
-  /* flex prevents .main's margins collapsing out of body and adding 96px of scroll */
-  display: flex;
-  flex-direction: column;
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-primary);
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.21;
+  -webkit-font-smoothing: antialiased;
 }
 
-.main {
-  width: 100%;
-  /* 500px column + side paddings */
-  max-width: calc(500px + 2 * var(--gutter));
-  margin-top: 96px;
-  margin-bottom: 64px;
-  display: flex;
-  flex-direction: column;
-  gap: 48px;
-  padding: 0 var(--gutter);
-  margin-left: auto;
-  margin-right: auto;
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+  font: inherit;
 }
 
-/* narrow phones: the page starts a little higher */
-@media (max-width: 480px) {
-  .main {
-    margin-top: 84px;
-  }
+img,
+video {
+  display: block;
+  max-width: 100%;
 }
 
-/* ── BUTTONS (home contacts) ── */
+a {
+  color: inherit;
+}
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border-radius: 999px;
-  font-family: inherit;
-  font-size: 20px;
+/* Текстовые стили из Figma: H1, H2, H3, Body. line-height: normal у Inter ≈ 1.21 */
+.h1 {
+  font-size: 70px;
+  font-weight: 700;
+  line-height: 1.21;
+}
+
+.h2 {
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1.21;
+  letter-spacing: -0.02em;
+}
+
+.h3 {
+  font-size: 24px;
   font-weight: 500;
-  line-height: 24px;
-  letter-spacing: -0.4px;
-  color: var(--text);
-  background: var(--surface);
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
+  line-height: 1.21;
+  letter-spacing: -0.02em;
+}
+
+.body {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.21;
+}
+
+/*
+ * Подчёркнутая ссылка. Основная — тёмный текст с полупрозрачной линией,
+ * вторичная (.link--secondary) — серый текст. У активной и при наведении
+ * линия становится цветом текста.
+ */
+.link,
+.underline {
+  text-decoration-line: underline;
+  text-decoration-color: var(--underline-primary);
+  text-decoration-thickness: var(--underline-thickness);
+  text-underline-position: from-font;
+}
+
+.link--secondary {
+  color: var(--color-secondary);
+}
+
+.link:hover,
+.link[aria-current='page'] {
+  text-decoration-color: currentColor;
+}
+
+/*
+ * Внешняя ссылка со стрелкой ↗ справа. Стрелка — псевдоэлемент,
+ * поэтому подчёркивание её не задевает. --external-* меняет размер (см. .external--large).
+ * .external-hover на родителе сдвигает стрелку при наведении на весь блок (карточка продукта).
+ */
+.external {
+  --external-size: 8px;
+  --external-gap: 6px;
+  --external-shift: -3px;
+  --external-hover: 1px;
+
   position: relative;
-  white-space: nowrap;
-  -webkit-tap-highlight-color: transparent;
+  padding-right: calc(var(--external-size) + var(--external-gap));
 }
 
-.btn:hover {
-  background: var(--text);
-  color: var(--bg);
-}
-
-.btn-icon {
-  flex-shrink: 0;
-}
-
-.btn-icon--arrow {
-  width: 10px;
-  height: 10px;
-  transition: transform 0.1s ease-in-out;
-}
-
-.btn:hover .btn-icon--arrow {
-  transform: translate(2px, -2px);
-}
-
-/* ── NAV ── */
-
-.nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  /* slightly see-through, content scrolling under the menu is blurred */
-  background: color-mix(in srgb, var(--bg) 80%, transparent);
-  -webkit-backdrop-filter: blur(20px);
-  backdrop-filter: blur(20px);
-  box-shadow: inset 0em -1px var(--surface-2);
-}
-
-/* coming back on scroll up: quick, while hiding follows the scroll with no easing */
-.nav--returning {
-  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.nav-tabs {
-  display: flex;
-  gap: 16px;
-  padding: 0 var(--gutter);
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  /* same width as the stretched Gallery / Products blocks: 1024px + paddings */
-  max-width: calc(1024px + 2 * var(--gutter));
-  margin: 0 auto;
-}
-
-.nav-tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.tab {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  height: 48px;
-  color: var(--text);
-  text-decoration: none;
-  position: relative;
-  white-space: nowrap;
-}
-
-.tab.active::after,
-.tab:hover::after {
+.external::after {
   content: '';
   position: absolute;
-  bottom: 0px;
-  left: 0;
+  top: calc(50% + var(--external-shift));
   right: 0;
-  height: 2px;
-  background: var(--text);
-  border-radius: 1px 1px 0px 0px;
+  width: var(--external-size);
+  height: var(--external-size);
+  background: url('/icons/arrow-8.svg') no-repeat center / contain;
+  transform: translateY(-50%);
+  /* Исключение из «всё мгновенно»: стрелка плавно уезжает вверх-вправо при наведении */
+  transition: transform var(--motion-hover) !important;
 }
 
-/* language switch sits at the right end of the menu, styled as tabs */
-.nav-langs {
-  display: flex;
-  gap: 16px;
-  margin-left: auto;
-  /* keeps the languages visibly apart from the tabs when the menu is tight */
-  padding-left: 16px;
+.external:hover::after,
+.external-hover:hover .external::after {
+  transform: translate(var(--external-hover), calc(-50% - var(--external-hover)));
 }
 
-/* phones: tighter gaps inside each group, so the tabs and languages read as two groups and still fit */
-@media (max-width: 767px) {
-  .nav-tabs,
-  .nav-langs {
-    gap: 12px;
-  }
+.external--large {
+  --external-size: 12px;
+  --external-gap: 8px;
+  --external-shift: -3.5px;
+  --external-hover: 2px;
 }
 
-button.tab {
-  font-family: inherit;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
-
-/* Gallery and Products blocks leave the narrow column below desktop and span the screen
-   (side paddings, up to 1024px), so shots are readable without zooming */
-@media (max-width: 959px) {
-  .main > .wide {
-    width: min(100vw - 2 * var(--gutter), 1024px);
-    align-self: center;
-  }
-
-  /* 100vw counts a desktop scrollbar — clip that sliver instead of scrolling sideways */
-  html:has(.wide) {
-    overflow-x: clip;
-  }
-}
-
-@media (min-width: 960px) {
-  .nav-tabs {
-    max-width: calc(1280px + 2 * var(--gutter));
-  }
-
-  .main {
-    max-width: calc(1280px + 2 * var(--gutter));
-  }
+.external--large::after {
+  background-image: url('/icons/arrow-12.svg');
 }

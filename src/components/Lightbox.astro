@@ -1,0 +1,148 @@
+---
+/**
+ * Полноэкранный просмотр плитки ленты. Открывается по клику на кнопку с data-lightbox
+ * (см. Media.astro); закрывается кликом в любом месте или Esc.
+ *
+ * Ничего не загружается заново:
+ * - видео переносится в оверлей тем же элементом (с буфером и позицией) и возвращается обратно;
+ * - картинка сразу показывается той версией, что уже на экране, а полное разрешение
+ *   подменяется после загрузки. Полную версию начинаем грузить ещё при наведении.
+ * Показываем не больше натурального размера ассета, уменьшаем только чтобы влезть в экран.
+ */
+---
+
+<dialog class="lightbox" aria-label="Shot preview">
+  <div class="lightbox__content"></div>
+</dialog>
+
+<script>
+  const preloaded = new Map<string, HTMLImageElement>();
+  let returnVideo: (() => void) | undefined;
+
+  function preload(url: string) {
+    let image = preloaded.get(url);
+    if (!image) {
+      image = new Image();
+      image.decoding = 'async';
+      image.src = url;
+      preloaded.set(url, image);
+    }
+    return image;
+  }
+
+  function openImage(content: Element, trigger: HTMLElement, url: string) {
+    const tileImage = trigger.querySelector('img')!;
+    const image = document.createElement('img');
+    image.alt = tileImage.alt;
+    image.width = Number(trigger.dataset.width);
+    image.height = Number(trigger.dataset.height);
+    // Мгновенно: версия из плитки уже загружена и декодирована
+    image.src = tileImage.currentSrc || tileImage.src;
+    content.replaceChildren(image);
+
+    if (image.src === url) return;
+    const full = preload(url);
+    full.decode().then(
+      () => {
+        if (image.isConnected) image.src = full.src;
+      },
+      () => {},
+    );
+  }
+
+  function openVideo(content: Element, trigger: HTMLElement) {
+    const video = trigger.querySelector('video')!;
+    // Натуральный размер; если метаданных ещё нет — размер возьмётся из самого видео
+    if (video.videoWidth) {
+      video.width = video.videoWidth;
+      video.height = video.videoHeight;
+    }
+    content.replaceChildren(video);
+    video.play().catch(() => {});
+
+    returnVideo = () => {
+      video.removeAttribute('width');
+      video.removeAttribute('height');
+      trigger.append(video);
+      video.play().catch(() => {});
+    };
+  }
+
+  // Делегирование на document: переживает клиентские переходы между страницами
+  document.addEventListener('click', (event) => {
+    const dialog = document.querySelector<HTMLDialogElement>('dialog.lightbox');
+    if (!dialog) return;
+
+    if (dialog.open) {
+      dialog.close();
+      return;
+    }
+
+    const trigger = (event.target as Element).closest<HTMLElement>('[data-lightbox]');
+    if (!trigger) return;
+
+    const content = dialog.querySelector('.lightbox__content')!;
+    const url = trigger.dataset.lightbox!;
+    if (url === 'video') openVideo(content, trigger);
+    else openImage(content, trigger, url);
+    dialog.showModal();
+  });
+
+  document.addEventListener('close', (event) => {
+    const dialog = event.target as HTMLElement;
+    if (!dialog.matches?.('dialog.lightbox')) return;
+    returnVideo?.();
+    returnVideo = undefined;
+    dialog.querySelector('.lightbox__content')!.replaceChildren();
+  }, true);
+
+  // Полную версию картинки начинаем грузить уже при наведении
+  document.addEventListener('pointerover', (event) => {
+    const trigger = (event.target as Element).closest<HTMLElement>('[data-lightbox]');
+    const url = trigger?.dataset.lightbox;
+    if (url && url !== 'video') preload(url);
+  });
+</script>
+
+<style>
+  .lightbox {
+    width: 100vw;
+    max-width: none;
+    height: 100vh;
+    max-height: none;
+    margin: 0;
+    padding: 32px;
+    border: none;
+    background: transparent;
+    cursor: zoom-out;
+  }
+
+  .lightbox[open] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lightbox::backdrop {
+    background: rgba(17, 17, 17, 0.9);
+  }
+
+  .lightbox__content {
+    display: contents;
+  }
+
+  /* Атрибуты width/height = натуральный размер, поэтому крупнее он не станет */
+  .lightbox__content > :global(img),
+  .lightbox__content > :global(video) {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: var(--radius-tile);
+    object-fit: contain;
+  }
+
+  :global(html:has(dialog.lightbox[open])) {
+    overflow: hidden;
+  }
+</style>
