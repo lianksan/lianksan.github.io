@@ -112,6 +112,11 @@ const here = (page: Page) => (current === page ? 'page' : undefined);
     height: 36px;
   }
 
+  /* 2px между заголовком Products и списком продуктов, как в Figma */
+  .links li:has(> a:not(.product)) + li:has(> .product) {
+    padding-top: 2px;
+  }
+
   .product__icon {
     flex: none;
   }
@@ -131,5 +136,56 @@ const here = (page: Page) => (current === page ? 'page' : undefined);
   .sidebar__contacts {
     margin-top: auto;
     padding-top: 20px;
+  }
+
+  /* Main 960-1279: сайдбар компактнее, аватар 52px, иконки продуктов 16px */
+  @media (max-width: 1279px) {
+    .sidebar,
+    .sidebar__nav {
+      gap: 16px;
+    }
+
+    .sidebar {
+      padding: 28px 28px 22px;
+    }
+
+    .home {
+      gap: 12px;
+      height: 52px;
+    }
+
+    .home :global(.avatar) {
+      width: 52px;
+      height: 52px;
+    }
+
+    .sidebar__nav .links:first-child {
+      padding-top: 4px;
+    }
+
+    .links a {
+      height: 40px;
+    }
+
+    .product__icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .product__icon--wide {
+      width: 20.8px;
+      margin: 0 -2.4px;
+    }
+
+    .sidebar__contacts {
+      padding-top: 16px;
+    }
+  }
+
+  /* Main 959-: вместо сайдбара меню сверху, см. MobileNav.astro */
+  @media (max-width: 959px) {
+    .sidebar {
+      display: none;
+    }
   }
 </style>

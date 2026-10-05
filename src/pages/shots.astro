@@ -24,16 +24,16 @@ const CONTENT_WIDTH = 960;
 
           <div class="section__shots">
             {section.shots.map((shot) => (
-              <figure class="shot">
+              <figure class:list={['shot', { 'shot--split': Array.isArray(shot.caption) }]}>
                 {shot.rows.map((row) => (
                   <div class="row">
-                    {row.map((m) => {
+                    {row.map((m, i) => {
                       const span = m.span ?? COLUMNS;
                       return (
                         <Media
                           {...m}
-                          sizes={`${Math.round((span / COLUMNS) * CONTENT_WIDTH)}px`}
-                          style={`grid-column: span ${span}`}
+                          sizes={`(max-width: 959px) calc(100vw - 32px), ${Math.round((span / COLUMNS) * CONTENT_WIDTH)}px`}
+                          style={`grid-column: span ${span}; --i: ${i}`}
                         />
                       );
                     })}
@@ -42,8 +42,8 @@ const CONTENT_WIDTH = 960;
                 {typeof shot.caption === 'string' && <figcaption class="body">{shot.caption}</figcaption>}
                 {Array.isArray(shot.caption) && (
                   <figcaption class="row">
-                    {shot.caption.map((c) => (
-                      <span class="body" style={`grid-column: span ${c.span}`}>
+                    {shot.caption.map((c, i) => (
+                      <span class="body" style={`grid-column: span ${c.span}; --i: ${i}`}>
                         {c.text}
                       </span>
                     ))}
@@ -63,18 +63,18 @@ const CONTENT_WIDTH = 960;
   .content {
     display: flex;
     flex-direction: column;
-    gap: 48px;
-    /* Контент не шире --content-width + поля по 52px, по центру области */
-    max-width: calc(var(--content-width) + 2 * 52px);
+    /* Между блоками 24px; свёрнутый блок добавляет 12px снизу, раскрытый — 24px (итого 48) */
+    gap: 24px;
+    /* Контент не шире --content-width + поля по 60px, по центру области */
+    max-width: calc(var(--content-width) + 2 * 60px);
     margin: 0 auto;
-    padding: 40px 52px 49px;
+    padding: 40px 60px 47px;
   }
 
   .section__title {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding-bottom: 8px;
     cursor: pointer;
     list-style: none;
   }
@@ -87,6 +87,14 @@ const CONTENT_WIDTH = 960;
     text-decoration-color: currentColor;
   }
 
+  .section:not([open]) {
+    padding-bottom: 12px;
+  }
+
+  .section[open]:not(:last-child) {
+    padding-bottom: 24px;
+  }
+
   .section:not([open]) .chevron {
     transform: rotate(-90deg);
   }
@@ -95,7 +103,8 @@ const CONTENT_WIDTH = 960;
     display: flex;
     flex-direction: column;
     gap: 32px;
-    padding-top: 32px;
+    /* 8px под заголовком + 32px, как в Figma */
+    padding-top: 40px;
   }
 
   .shot {
@@ -119,5 +128,45 @@ const CONTENT_WIDTH = 960;
 
   figcaption.row {
     max-width: none;
+  }
+
+  @media (max-width: 959px) {
+    .content {
+      padding: 16px 16px 40px;
+    }
+
+    .section[open]:not(:last-child) {
+      padding-bottom: 16px;
+    }
+
+    .section__shots {
+      gap: 24px;
+      padding-top: 24px;
+    }
+
+    /* По одной плитке в ряду: перебиваем span из style */
+    .row > :global(*) {
+      grid-column: 1 / -1 !important;
+    }
+
+    /*
+     * Шот с подписью у каждой плитки: ряды «раскрываются» в саму фигуру,
+     * и каждая подпись встаёт под свою плитку (порядок по --i)
+     */
+    .shot--split .row {
+      display: contents;
+    }
+
+    .shot--split .row > :global(*) {
+      order: calc(var(--i) * 2);
+    }
+
+    .shot--split figcaption.row > span {
+      order: calc(var(--i) * 2 + 1);
+    }
+
+    .shot--split figcaption.row > span:not(:last-child) {
+      margin-bottom: 16px;
+    }
   }
 </style>

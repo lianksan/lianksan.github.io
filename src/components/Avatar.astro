@@ -1,17 +1,40 @@
 ---
 import { Image } from 'astro:assets';
 import avatar from '../assets/avatar.jpg';
+
+interface Props {
+  /** 64 — в сайдбаре (52 на планшете, см. Sidebar.astro), 24 — в мобильном меню */
+  size?: number;
+  /** Имя для transition:persist: у каждого экземпляра на странице своё */
+  persist?: string;
+}
+
+const { size = 64, persist = 'avatar' } = Astro.props;
 ---
 
-<Image src={avatar} alt="" width={64} height={64} densities={[1, 2, 3]} class="avatar" transition:persist="avatar" />
+<Image
+  src={avatar}
+  alt=""
+  width={size}
+  height={size}
+  densities={[1, 2, 3]}
+  class:list={['avatar', { 'avatar--small': size < 64 }]}
+  style={`--avatar-size: ${size}px`}
+  transition:persist={persist}
+/>
 
 <style>
   .avatar {
     flex: none;
-    width: 64px;
-    height: 64px;
+    width: var(--avatar-size);
+    height: var(--avatar-size);
     border-radius: 16px;
     object-fit: cover;
     transition: transform var(--motion-hover) !important;
+  }
+
+  /* В мобильном меню 24px со скруглением 6px, как в Figma */
+  .avatar--small {
+    border-radius: calc(var(--avatar-size) / 4);
   }
 </style>

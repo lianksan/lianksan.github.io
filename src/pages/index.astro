@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Timeline from '../components/Timeline.astro';
+import ContactLinks from '../components/ContactLinks.astro';
 import video1 from '../assets/home/video-1.mp4';
 import video2 from '../assets/home/video-2.mp4';
 import video3 from '../assets/home/video-3.mp4';
@@ -28,7 +29,7 @@ const clips = [
       <div class="clips">
         {
           clips.map((clip) => (
-            <div class="clip" style={`width: ${clip.width}px`}>
+            <div class="clip" style={`--clip-width: ${clip.width}`}>
               <video src={clip.src} autoplay muted loop playsinline aria-label={clip.alt} />
             </div>
           ))
@@ -40,28 +41,35 @@ const clips = [
 
     <footer class="footer">
       <p class="h2">
-        I want to develop products that move<br /> humanity forward, making people healthier<br /> and more conscious
+        I want to develop products that move<br /> humanity forward, making people healthier<br class="desktop-only" /> and more conscious
       </p>
 
-      <div class="contact">
+      <div class="contact contact--desktop">
         <img class="contact__highlight" src="/icons/highlight.svg" alt="" width="252" height="58" />
         <p class="contact__text h3">Let’s stay in touch</p>
         <div class="contact__arrow" aria-hidden="true">
           <img src="/icons/contact-arrow.svg" alt="" width="123" height="34" />
         </div>
       </div>
+
+      <!-- Main 959-: сайдбара нет, контакты прямо под подписью -->
+      <div class="contact-mobile">
+        <p class="h3">Let’s stay in touch</p>
+        <ContactLinks />
+      </div>
     </footer>
   </div>
 </Base>
 
 <style>
+  /* Колонка до 760px с полями по 60px (Scrollable content в Figma) */
   .content {
     display: flex;
     flex-direction: column;
     gap: 52px;
-    width: var(--column-width);
+    max-width: calc(var(--column-width) + 2 * 60px);
     margin: 0 auto;
-    padding: 32px 0 100px;
+    padding: 32px 60px 100px;
   }
 
   .header {
@@ -77,13 +85,17 @@ const clips = [
   }
 
   .clips {
+    --clip-height: 260;
+
     display: flex;
     gap: 8px;
   }
 
+  /* Ширина из Figma задана при высоте 260px — на меньших экранах масштабируем пропорционально */
   .clip {
     flex: none;
-    height: 260px;
+    width: calc(var(--clip-width) / 260 * var(--clip-height) * 1px);
+    height: calc(var(--clip-height) * 1px);
     overflow: hidden;
     border: 1px solid var(--color-tile-border);
     border-radius: var(--radius-tile);
@@ -140,5 +152,74 @@ const clips = [
   .contact__arrow img {
     max-width: none;
     transform: rotate(-28.91deg);
+  }
+
+  .contact-mobile {
+    display: none;
+  }
+
+  /* Main 960-1279 */
+  @media (max-width: 1279px) {
+    .content {
+      gap: 44px;
+      padding-top: 28px;
+    }
+
+    .header {
+      gap: 32px;
+    }
+
+    .clips {
+      --clip-height: 216;
+    }
+  }
+
+  /* Main 959- */
+  @media (max-width: 959px) {
+    .content {
+      gap: 32px;
+      max-width: calc(520px + 2 * 16px);
+      padding: 16px 16px 28px;
+    }
+
+    .header {
+      gap: 24px;
+    }
+
+    .texts {
+      gap: 16px;
+    }
+
+    /* Плитки листаются вбок от края до края экрана */
+    .clips {
+      --clip-height: 184;
+
+      margin: 0 -16px;
+      padding: 0 16px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .clips::-webkit-scrollbar {
+      display: none;
+    }
+
+    .desktop-only {
+      display: none;
+    }
+
+    .contact--desktop {
+      display: none;
+    }
+
+    .contact-mobile {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .contact-mobile :global(.contacts) {
+      width: 180px;
+    }
   }
 </style>

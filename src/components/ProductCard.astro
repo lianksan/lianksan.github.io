@@ -108,4 +108,24 @@ const linkProps = product.href ? { href: product.href, target: '_blank', rel: 'n
     color: var(--color-secondary);
     white-space: nowrap;
   }
+
+  /* Products 960-1279 и 959-: название в стиле Tablet/H3, описание у иконок 100px переносится */
+  @media (max-width: 1279px) {
+    .card__name {
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .card__name.external--large {
+      --external-shift: -4px;
+    }
+
+    .card--large .card__texts {
+      width: 100%;
+    }
+
+    .card--large .card__description {
+      white-space: normal;
+    }
+  }
 </style>

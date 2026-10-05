@@ -4,6 +4,7 @@ import { ClientRouter } from 'astro:transitions';
 import interUrl from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import dmMonoUrl from '@fontsource/dm-mono/files/dm-mono-latin-300-normal.woff2?url';
 import Sidebar, { type Page } from '../components/Sidebar.astro';
+import MobileNav from '../components/MobileNav.astro';
 
 interface Props {
   title: string;
@@ -36,6 +37,7 @@ const { title, description, current } = Astro.props;
   </head>
   <body>
     <Sidebar current={current} />
+    <MobileNav current={current} />
     <main class="main">
       <slot />
     </main>
@@ -43,11 +45,6 @@ const { title, description, current } = Astro.props;
 </html>
 
 <style>
-  /* Пока только десктоп: ширина не меньше макета */
-  body {
-    min-width: 1280px;
-  }
-
   .main {
     margin-left: var(--sidebar-width);
   }

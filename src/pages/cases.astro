@@ -20,8 +20,11 @@ import Base from '../layouts/Base.astro';
   /** Скорость полёта, px/с */
   const SPEED = 226;
 
-  /** Цвета логотипа: приглушённая радуга и чёрный. После каждого отскока — случайный другой */
-  const COLORS = ['#111111', '#c0625a', '#cf8a4f', '#c9a645', '#6c9a5e', '#5b9aae', '#5571b0', '#8566a8'];
+  /** Насколько направление может отклоняться от диагонали */
+  const MAX_TILT = (15 * Math.PI) / 180;
+
+  /** Цвета логотипа: приглушённая радуга и тёмно-серый. После каждого отскока — случайный другой */
+  const COLORS = ['#555555', '#c0625a', '#cf8a4f', '#c9a645', '#6c9a5e', '#5b9aae', '#5571b0', '#8566a8'];
 
   let cleanup: (() => void) | undefined;
 
@@ -42,10 +45,12 @@ import Base from '../layouts/Base.astro';
     };
     measure();
 
-    // Стартуем из центра (там же логотип стоит без JS) под случайным углом 0–360°
+    // Стартуем из центра (там же логотип стоит без JS) по одной из диагоналей ±15°:
+    // при отскоках угол к стенкам сохраняется, поэтому логотип всё время летает к углам
     let x = maxX / 2;
     let y = maxY / 2;
-    const angle = Math.random() * 2 * Math.PI;
+    const diagonal = (Math.floor(Math.random() * 4) * 2 + 1) * (Math.PI / 4);
+    const angle = diagonal + (Math.random() * 2 - 1) * MAX_TILT;
     let vx = SPEED * Math.cos(angle);
     let vy = SPEED * Math.sin(angle);
     let last = performance.now();
@@ -122,7 +127,7 @@ import Base from '../layouts/Base.astro';
     left: 50%;
     width: calc(150px * 1.7);
     height: calc(68px * 1.7);
-    background-color: var(--logo-color, var(--color-primary));
+    background-color: var(--logo-color, #555);
     mask: url('/icons/empty.svg') no-repeat center / contain;
     transform: translate(-50%, -50%);
   }
@@ -131,5 +136,19 @@ import Base from '../layouts/Base.astro';
   .empty__logo[data-moving] {
     top: 0;
     left: 0;
+  }
+
+  /* Main 959-: рамка под меню по ширине экрана, логотип мельче */
+  @media (max-width: 959px) {
+    .empty {
+      height: calc(100dvh - 44px - 2 * 16px);
+      min-height: 320px;
+      margin: 16px;
+    }
+
+    .empty__logo {
+      width: calc(150px * 1.1);
+      height: calc(68px * 1.1);
+    }
   }
 </style>

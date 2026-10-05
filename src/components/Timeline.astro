@@ -31,6 +31,12 @@ import { timeline } from '../data/site';
     /* Центр точки от верха строки: по первой строке текста 18px и заголовка 24px */
     --dot-minor: 11px;
     --dot-major: 15px;
+    --dot-minor-size: 4px;
+    --dot-major-size: 4px;
+    /* Зазор между кружком и линией сверху и снизу */
+    --line-gap: 4px;
+    /* Ширина колонки с точкой и линией */
+    --marker: 12px;
 
     display: flex;
     flex-direction: column;
@@ -42,9 +48,11 @@ import { timeline } from '../data/site';
 
   .row {
     --dot: var(--dot-minor);
+    --dot-size: var(--dot-minor-size);
 
     display: grid;
-    grid-template-columns: 126px 12px 1fr;
+    grid-template-columns: 126px var(--marker) 1fr;
+    grid-template-areas: 'date marker content';
     column-gap: 8px;
     align-items: start;
     color: var(--color-secondary);
@@ -52,9 +60,11 @@ import { timeline } from '../data/site';
 
   .row--major {
     --dot: var(--dot-major);
+    --dot-size: var(--dot-major-size);
   }
 
   .date {
+    grid-area: date;
     font-family: var(--font-mono);
     font-weight: 300;
     text-align: right;
@@ -84,7 +94,12 @@ import { timeline } from '../data/site';
   }
 
   /* Точка и линия до следующей точки */
+  .content {
+    grid-area: content;
+  }
+
   .marker {
+    grid-area: marker;
     position: relative;
     align-self: stretch;
   }
@@ -92,10 +107,10 @@ import { timeline } from '../data/site';
   .marker::before {
     content: '';
     position: absolute;
-    top: calc(var(--dot) - 2px);
-    left: 4px;
-    width: 4px;
-    height: 4px;
+    top: calc(var(--dot) - var(--dot-size) / 2);
+    left: calc(50% - var(--dot-size) / 2);
+    width: var(--dot-size);
+    height: var(--dot-size);
     border: 1px solid var(--color-secondary);
     border-radius: 50%;
   }
@@ -107,18 +122,62 @@ import { timeline } from '../data/site';
   .marker::after {
     content: '';
     position: absolute;
-    top: calc(var(--dot) + 6px);
-    left: 5.5px;
+    /* От низа своего кружка до верха следующего, с зазором --line-gap */
+    top: calc(var(--dot) + var(--dot-size) / 2 + var(--line-gap));
+    left: calc(50% - 0.5px);
     width: 1px;
-    bottom: calc(var(--dot-minor) - 6px - var(--row-gap));
+    bottom: calc(var(--line-gap) + var(--dot-minor-size) / 2 - var(--dot-minor) - var(--row-gap));
     background: var(--color-line);
   }
 
   .row:has(+ .row--major) .marker::after {
-    bottom: calc(var(--dot-major) - 6px - var(--row-gap));
+    bottom: calc(var(--line-gap) + var(--dot-major-size) / 2 - var(--dot-major) - var(--row-gap));
   }
 
   .row:last-child .marker::after {
     display: none;
+  }
+
+  /* Main 960-1279: Body 16px, H3 и крупные даты 20px */
+  @media (max-width: 1279px) {
+    .timeline {
+      --dot-minor: 10px;
+      --dot-major: 13px;
+    }
+
+    .row--major .date {
+      font-size: 20px;
+      line-height: 26px;
+    }
+  }
+
+  /* Main 959-: точка слева, дата над текстом */
+  @media (max-width: 959px) {
+    .timeline {
+      --row-gap: 20px;
+      --dot-major: 14px;
+      --marker: 8px;
+    }
+
+    .row {
+      grid-template-columns: var(--marker) 1fr;
+      grid-template-areas:
+        'marker date'
+        'marker content';
+      column-gap: 12px;
+      row-gap: 8px;
+    }
+
+    .date {
+      text-align: left;
+    }
+
+    .row--minor .date {
+      padding-top: 0;
+    }
+
+    .marker {
+      grid-row: 1 / -1;
+    }
   }
 </style>
