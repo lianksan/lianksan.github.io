@@ -29,12 +29,18 @@ import china1 from '../assets/shots/china1.png';
 import china2 from '../assets/shots/china2.png';
 import rdApp from '../assets/shots/rd-app.png';
 
+// Первые кадры видео (ffmpeg): показываются, пока само видео не загрузилось
+const posters = import.meta.glob<{ default: ImageMetadata }>('../assets/shots/posters/*.jpg', { eager: true });
+const poster = (name: string) => posters[`../assets/shots/posters/${name}.jpg`].default;
+
 /**
  * Плитка ленты. `src` — картинка (ImageMetadata) или видео (строка-URL после импорта mp4).
  * `ratio` — пропорции контейнера из Figma, `span` — сколько колонок из 6 занимает плитка.
  */
 export type ShotMedia = {
   src: ImageMetadata | string;
+  /** Для видео: первый кадр, который виден до загрузки */
+  poster?: ImageMetadata;
   ratio: string;
   alt: string;
   span?: number;
@@ -56,7 +62,7 @@ export const shotSections: ShotSection[] = [
       {
         caption: CHAPTER_SELECTION,
         rows: [
-          [{ src: wotSelector19, ratio: '880 / 495', alt: 'World of Tanks chapter selection' }],
+          [{ src: wotSelector19, poster: poster('wot_selector_19'), ratio: '880 / 495', alt: 'World of Tanks chapter selection' }],
           [
             { src: wotSelector21, ratio: '436 / 246', alt: 'Chapter selection screen', span: 3 },
             { src: wotSelectorDuke, ratio: '436 / 246', alt: 'Chapter selection screen', span: 3 },
@@ -70,7 +76,7 @@ export const shotSections: ShotSection[] = [
       },
       {
         caption: 'QR Machine',
-        rows: [[{ src: qrMachine, ratio: '880 / 495', alt: 'QR Machine' }]],
+        rows: [[{ src: qrMachine, poster: poster('qr-machine'), ratio: '880 / 495', alt: 'QR Machine' }]],
       },
       {
         // В макете подпись повторяет первую работу
@@ -87,9 +93,9 @@ export const shotSections: ShotSection[] = [
         caption: 'Simple VFX animation',
         rows: [
           [
-            { src: wotUmg2, ratio: '288 / 112', alt: 'VFX animation', span: 2 },
-            { src: wotUmg3, ratio: '288 / 112', alt: 'VFX animation', span: 2 },
-            { src: wotUmg4, ratio: '288 / 112', alt: 'VFX animation', span: 2 },
+            { src: wotUmg2, poster: poster('wot_umg_2'), ratio: '288 / 112', alt: 'VFX animation', span: 2 },
+            { src: wotUmg3, poster: poster('wot_umg_3'), ratio: '288 / 112', alt: 'VFX animation', span: 2 },
+            { src: wotUmg4, poster: poster('wot_umg_4'), ratio: '288 / 112', alt: 'VFX animation', span: 2 },
           ],
         ],
       },
@@ -97,8 +103,8 @@ export const shotSections: ShotSection[] = [
         caption: 'Daily rewards feature for the UFL console game',
         rows: [
           [
-            { src: ufl1, ratio: '584 / 328', alt: 'UFL daily rewards', span: 4 },
-            { src: ufl2, ratio: '288 / 328', alt: 'UFL daily rewards claim', span: 2 },
+            { src: ufl1, poster: poster('ufl-1'), ratio: '584 / 328', alt: 'UFL daily rewards', span: 4 },
+            { src: ufl2, poster: poster('ufl-2'), ratio: '288 / 328', alt: 'UFL daily rewards claim', span: 2 },
           ],
         ],
       },
@@ -110,10 +116,10 @@ export const shotSections: ShotSection[] = [
       {
         caption: 'Lottie icons packs',
         rows: [
-          [{ src: lottieEco, ratio: '880 / 586', alt: 'Eco Lottie icons' }],
+          [{ src: lottieEco, poster: poster('lottie_eco'), ratio: '880 / 586', alt: 'Eco Lottie icons' }],
           [
-            { src: lottieLogos, ratio: '436 / 314', alt: 'Logo Lottie icons', span: 3 },
-            { src: lottieWeather, ratio: '436 / 314', alt: 'Weather Lottie icons', span: 3 },
+            { src: lottieLogos, poster: poster('lottie_logos'), ratio: '436 / 314', alt: 'Logo Lottie icons', span: 3 },
+            { src: lottieWeather, poster: poster('lottie_weather'), ratio: '436 / 314', alt: 'Weather Lottie icons', span: 3 },
           ],
         ],
       },
@@ -142,7 +148,7 @@ export const shotSections: ShotSection[] = [
       },
       {
         caption: 'Unsplash mobile app concept',
-        rows: [[{ src: unsplash, ratio: '880 / 660', alt: 'Unsplash app concept' }]],
+        rows: [[{ src: unsplash, poster: poster('unsplash'), ratio: '880 / 660', alt: 'Unsplash app concept' }]],
       },
       {
         caption: 'Playing with pixel art soft',
@@ -155,7 +161,7 @@ export const shotSections: ShotSection[] = [
       },
       {
         caption: 'National belarus convertor mobile app concept',
-        rows: [[{ src: converter, ratio: '880 / 660', alt: 'Belarusian converter app concept' }]],
+        rows: [[{ src: converter, poster: poster('converter'), ratio: '880 / 660', alt: 'Belarusian converter app concept' }]],
       },
     ],
   },
