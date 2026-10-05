@@ -108,4 +108,14 @@ const linkProps = product.href ? { href: product.href, target: '_blank', rel: 'n
     color: var(--color-secondary);
     white-space: nowrap;
   }
+
+  @media (max-width: 1023px) {
+    .card__name {
+      font-size: 22px;
+    }
+
+    .card__description {
+      white-space: normal;
+    }
+  }
 </style>

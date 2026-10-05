@@ -4,6 +4,8 @@ import { ClientRouter } from 'astro:transitions';
 import interUrl from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import dmMonoUrl from '@fontsource/dm-mono/files/dm-mono-latin-300-normal.woff2?url';
 import Sidebar, { type Page } from '../components/Sidebar.astro';
+import MobileNav from '../components/MobileNav.astro';
+import ContactLinks from '../components/ContactLinks.astro';
 
 interface Props {
   title: string;
@@ -36,19 +38,35 @@ const { title, description, current } = Astro.props;
   </head>
   <body>
     <Sidebar current={current} />
+    <MobileNav current={current} />
     <main class="main">
       <slot />
     </main>
+    <!-- На мобилке сайдбара нет — контакты внизу страницы, на них ведёт пункт Contacts в меню -->
+    <footer class="contacts" id="contacts">
+      <ContactLinks />
+    </footer>
   </body>
 </html>
 
 <style>
-  /* Пока только десктоп: ширина не меньше макета */
-  body {
-    min-width: 1280px;
-  }
-
   .main {
     margin-left: var(--sidebar-width);
+  }
+
+  .contacts {
+    display: none;
+  }
+
+  @media (max-width: 1023px) {
+    .main {
+      margin-left: 0;
+    }
+
+    .contacts {
+      display: block;
+      padding: 24px var(--page-gutter) 40px;
+      border-top: 1px solid var(--color-line);
+    }
   }
 </style>

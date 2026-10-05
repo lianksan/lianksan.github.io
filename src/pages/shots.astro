@@ -32,7 +32,7 @@ const CONTENT_WIDTH = 960;
                       return (
                         <Media
                           {...m}
-                          sizes={`${Math.round((span / COLUMNS) * CONTENT_WIDTH)}px`}
+                          sizes={`(max-width: 1023px) ${Math.round((span / COLUMNS) * 100)}vw, ${Math.round((span / COLUMNS) * CONTENT_WIDTH)}px`}
                           style={`grid-column: span ${span}`}
                         />
                       );
@@ -119,5 +119,17 @@ const CONTENT_WIDTH = 960;
 
   figcaption.row {
     max-width: none;
+  }
+
+  @media (max-width: 1023px) {
+    .content {
+      gap: 32px;
+      padding: 16px var(--page-gutter) 48px;
+    }
+
+    .section__shots {
+      gap: 32px;
+      padding-top: 16px;
+    }
   }
 </style>

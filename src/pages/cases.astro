@@ -127,6 +127,20 @@ import Base from '../layouts/Base.astro';
     transform: translate(-50%, -50%);
   }
 
+  /* На мобилке рамка по ширине экрана, под меню; логотип мельче */
+  @media (max-width: 1023px) {
+    .empty {
+      height: calc(100dvh - 76px - 2 * var(--page-gutter));
+      min-height: 320px;
+      margin: var(--page-gutter);
+    }
+
+    .empty__logo {
+      width: calc(150px * 1.1);
+      height: calc(68px * 1.1);
+    }
+  }
+
   /* Во время полёта позиция задаётся из скрипта через transform */
   .empty__logo[data-moving] {
     top: 0;

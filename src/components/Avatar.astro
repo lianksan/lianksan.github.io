@@ -1,16 +1,35 @@
 ---
 import { Image } from 'astro:assets';
 import avatar from '../assets/avatar.jpg';
+
+interface Props {
+  /** 64 — в сайдбаре, меньше — в мобильном меню */
+  size?: number;
+  /** Имя для transition:persist: у каждого экземпляра на странице своё */
+  persist?: string;
+}
+
+const { size = 64, persist = 'avatar' } = Astro.props;
 ---
 
-<Image src={avatar} alt="" width={64} height={64} densities={[1, 2, 3]} class="avatar" transition:persist="avatar" />
+<Image
+  src={avatar}
+  alt=""
+  width={size}
+  height={size}
+  densities={[1, 2, 3]}
+  class="avatar"
+  style={`--avatar-size: ${size}px`}
+  transition:persist={persist}
+/>
 
 <style>
   .avatar {
     flex: none;
-    width: 64px;
-    height: 64px;
-    border-radius: 16px;
+    width: var(--avatar-size);
+    height: var(--avatar-size);
+    /* 16px при 64px, пропорционально у меньших */
+    border-radius: calc(var(--avatar-size) / 4);
     object-fit: cover;
     transition: transform var(--motion-hover) !important;
   }

@@ -28,7 +28,7 @@ const clips = [
       <div class="clips">
         {
           clips.map((clip) => (
-            <div class="clip" style={`width: ${clip.width}px`}>
+            <div class="clip" style={`--clip-width: ${clip.width}`}>
               <video src={clip.src} autoplay muted loop playsinline aria-label={clip.alt} />
             </div>
           ))
@@ -59,9 +59,23 @@ const clips = [
     display: flex;
     flex-direction: column;
     gap: 52px;
-    width: var(--column-width);
+    width: min(var(--column-width), calc(100% - 80px));
     margin: 0 auto;
     padding: 32px 0 100px;
+  }
+
+  @media (max-width: 1023px) {
+    .content {
+      gap: 40px;
+      width: auto;
+      max-width: calc(var(--column-width) + 2 * var(--page-gutter));
+      padding: 16px var(--page-gutter) 56px;
+    }
+
+    /* Ручные переносы рассчитаны на десктопную ширину */
+    .content br {
+      display: none;
+    }
   }
 
   .header {
@@ -77,13 +91,34 @@ const clips = [
   }
 
   .clips {
+    --clip-height: 260;
+
     display: flex;
     gap: 8px;
+    /* Если не влезают (узкое окно) — листаются вбок */
+    overflow-x: auto;
+    scrollbar-width: none;
   }
 
+  .clips::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* На мобилке плитки ниже и листаются от края до края экрана */
+  @media (max-width: 1023px) {
+    .clips {
+      --clip-height: 200;
+
+      margin: 0 calc(-1 * var(--page-gutter));
+      padding: 0 var(--page-gutter);
+    }
+  }
+
+  /* Ширина из Figma задана при высоте 260px — масштабируем пропорционально */
   .clip {
     flex: none;
-    height: 260px;
+    width: calc(var(--clip-width) / 260 * var(--clip-height) * 1px);
+    height: calc(var(--clip-height) * 1px);
     overflow: hidden;
     border: 1px solid var(--color-tile-border);
     border-radius: var(--radius-tile);
@@ -140,5 +175,16 @@ const clips = [
   .contact__arrow img {
     max-width: none;
     transform: rotate(-28.91deg);
+  }
+
+  /* Стрелка указывает на контакты в сайдбаре; на мобилке они сразу под ней */
+  @media (max-width: 1023px) {
+    .contact {
+      margin-left: 27px;
+    }
+
+    .contact__arrow {
+      display: none;
+    }
   }
 </style>
