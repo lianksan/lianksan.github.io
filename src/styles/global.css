@@ -21,8 +21,6 @@
   --sidebar-width: 283px;
   --radius-tile: 16px;
   --column-width: 760px;
-  /* Боковые поля страницы на мобилке */
-  --page-gutter: 16px;
 
   /* Единственные плавные переходы на сайте: стрелки ↗ и наклон аватара/иконок */
   --motion-hover: 0.14s ease-out;
@@ -91,28 +89,6 @@ a {
   font-size: 18px;
   font-weight: 400;
   line-height: 1.21;
-}
-
-/*
- * Мобилка — всё, что уже 1024px: там сайдбар меняется на меню сверху (MobileNav.astro).
- * Брейкпоинт повторяется в компонентах как (max-width: 1023px).
- */
-@media (max-width: 1023px) {
-  .h1 {
-    font-size: 44px;
-  }
-
-  .h2 {
-    font-size: 24px;
-  }
-
-  .h3 {
-    font-size: 20px;
-  }
-
-  .body {
-    font-size: 16px;
-  }
 }
 
 /*

@@ -55,7 +55,7 @@ const lists = [
     display: flex;
     flex-direction: column;
     gap: 60px;
-    width: min(var(--column-width), calc(100% - 80px));
+    width: var(--column-width);
     margin: 0 auto;
     padding: 40px 0;
   }
@@ -89,23 +89,5 @@ const lists = [
     display: flex;
     flex-direction: column;
     gap: 20px;
-  }
-
-  @media (max-width: 1023px) {
-    .content {
-      gap: 48px;
-      width: auto;
-      max-width: calc(var(--column-width) + 2 * var(--page-gutter));
-      padding: 16px var(--page-gutter) 56px;
-    }
-
-    .grid {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    }
-
-    .columns {
-      grid-template-columns: 1fr;
-      gap: 48px;
-    }
   }
 </style>

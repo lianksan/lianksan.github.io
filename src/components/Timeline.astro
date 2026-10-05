@@ -121,29 +121,4 @@ import { timeline } from '../data/site';
   .row:last-child .marker::after {
     display: none;
   }
-
-  /* На мобилке даты мельче и колонка уже, чтобы оставить место тексту */
-  @media (max-width: 1023px) {
-    .timeline {
-      --row-gap: 24px;
-      --dot-minor: 10px;
-      --dot-major: 12px;
-    }
-
-    .row {
-      grid-template-columns: 84px 12px 1fr;
-      column-gap: 6px;
-    }
-
-    .row--minor .date {
-      font-size: 14px;
-      line-height: 18px;
-    }
-
-    .row--major .date {
-      font-size: 15px;
-      line-height: 24px;
-      letter-spacing: -0.04em;
-    }
-  }
 </style>
