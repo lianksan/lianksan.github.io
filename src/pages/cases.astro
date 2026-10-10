@@ -120,13 +120,13 @@ import Base from '../layouts/Base.astro';
     background: var(--color-surface);
   }
 
-  /* Пропорции ровно по SVG (150×68), чтобы логотип касался стенок самим рисунком; масштаб ×1.7 */
+  /* Пропорции ровно по SVG (150×69), чтобы логотип касался стенок самим рисунком */
   .empty__logo {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: calc(150px * 1.7);
-    height: calc(68px * 1.7);
+    width: 260px;
+    aspect-ratio: 150 / 69;
     background-color: var(--logo-color, #555);
     mask: url('/icons/empty.svg') no-repeat center / contain;
     transform: translate(-50%, -50%);
@@ -138,7 +138,19 @@ import Base from '../layouts/Base.astro';
     left: 0;
   }
 
-  /* Main 959-: рамка под меню по ширине экрана, логотип мельче */
+  /* Cases 960-1279 */
+  @media (max-width: 1279px) {
+    .empty {
+      height: calc(100dvh - 2 * 28px);
+      margin: 28px;
+    }
+
+    .empty__logo {
+      width: 200px;
+    }
+  }
+
+  /* Cases 959-: рамка под меню по ширине экрана */
   @media (max-width: 959px) {
     .empty {
       height: calc(100dvh - 44px - 2 * 16px);
@@ -147,8 +159,7 @@ import Base from '../layouts/Base.astro';
     }
 
     .empty__logo {
-      width: calc(150px * 1.1);
-      height: calc(68px * 1.1);
+      width: 150px;
     }
   }
 </style>

@@ -32,7 +32,7 @@ const CONTENT_WIDTH = 960;
                       return (
                         <Media
                           {...m}
-                          sizes={`(max-width: 959px) calc(100vw - 32px), ${Math.round((span / COLUMNS) * CONTENT_WIDTH)}px`}
+                          sizes={`(max-width: 680px) calc(100vw - 32px), ${Math.round((span / COLUMNS) * CONTENT_WIDTH)}px`}
                           style={`grid-column: span ${span}; --i: ${i}`}
                         />
                       );
@@ -102,7 +102,7 @@ const CONTENT_WIDTH = 960;
   .section__shots {
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 40px;
     /* 8px под заголовком + 32px, как в Figma */
     padding-top: 40px;
   }
@@ -143,8 +143,11 @@ const CONTENT_WIDTH = 960;
       gap: 24px;
       padding-top: 24px;
     }
+  }
 
-    /* По одной плитке в ряду: перебиваем span из style */
+  /* До 680px — по одной плитке в ряду */
+  @media (max-width: 680px) {
+    /* Перебиваем span из style */
     .row > :global(*) {
       grid-column: 1 / -1 !important;
     }

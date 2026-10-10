@@ -38,9 +38,14 @@ import { timeline } from '../data/site';
     /* Ширина колонки с точкой и линией */
     --marker: 12px;
 
-    display: flex;
-    flex-direction: column;
-    gap: var(--row-gap);
+    /*
+     * Общая сетка на все строки (строки — subgrid): колонка дат по самой широкой дате,
+     * поэтому даты не отступают от левого края, когда шрифт меньше
+     */
+    display: grid;
+    grid-template-columns: max-content var(--marker) 1fr;
+    column-gap: 8px;
+    row-gap: var(--row-gap);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -51,9 +56,8 @@ import { timeline } from '../data/site';
     --dot-size: var(--dot-minor-size);
 
     display: grid;
-    grid-template-columns: 126px var(--marker) 1fr;
-    grid-template-areas: 'date marker content';
-    column-gap: 8px;
+    grid-column: 1 / -1;
+    grid-template-columns: subgrid;
     align-items: start;
     color: var(--color-secondary);
   }
@@ -64,7 +68,7 @@ import { timeline } from '../data/site';
   }
 
   .date {
-    grid-area: date;
+    grid-column: 1;
     font-family: var(--font-mono);
     font-weight: 300;
     text-align: right;
@@ -86,7 +90,7 @@ import { timeline } from '../data/site';
   .row--major .content {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
   }
 
   .row--major h3 {
@@ -95,11 +99,11 @@ import { timeline } from '../data/site';
 
   /* Точка и линия до следующей точки */
   .content {
-    grid-area: content;
+    grid-column: 3;
   }
 
   .marker {
-    grid-area: marker;
+    grid-column: 2;
     position: relative;
     align-self: stretch;
   }
@@ -159,6 +163,12 @@ import { timeline } from '../data/site';
       --marker: 8px;
     }
 
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: var(--row-gap);
+    }
+
     .row {
       grid-template-columns: var(--marker) 1fr;
       grid-template-areas:
@@ -169,7 +179,12 @@ import { timeline } from '../data/site';
     }
 
     .date {
+      grid-area: date;
       text-align: left;
+    }
+
+    .content {
+      grid-area: content;
     }
 
     .row--minor .date {
@@ -177,7 +192,11 @@ import { timeline } from '../data/site';
     }
 
     .marker {
-      grid-row: 1 / -1;
+      grid-area: marker;
+    }
+
+    .row--major .body p + p {
+      margin-top: 6px;
     }
   }
 </style>
