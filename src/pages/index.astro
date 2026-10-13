@@ -29,7 +29,7 @@ const clips = [
       <div class="clips">
         {
           clips.map((clip) => (
-            <div class="clip" style={`--clip-width: ${clip.width}`}>
+            <div class="clip inner-border" style={`--clip-width: ${clip.width}`}>
               <video src={clip.src} autoplay muted loop playsinline aria-label={clip.alt} />
             </div>
           ))
@@ -97,7 +97,6 @@ const clips = [
     width: calc(var(--clip-width) / 260 * var(--clip-height) * 1px);
     height: calc(var(--clip-height) * 1px);
     overflow: hidden;
-    border: 1px solid var(--color-tile-border);
     border-radius: var(--radius-tile);
     background: var(--color-placeholder);
   }

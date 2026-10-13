@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Media from '../components/Media.astro';
 import Lightbox from '../components/Lightbox.astro';
-import { shotSections } from '../data/shots';
+import { shotSections, captionParts } from '../data/shots';
 
 const COLUMNS = 6;
 const CONTENT_WIDTH = 960;
@@ -29,17 +29,37 @@ const CONTENT_WIDTH = 960;
                   <div class="row">
                     {row.map((m, i) => {
                       const span = m.span ?? COLUMNS;
-                      return (
-                        <Media
-                          {...m}
-                          sizes={`(max-width: 680px) calc(100vw - 32px), ${Math.round((span / COLUMNS) * CONTENT_WIDTH)}px`}
-                          style={`grid-column: span ${span}; --i: ${i}`}
-                        />
+                      const sizes = `(max-width: 680px) calc(100vw - 32px), ${Math.round((span / COLUMNS) * CONTENT_WIDTH)}px`;
+                      const style = `grid-column: span ${span}; --i: ${i}`;
+                      return 'stack' in m ? (
+                        <div class="stack" style={style}>
+                          {m.stack.map((s) => (
+                            <Media {...s} sizes={sizes} />
+                          ))}
+                        </div>
+                      ) : (
+                        <Media {...m} sizes={sizes} style={style} />
                       );
                     })}
                   </div>
                 ))}
-                {typeof shot.caption === 'string' && <figcaption class="body">{shot.caption}</figcaption>}
+                {typeof shot.caption === 'string' && (
+                  <figcaption class="body">
+                    {captionParts(shot.caption).map((part) =>
+                      typeof part === 'string' ? (
+                        part
+                      ) : (
+                        <a
+                          class="link link--accent"
+                          href={part.href}
+                          {...(part.href.startsWith('http') ? { target: '_blank', rel: 'noopener' } : {})}
+                        >
+                          {part.text}
+                        </a>
+                      ),
+                    )}
+                  </figcaption>
+                )}
                 {Array.isArray(shot.caption) && (
                   <figcaption class="row">
                     {shot.caption.map((c, i) => (
@@ -128,6 +148,27 @@ const CONTENT_WIDTH = 960;
 
   figcaption.row {
     max-width: none;
+  }
+
+  /* Колонка плиток друг над другом */
+  .stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Плитка рядом с колонкой — на всю её высоту, обрезается по краям */
+  @media (min-width: 681px) {
+    .row > :global(.media--fill) {
+      align-self: stretch;
+      aspect-ratio: auto !important;
+    }
+
+    /* Картинка не влияет на высоту ряда — её задают соседи */
+    .row > :global(.media--fill) :global(:is(img, video)) {
+      position: absolute;
+      inset: 0;
+    }
   }
 
   @media (max-width: 959px) {

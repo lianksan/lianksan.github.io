@@ -11,9 +11,11 @@ interface Props {
   alt: string;
   sizes: string;
   style?: string;
+  /** Тянется на высоту ряда вместо своих пропорций (стили — в shots.astro) */
+  fill?: boolean;
 }
 
-const { src, poster, ratio, alt, sizes, style = '' } = Astro.props;
+const { src, poster, ratio, alt, sizes, style = '', fill = false } = Astro.props;
 const isImage = typeof src === 'object';
 const widths = isImage && [400, 900, 1800].filter((w) => w < src.width).concat(Math.min(src.width, 1800));
 
@@ -32,7 +34,7 @@ const posterSrc = poster && (await getImage({ src: poster, width: posterWidth, f
 <!-- Любая плитка открывается на весь экран по клику, поэтому это кнопка -->
 <button
   type="button"
-  class="media"
+  class:list={['media inner-border', { 'media--fill': fill }]}
   style={`aspect-ratio: ${ratio}; ${style}`}
   data-lightbox={full}
   {...size}
@@ -40,8 +42,13 @@ const posterSrc = poster && (await getImage({ src: poster, width: posterWidth, f
 >
   {
     typeof src === 'string' ? (
-      // Видео грузится и играет, только когда видно на экране (см. скрипт ниже)
-      <video src={src} poster={posterSrc} muted loop playsinline preload="none" data-inview-play aria-label={alt} />
+      // Видео грузится и играет, только когда видно на экране (см. скрипт ниже).
+      // Постер — ещё и картинкой под видео: браузер убирает poster раньше, чем покажет первый кадр,
+      // а пустое видео прозрачное, поэтому в этот момент виден постер, а не пустая плитка
+      <>
+        {posterSrc && <img class="media__poster" src={posterSrc} alt="" aria-hidden="true" decoding="async" />}
+        <video src={src} poster={posterSrc} muted loop playsinline preload="none" data-inview-play aria-label={alt} />
+      </>
     ) : src.format === 'gif' ? (
       // GIF не пропускаем через оптимизацию, иначе пропадёт анимация
       <img src={src.src} width={src.width} height={src.height} alt={alt} loading="lazy" decoding="async" />
@@ -87,7 +94,6 @@ const posterSrc = poster && (await getImage({ src: poster, width: posterWidth, f
 
 <style>
   .media {
-    position: relative;
     display: block;
     width: 100%;
     padding: 0;
@@ -104,13 +110,13 @@ const posterSrc = poster && (await getImage({ src: poster, width: posterWidth, f
     object-fit: cover;
   }
 
-  /* Обводка внутри плитки, поверх картинки: размер плитки не меняется */
-  .media::after {
-    content: '';
+  /* Постер под видео, видео поверх */
+  .media__poster {
     position: absolute;
     inset: 0;
-    border: 1px solid var(--color-tile-border);
-    border-radius: inherit;
-    pointer-events: none;
+  }
+
+  .media video {
+    position: relative;
   }
 </style>

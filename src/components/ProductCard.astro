@@ -19,15 +19,14 @@ const linkProps = product.href ? { href: product.href, target: '_blank', rel: 'n
 <Tag class:list={['card', `card--${variant}`, { 'card--soon': !product.href, 'external-hover': product.href }]} {...linkProps}>
   {
     typeof icon === 'string' ? (
-      <img class="card__icon card__icon--vector" src={icon} alt="" width={size} height={size} />
+      // Векторная иконка уже со своим фоном и скруглением — без обводки
+      <span class="card__icon">
+        <img src={icon} alt="" width={size} height={size} />
+      </span>
     ) : (
-      <Image
-        class="card__icon"
-        src={icon}
-        alt=""
-        widths={[size, Math.min(size * 2, icon.width)]}
-        sizes={`${size}px`}
-      />
+      <span class="card__icon inner-border">
+        <Image src={icon} alt="" widths={[size, Math.min(size * 2, icon.width)]} sizes={`${size}px`} />
+      </span>
     )
   }
   <span class="card__texts">
@@ -60,8 +59,15 @@ const linkProps = product.href ? { href: product.href, target: '_blank', rel: 'n
   .card__icon {
     display: block;
     flex: none;
-    border: 1px solid var(--color-tile-border);
+    overflow: hidden;
     transition: transform var(--motion-hover) !important;
+  }
+
+  .card__icon :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .card--large .card__icon {
@@ -74,11 +80,6 @@ const linkProps = product.href ? { href: product.href, target: '_blank', rel: 'n
     width: 64px;
     height: 64px;
     border-radius: 16px;
-  }
-
-  /* Векторная иконка уже со своим фоном и скруглением — без обводки */
-  .card__icon--vector {
-    border: none;
   }
 
   /* Иконка наклоняется при наведении, как аватар в сайдбаре */

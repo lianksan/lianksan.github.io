@@ -13,6 +13,9 @@
   --color-bg: #f9f9f9;
 
   --underline-primary: rgba(17, 17, 17, 0.1);
+  /* Ссылки внутри текста (подписи шотов) */
+  --color-accent: #2674da;
+  --underline-accent: rgba(38, 116, 218, 0.3);
   --underline-thickness: 8%;
 
   --font-sans: 'Inter Variable', Inter, system-ui, sans-serif;
@@ -129,6 +132,23 @@ a {
 }
 
 /*
+ * Обводка внутри блока, поверх картинки или видео: размер блока не меняется.
+ * Скругление берётся у самого блока.
+ */
+.inner-border {
+  position: relative;
+}
+
+.inner-border::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--color-tile-border);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/*
  * Подчёркнутая ссылка. Основная — тёмный текст с полупрозрачной линией,
  * вторичная (.link--secondary) — серый текст. У активной и при наведении
  * линия становится цветом текста.
@@ -143,6 +163,12 @@ a {
 
 .link--secondary {
   color: var(--color-secondary);
+}
+
+/* Синяя ссылка внутри текста */
+.link--accent {
+  color: var(--color-accent);
+  text-decoration-color: var(--underline-accent);
 }
 
 .link:hover,
