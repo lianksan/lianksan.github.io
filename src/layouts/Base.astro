@@ -19,7 +19,8 @@ const { title, description, current } = Astro.props;
 <html lang="en" transition:animate="none">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- viewport-fit=cover: страница рисуется до краёв экрана, под прозрачными панелями Safari -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <!-- Шрифты грузим сразу, иначе текст при загрузке успевает мигнуть системным шрифтом -->
     <link rel="preload" href={interUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={dmMonoUrl} as="font" type="font/woff2" crossorigin />
@@ -47,5 +48,11 @@ const { title, description, current } = Astro.props;
 <style>
   .main {
     margin-left: var(--sidebar-width);
+  }
+
+  /* При viewport-fit=cover в горизонтальной ориентации не заезжаем под вырез экрана */
+  body {
+    padding-right: env(safe-area-inset-right);
+    padding-left: env(safe-area-inset-left);
   }
 </style>

@@ -44,6 +44,7 @@ import wotAucMain2 from '../assets/shots/wot-auc-main-2.png';
 import wotAucAnons from '../assets/shots/wot-auc-anons.png';
 import wotAucReward from '../assets/shots/wot-auc-reward.png';
 import converter2 from '../assets/shots/converter-2.png';
+import mononoise from '../assets/shots/mononoise.png';
 import vibro1 from '../assets/shots/vibro-1.png';
 import vibro2 from '../assets/shots/vibro-2.png';
 import samoeRadio from '../assets/shots/samoe-radio.png';
@@ -191,6 +192,10 @@ export const shotSections: ShotSection[] = [
             { src: ufl1, poster: poster('ufl-1'), ratio: '584 / 328', alt: 'UFL daily rewards', span: 4 },
           ],
         ],
+      },
+      {
+        caption: '[Mononoise](#), an iOS app with ambient sounds for relaxing and focusing.',
+        rows: [[{ src: mononoise, ratio: '16 / 9', alt: 'Mononoise iOS app' }]],
       },
     ],
   },
