@@ -78,6 +78,9 @@
       return;
     }
 
+    // На мобилке (меню сверху) шоты на весь экран не открываются
+    if (matchMedia('(max-width: 959px)').matches) return;
+
     const trigger = (event.target as Element).closest<HTMLElement>('[data-lightbox]');
     if (!trigger) return;
 

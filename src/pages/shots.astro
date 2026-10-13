@@ -29,7 +29,7 @@ const CONTENT_WIDTH = 960;
                   <div class="row">
                     {row.map((m, i) => {
                       const span = m.span ?? COLUMNS;
-                      const sizes = `(max-width: 680px) calc(100vw - 32px), ${Math.round((span / COLUMNS) * CONTENT_WIDTH)}px`;
+                      const sizes = `(max-width: 680px) calc(100vw - 16px), ${Math.round((span / COLUMNS) * CONTENT_WIDTH)}px`;
                       const style = `grid-column: span ${span}; --i: ${i}`;
                       return 'stack' in m ? (
                         <div class="stack" style={style}>
@@ -184,6 +184,33 @@ const CONTENT_WIDTH = 960;
       gap: 24px;
       padding-top: 24px;
     }
+
+    /* Картинки шотов — вдвое ближе к краям экрана (8px), подписи и заголовки — как были (16px) */
+    .row:not(figcaption) {
+      margin-inline: -8px;
+    }
+
+    /* Между плитками 6px, между плитками и подписью — 8px, как было */
+    .shot,
+    .row,
+    .stack {
+      gap: 6px;
+    }
+
+    .shot > figcaption {
+      margin-top: 2px;
+    }
+  }
+
+  /* Подписи под колонками стоят по тем же колонкам, что и плитки; первая — с отступом 16px от края */
+  @media (min-width: 681px) and (max-width: 959px) {
+    figcaption.row {
+      margin-inline: -8px;
+    }
+
+    figcaption.row > span:first-child {
+      padding-left: 8px;
+    }
   }
 
   /* До 680px — по одной плитке в ряду */
@@ -199,6 +226,16 @@ const CONTENT_WIDTH = 960;
      */
     .shot--split .row {
       display: contents;
+    }
+
+    /* Ряд «раскрыт», поэтому отступ к краям даём самим плиткам */
+    .shot--split .row:not(figcaption) > :global(*) {
+      width: auto;
+      margin-inline: -8px;
+    }
+
+    .shot--split figcaption.row > span {
+      margin-top: 2px;
     }
 
     .shot--split .row > :global(*) {

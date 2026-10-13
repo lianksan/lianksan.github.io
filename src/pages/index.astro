@@ -5,13 +5,23 @@ import ContactLinks from '../components/ContactLinks.astro';
 import video1 from '../assets/home/video-1.mp4';
 import video2 from '../assets/home/video-2.mp4';
 import video3 from '../assets/home/video-3.mp4';
+import poster1 from '../assets/home/posters/video-1.jpg';
+import poster2 from '../assets/home/posters/video-2.jpg';
+import poster3 from '../assets/home/posters/video-3.jpg';
+import { getImage } from 'astro:assets';
 
-// Ширина плиток из Figma при высоте 260px; видео заполняет плитку с обрезкой (cover)
-const clips = [
-  { src: video1, width: 260, alt: 'Walking in Rome' },
-  { src: video2, width: 195, alt: 'Skiing' },
-  { src: video3, width: 238, alt: 'Playing basketball' },
-];
+// Ширина плиток из Figma при высоте 260px; видео заполняет плитку с обрезкой (cover).
+// Постер — первый кадр (ffmpeg), сжатый под ретину
+const clips = await Promise.all(
+  [
+    { src: video1, poster: poster1, width: 260, alt: 'Walking in Rome' },
+    { src: video2, poster: poster2, width: 195, alt: 'Skiing' },
+    { src: video3, poster: poster3, width: 238, alt: 'Playing basketball' },
+  ].map(async (clip) => ({
+    ...clip,
+    poster: (await getImage({ src: clip.poster, width: Math.min(clip.poster.width, clip.width * 2), format: 'webp' })).src,
+  })),
+);
 ---
 
 <Base
@@ -30,7 +40,9 @@ const clips = [
         {
           clips.map((clip) => (
             <div class="clip inner-border" style={`--clip-width: ${clip.width}`}>
-              <video src={clip.src} autoplay muted loop playsinline aria-label={clip.alt} />
+              {/* Постер ещё и картинкой под видео: пока нет первого кадра, видео прозрачное */}
+              <img class="clip__poster" src={clip.poster} alt="" aria-hidden="true" decoding="async" />
+              <video src={clip.src} poster={clip.poster} autoplay muted loop playsinline aria-label={clip.alt} />
             </div>
           ))
         }
@@ -101,10 +113,19 @@ const clips = [
     background: var(--color-placeholder);
   }
 
-  .clip video {
+  .clip :is(img, video) {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .clip__poster {
+    position: absolute;
+    inset: 0;
+  }
+
+  .clip video {
+    position: relative;
   }
 
   .footer {

@@ -110,6 +110,14 @@ const posterSrc = poster && (await getImage({ src: poster, width: posterWidth, f
     object-fit: cover;
   }
 
+  /* На мобилке оверлея нет (см. Lightbox.astro), скругление меньше */
+  @media (max-width: 959px) {
+    .media {
+      border-radius: calc(var(--radius-tile) - 4px);
+      cursor: default;
+    }
+  }
+
   /* Постер под видео, видео поверх */
   .media__poster {
     position: absolute;
