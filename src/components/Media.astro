@@ -1,6 +1,7 @@
 ---
 import type { ImageMetadata } from 'astro';
 import { Image, getImage } from 'astro:assets';
+import { imageMeta } from '../utils/image';
 
 interface Props {
   /** Картинка из src/assets или URL видео (импорт mp4). */
@@ -17,17 +18,20 @@ interface Props {
 
 const { src, poster, ratio, alt, sizes, style = '', fill = false } = Astro.props;
 const isImage = typeof src === 'object';
-const widths = isImage && [400, 900, 1800].filter((w) => w < src.width).concat(Math.min(src.width, 1800));
+// Размеры и формат читаем через imageMeta, иначе оригинал картинки попадёт в сборку
+const meta = isImage ? imageMeta(src) : undefined;
+const isGif = meta?.format === 'gif';
+const widths = meta && [400, 900, 1800].filter((w) => w < meta.width).concat(Math.min(meta.width, 1800));
 
 // Для полноэкранного просмотра (Lightbox.astro): картинка в исходном размере, GIF как есть.
 // Видео в оверлей переносится тем же элементом, поэтому URL не нужен.
-const full = !isImage ? 'video' : src.format === 'gif' ? src.src : (await getImage({ src, format: 'webp', quality: 90 })).src;
-const size = isImage ? { 'data-width': src.width, 'data-height': src.height } : {};
+const full = !isImage ? 'video' : isGif ? src.src : (await getImage({ src, format: 'webp', quality: 90 })).src;
+const size = meta ? { 'data-width': meta.width, 'data-height': meta.height } : {};
 
 // Постер видео сжимаем под ширину плитки ×2 (ретина), но не больше исходника.
 // Ширина плитки — последнее значение в sizes; до 680px плитка во всю ширину экрана
 const tileWidth = Math.max(parseInt(sizes.split(',').pop()!, 10), 680);
-const posterWidth = poster && Math.min(poster.width, tileWidth * 2);
+const posterWidth = poster && Math.min(imageMeta(poster).width, tileWidth * 2);
 const posterSrc = poster && (await getImage({ src: poster, width: posterWidth, format: 'webp' })).src;
 ---
 
@@ -49,9 +53,9 @@ const posterSrc = poster && (await getImage({ src: poster, width: posterWidth, f
         {posterSrc && <img class="media__poster" src={posterSrc} alt="" aria-hidden="true" decoding="async" />}
         <video src={src} poster={posterSrc} muted loop playsinline preload="none" data-inview-play aria-label={alt} />
       </>
-    ) : src.format === 'gif' ? (
+    ) : isGif ? (
       // GIF не пропускаем через оптимизацию, иначе пропадёт анимация
-      <img src={src.src} width={src.width} height={src.height} alt={alt} loading="lazy" decoding="async" />
+      <img src={src.src} width={meta!.width} height={meta!.height} alt={alt} loading="lazy" decoding="async" />
     ) : (
       <Image src={src} alt={alt} widths={widths || undefined} sizes={sizes} />
     )

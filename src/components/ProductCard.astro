@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import { imageMeta } from '../utils/image';
 import type { products } from '../data/site';
 
 interface Props {
@@ -25,7 +26,7 @@ const linkProps = product.href ? { href: product.href, target: '_blank', rel: 'n
       </span>
     ) : (
       <span class="card__icon inner-border">
-        <Image src={icon} alt="" widths={[size, Math.min(size * 2, icon.width)]} sizes={`${size}px`} />
+        <Image src={icon} alt="" widths={[size, Math.min(size * 2, imageMeta(icon).width)]} sizes={`${size}px`} />
       </span>
     )
   }

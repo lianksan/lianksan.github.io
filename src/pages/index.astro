@@ -9,6 +9,7 @@ import poster1 from '../assets/home/posters/video-1.jpg';
 import poster2 from '../assets/home/posters/video-2.jpg';
 import poster3 from '../assets/home/posters/video-3.jpg';
 import { getImage } from 'astro:assets';
+import { imageMeta } from '../utils/image';
 
 // Ширина плиток из Figma при высоте 260px; видео заполняет плитку с обрезкой (cover).
 // Постер — первый кадр (ffmpeg), сжатый под ретину
@@ -19,7 +20,7 @@ const clips = await Promise.all(
     { src: video3, poster: poster3, width: 238, alt: 'Playing basketball' },
   ].map(async (clip) => ({
     ...clip,
-    poster: (await getImage({ src: clip.poster, width: Math.min(clip.poster.width, clip.width * 2), format: 'webp' })).src,
+    poster: (await getImage({ src: clip.poster, width: Math.min(imageMeta(clip.poster).width, clip.width * 2), format: 'webp' })).src,
   })),
 );
 ---
