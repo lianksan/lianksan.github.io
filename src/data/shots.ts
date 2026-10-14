@@ -101,7 +101,7 @@ export const shotSections: ShotSection[] = [
     shots: [
       {
         caption:
-          'Battle Pass in the PC game [World of Tanks](#). Launched, updated and optimised it. In particular, I reworked the chapter selection screen: it’s now cheaper to use, scales more flexibly with the feature and looks juicier at the same time.',
+          'Battle Pass in the PC game [World of Tanks](https://worldoftanks.eu). Launched, updated and optimised it. In particular, I reworked the chapter selection screen: it’s now cheaper to use, scales more flexibly with the feature and looks juicier at the same time.',
         rows: [
           [{ src: wotSelector19, poster: poster('wot-selector-19'), ratio: '880 / 495', alt: 'World of Tanks chapter selection' }],
           [
@@ -112,12 +112,12 @@ export const shotSections: ShotSection[] = [
       },
       {
         caption:
-          'Chapter upgrade screen in the [WoT](#) Battle Pass. Reworked it to make it cheaper to use, put more emphasis on the discounted option, and made the screen more functional and flexible.',
+          'Chapter upgrade screen in the [WoT](https://worldoftanks.eu) Battle Pass. Reworked it to make it cheaper to use, put more emphasis on the discounted option, and made the screen more functional and flexible.',
         rows: [[{ src: wotBgPurchasing, ratio: '880 / 495', alt: 'World of Tanks purchasing screen' }]],
       },
       {
         caption:
-          'A simple [QR code generator](#). Got fed up and vibe-coded it, because everywhere else asked me to pay, sign up or watch ads.',
+          'A simple [QR code generator](https://lianksan.github.io/QR-Machine/). Got fed up and vibe-coded it, because everywhere else asked me to pay, sign up or watch ads.',
         rows: [[{ src: qrMachine, poster: poster('qr-machine'), ratio: '880 / 495', alt: 'QR Machine' }]],
       },
       {
@@ -145,7 +145,7 @@ export const shotSections: ShotSection[] = [
       },
       {
         caption:
-          'Loot box feature in [WoT](#). Built a complete, standalone and flexible system, then iteratively optimised and refined it as new events launched.',
+          'Loot box feature in [WoT](https://worldoftanks.eu). Built a complete, standalone and flexible system, then iteratively optimised and refined it as new events launched.',
         rows: [
           [
             { src: wotLbEntry1, poster: poster('wot-lb-entry-1'), ratio: '374 / 250', alt: 'Loot box entry point', span: 2 },
@@ -165,7 +165,7 @@ export const shotSections: ShotSection[] = [
       },
       {
         caption:
-          'Simple VFX in [WoT](#). Brought images to life with smoke, sparks, light and even flies buzzing around the Garage (yes, flies).',
+          'Simple VFX in [WoT](https://worldoftanks.eu). Brought images to life with smoke, sparks, light and even flies buzzing around the Garage (yes, flies).',
         rows: [
           [
             { src: wotUmg2, poster: poster('wot-umg-2'), ratio: '288 / 112', alt: 'VFX animation', span: 2 },
@@ -175,7 +175,7 @@ export const shotSections: ShotSection[] = [
         ],
       },
       {
-        caption: '[Alias w Ali](#), a card game for iPhone. Made it as a practice project while learning Swift development.',
+        caption: '[Alias w Ali](https://apps.apple.com/lt/app/alias-w-ali-guess-the-word/id6751412417), a card game for iPhone. Made it as a practice project while learning Swift development.',
         rows: [
           [
             { src: aliasMenu, poster: poster('alias-menu'), ratio: '960 / 1720', alt: 'Alias w Ali menu', span: 3 },
@@ -194,7 +194,7 @@ export const shotSections: ShotSection[] = [
         ],
       },
       {
-        caption: '[Mononoise](#), an iOS app with ambient sounds for relaxing and focusing.',
+        caption: '[Mononoise](https://apps.apple.com/lt/app/mononoise/id6748365867), an iOS app with ambient sounds for relaxing and focusing.',
         rows: [[{ src: mononoise, ratio: '16 / 9', alt: 'Mononoise iOS app' }]],
       },
     ],
@@ -203,7 +203,7 @@ export const shotSections: ShotSection[] = [
     title: '2024–2022',
     shots: [
       {
-        caption: 'Sets of looping animated icons. Made them while learning After Effects and published them on [IconScout](#).',
+        caption: 'Sets of looping animated icons. Made them while learning After Effects and published them on [IconScout](https://iconscout.com/contributors/pavel-lenkevich/lottie-animations/free-icons-animation-collection_14488).',
         rows: [
           [{ src: lottieEco, poster: poster('lottie-eco'), ratio: '880 / 586', alt: 'Eco Lottie icons' }],
           [
@@ -224,7 +224,7 @@ export const shotSections: ShotSection[] = [
         ],
       },
       {
-        caption: 'Auction, a monetisation feature in [WoT](#). Launched events, optimised and refined the system itself.',
+        caption: 'Auction, a monetisation feature in [WoT](https://worldoftanks.eu). Launched events, optimised and refined the system itself.',
         rows: [
           [{ src: wotAucMain2, ratio: '16 / 9', alt: 'World of Tanks auction screen' }],
           [
