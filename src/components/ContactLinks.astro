@@ -5,8 +5,18 @@ const [coffee, ...socials] = contacts;
 ---
 
 <ul class="contacts body">
-  <li class="contacts__row"><a class="link link--secondary external" href={coffee.href}>{coffee.label}</a></li>
-  {socials.map((c) => <li><a class="link link--secondary external" href={c.href}>{c.label}</a></li>)}
+  <li class="contacts__row">
+    <a class="link link--secondary external" href={coffee.href} target="_blank" rel="noopener">{coffee.label}</a>
+  </li>
+  {
+    socials.map((c) => (
+      <li>
+        <a class="link link--secondary external" href={c.href} target="_blank" rel="noopener">
+          {c.label}
+        </a>
+      </li>
+    ))
+  }
   <li class="contacts__row"><a class="link link--secondary" href={`mailto:${person.email}`}>{person.email}</a></li>
 </ul>
 

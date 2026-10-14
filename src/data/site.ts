@@ -5,7 +5,6 @@ import qrMachineApp from '../assets/products/qr-machine.png';
 import proportionApp from '../assets/products/proportion.png';
 import brainyApp from '../assets/products/brainy.png';
 
-// TODO: ссылки, помеченные '#', в макете не указаны — заменить на реальные.
 export const person = {
   firstName: 'Paulik',
   lastName: 'Liankevich',
@@ -84,9 +83,9 @@ export const products: Product[] = [
 ];
 
 export const contacts = [
-  { label: 'Buy me a coffee', href: '#' },
-  { label: 'Telegram', href: '#' },
-  { label: 'GitHub', href: '#' },
+  { label: 'Buy me a coffee', href: 'https://buymeacoffee.com/lenkevich' },
+  { label: 'Telegram', href: 'https://t.me/lianksan' },
+  { label: 'GitHub', href: 'https://github.com/lianksan' },
 ];
 
 type TimelineEntry =
