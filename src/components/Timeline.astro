@@ -1,5 +1,6 @@
 ---
 import { timeline } from '../data/site';
+import LinkedText from './LinkedText.astro';
 ---
 
 <ol class="timeline">
@@ -9,13 +10,19 @@ import { timeline } from '../data/site';
         <span class="date">{entry.date}</span>
         <span class="marker" aria-hidden="true" />
         {entry.kind === 'minor' ? (
-          <p class="content body">{entry.text}</p>
+          <p class="content body">
+            <LinkedText text={entry.text} />
+          </p>
         ) : (
           <div class="content">
-            <h3 class="h3">{entry.title}</h3>
+            <h3 class="h3">
+              <LinkedText text={entry.title} large />
+            </h3>
             <div class="body">
               {entry.text.map((t) => (
-                <p>{t}</p>
+                <p>
+                  <LinkedText text={t} />
+                </p>
               ))}
             </div>
           </div>

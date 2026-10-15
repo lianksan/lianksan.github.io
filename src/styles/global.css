@@ -219,3 +219,13 @@ a {
 .external--large::after {
   background-image: url('/icons/arrow-12.svg');
 }
+
+/* У синей ссылки стрелка тоже синяя: иконка как маска, цвет — цвет текста */
+.link--accent.external::after {
+  background: currentColor;
+  mask: url('/icons/arrow-8.svg') no-repeat center / contain;
+}
+
+.link--accent.external--large::after {
+  mask-image: url('/icons/arrow-12.svg');
+}

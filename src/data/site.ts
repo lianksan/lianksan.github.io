@@ -88,38 +88,37 @@ export const contacts = [
   { label: 'GitHub', href: 'https://github.com/lianksan' },
 ];
 
+/** Ссылки в текстах и заголовках — как в подписях к шотам: `[текст](адрес)` */
 type TimelineEntry =
   | { kind: 'minor'; date: string; text: string }
   | { kind: 'major'; date: string; title: string; text: string[] };
 
 export const timeline: TimelineEntry[] = [
-  { kind: 'minor', date: '∼2016', text: 'Was playing with Photoshop and HTML/CSS in high school' },
-  { kind: 'minor', date: '2018', text: 'Took on freelance projects related to graphics and websites' },
+  { kind: 'minor', date: '∼2016', text: 'Got hooked on Photoshop and HTML/CSS back in high school.' },
+  { kind: 'minor', date: '2018', text: 'Started freelancing — graphics, landing pages and small websites.' },
   {
     kind: 'major',
     date: '2019–2021',
-    title: 'Web-designer at WebCat',
+    title: 'Web Designer at a marketing agency',
     text: [
-      'Created advertising materials and simple websites for a lead generation company: banners, posters, print, landing & quiz pages, and business cards.',
-      'Gained hands-on experience with After Effects to produce dynamic banners',
+      'Designed ads and websites for a lead generation company: banners, landing and quiz pages, print.',
+      'Learned After Effects to make animated banners.',
     ],
   },
   {
     kind: 'major',
     date: '2021–2022',
-    title: 'UI/UX Designer at Zetreex',
+    title: 'UI/UX Designer at a products studio',
     text: [
-      'Designed in-house mobile apps: competitor and user research, user flows and app architecture, interactive prototypes, design systems, and promo materials for app stores',
+      'Designed in-house mobile apps end to end: research, user flows, architecture, prototypes, design systems and App Store promo.',
     ],
   },
-  { kind: 'minor', date: '2023', text: 'Became interested in iOS development' },
   {
     kind: 'major',
-    date: '2022–....',
-    title: 'UX/UI Designer at Wargaming',
-    text: [
-      'Design interfaces for the PC game World of Tanks, focusing on complex in-game UI systems and live-service features',
-    ],
+    date: '2022–2026',
+    title: 'UX/UI Designer at [Wargaming](https://wargaming.com)',
+    text: ['Designed interfaces for World of Tanks PC game: complex in-game UI systems and live-service features.'],
   },
-  { kind: 'minor', date: '2025', text: 'Developed and launched a couple of simple iOS-apps' },
+  { kind: 'minor', date: '2023', text: 'Started learning Swift to bring my own designs to life.' },
+  { kind: 'minor', date: '2025', text: 'Launched my own iOS apps on the App Store, from design to code.' },
 ];
