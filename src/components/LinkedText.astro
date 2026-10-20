@@ -2,7 +2,7 @@
 import { captionParts } from '../data/shots';
 
 interface Props {
-  /** Текст со ссылками в разметке `[текст](адрес)`, как в подписях к шотам */
+  /** Текст со ссылками в разметке `[текст](адрес)`, как в подписях к шотам. Адрес с `/` — ссылка внутри сайта, без стрелки ↗ */
   text: string;
   /** Крупная стрелка ↗ — для заголовков */
   large?: boolean;
@@ -15,6 +15,10 @@ const { text, large = false } = Astro.props;
   captionParts(text).map((part) =>
     typeof part === 'string' ? (
       part
+    ) : part.href.startsWith('/') ? (
+      <a class="link link--accent" href={part.href}>
+        {part.text}
+      </a>
     ) : (
       <a
         class:list={['link link--accent external', { 'external--large': large }]}

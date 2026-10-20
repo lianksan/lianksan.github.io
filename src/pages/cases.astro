@@ -13,6 +13,11 @@ import Base from '../layouts/Base.astro';
   -->
   <div class="empty" data-bounce-box>
     <div class="empty__logo" role="img" aria-label="Oops, empty: cases are in development" data-bounce-item></div>
+    <!-- Подпись по центру поверх логотипа: difference инвертирует его там, где он пролетает под текстом -->
+    <p class="empty__caption body">
+      there are no current<br />
+      case studies here yet
+    </p>
   </div>
 </Base>
 
@@ -118,6 +123,20 @@ import Base from '../layouts/Base.astro';
     border: 1px solid var(--color-frame-border);
     border-radius: var(--radius-tile);
     background: var(--color-surface);
+    /* Граница для mix-blend-mode подписи */
+    isolation: isolate;
+  }
+
+  .empty__caption {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    left: 16px;
+    color: var(--color-bg);
+    text-align: center;
+    mix-blend-mode: difference;
+    pointer-events: none;
+    transform: translateY(-50%);
   }
 
   /* Пропорции ровно по SVG (150×69), чтобы логотип касался стенок самим рисунком */

@@ -120,5 +120,5 @@ export const timeline: TimelineEntry[] = [
     text: ['Designed interfaces for World of Tanks PC game: complex in-game UI systems and live-service features.'],
   },
   { kind: 'minor', date: '2023', text: 'Started learning Swift to bring my own designs to life.' },
-  { kind: 'minor', date: '2025', text: 'Launched my own iOS apps on the App Store, from design to code.' },
+  { kind: 'minor', date: '2025', text: 'Launched my [own iOS apps](/products) on the App Store, from design to code.' },
 ];
