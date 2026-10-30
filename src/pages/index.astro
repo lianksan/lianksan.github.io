@@ -183,13 +183,20 @@ const softGroups = [
     /* Высота ряда иконок — по самой высокой (Figma, 44px) */
     --soft-row: calc(44px * var(--soft-scale));
 
+    /* Одной строкой без переноса; не влезает — листается вбок */
     display: flex;
-    flex-wrap: wrap;
     align-items: flex-start;
     gap: 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .softs::-webkit-scrollbar {
+    display: none;
   }
 
   .softs__item {
+    flex: none;
     display: flex;
     align-items: flex-start;
     gap: 20px;
@@ -220,6 +227,7 @@ const softGroups = [
 
   .softs__label {
     color: var(--color-secondary);
+    white-space: nowrap;
   }
 
   /* Плюс по центру ряда иконок, подпись под ними не учитывается */
@@ -231,10 +239,13 @@ const softGroups = [
   }
 
   @media (max-width: 959px) {
+    /* Листается от края до края экрана, как плитки с видео */
     .softs {
       --soft-scale: 1.1;
 
-      gap: 16px 12px;
+      gap: 12px;
+      margin: 0 -16px;
+      padding: 0 16px;
     }
 
     .softs__item {
