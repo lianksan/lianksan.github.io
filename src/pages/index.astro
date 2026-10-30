@@ -23,6 +23,34 @@ const clips = await Promise.all(
     poster: (await getImage({ src: clip.poster, width: Math.min(imageMeta(clip.poster).width, clip.width * 2), format: 'webp' })).src,
   })),
 );
+
+// Иконки софта из public/soft группами (дизайн, AI, разработка), между группами плюсы.
+// Размеры — родные размеры SVG, на странице масштабируются через --soft-scale
+const softGroups = [
+  {
+    label: 'Main design tools',
+    items: [
+      { icon: 'figma', name: 'Figma', width: 30, height: 44 },
+      { icon: 'after', name: 'After Effects', width: 40, height: 40 },
+      { icon: 'ps', name: 'Photoshop', width: 40, height: 40 },
+    ],
+  },
+  {
+    label: 'AI-friends',
+    items: [
+      { icon: 'claude', name: 'Claude', width: 40, height: 40 },
+      { icon: 'comfy', name: 'ComfyUI', width: 40, height: 40 },
+    ],
+  },
+  {
+    label: 'Code base',
+    items: [
+      { icon: 'github', name: 'GitHub', width: 40, height: 40 },
+      { icon: 'html-css', name: 'HTML & CSS', width: 48, height: 40 },
+      { icon: 'swift', name: 'Swift', width: 48, height: 40 },
+    ],
+  },
+];
 ---
 
 <Base
@@ -51,6 +79,27 @@ const clips = await Promise.all(
     </header>
 
     <Timeline />
+
+    <div class="softs" aria-label="Tools" role="group">
+      {
+        softGroups.map((group, i) => (
+          // Плюс в одной обёртке со следующей группой, чтобы при переносе не висел в конце строки
+          <div class="softs__item">
+            {i > 0 && <span class="softs__plus h3" aria-hidden="true">+</span>}
+            <figure class="softs__group">
+              <ul class="softs__icons">
+                {group.items.map((soft) => (
+                  <li class="soft" style={`--w: ${soft.width}; --h: ${soft.height}`}>
+                    <img src={`/soft/${soft.icon}.svg`} alt={soft.name} title={soft.name} width={soft.width} height={soft.height} />
+                  </li>
+                ))}
+              </ul>
+              <figcaption class="softs__label body">{group.label}</figcaption>
+            </figure>
+          </div>
+        ))
+      }
+    </div>
 
     <footer class="footer">
       <p class="h2">
@@ -129,6 +178,74 @@ const clips = await Promise.all(
     position: relative;
   }
 
+  .softs {
+    --soft-scale: 1.3;
+    /* Высота ряда иконок — по самой высокой (Figma, 44px) */
+    --soft-row: calc(44px * var(--soft-scale));
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .softs__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .softs__group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+  }
+
+  .softs__icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: var(--soft-row);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .soft img {
+    display: block;
+    width: calc(var(--w) * var(--soft-scale) * 1px);
+    height: calc(var(--h) * var(--soft-scale) * 1px);
+  }
+
+  .softs__label {
+    color: var(--color-secondary);
+  }
+
+  /* Плюс по центру ряда иконок, подпись под ними не учитывается */
+  .softs__plus {
+    display: flex;
+    align-items: center;
+    height: var(--soft-row);
+    color: var(--color-secondary);
+  }
+
+  @media (max-width: 959px) {
+    .softs {
+      --soft-scale: 1.1;
+
+      gap: 16px 12px;
+    }
+
+    .softs__item {
+      gap: 12px;
+    }
+
+    .softs__icons {
+      gap: 8px;
+    }
+  }
+
   .footer {
     display: flex;
     flex-direction: column;
@@ -199,7 +316,8 @@ const clips = await Promise.all(
   @media (max-width: 959px) {
     .content {
       gap: 32px;
-      max-width: none;
+      /* Колонка не шире 640px плюс поля по 16px */
+      max-width: calc(640px + 2 * 16px);
       padding: 24px 16px 28px;
     }
 

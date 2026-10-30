@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import { nav } from '../data/site';
 ---
 
 <Base
@@ -13,10 +14,10 @@ import Base from '../layouts/Base.astro';
   -->
   <div class="empty" data-bounce-box>
     <div class="empty__logo" role="img" aria-label="Oops, empty: cases are in development" data-bounce-item></div>
-    <!-- Подпись по центру поверх логотипа: difference инвертирует его там, где он пролетает под текстом -->
+    <!-- Подпись по центру поверх логотипа -->
     <p class="empty__caption body">
-      there are no current<br />
-      case studies here yet
+      There are no cases yet.<br />
+      Take a look at the <a class="link link--accent" href={nav.shots}>Shots</a> or <a class="link link--accent" href={nav.products}>Products</a> pages
     </p>
   </div>
 </Base>
@@ -28,7 +29,7 @@ import Base from '../layouts/Base.astro';
   /** Насколько направление может отклоняться от диагонали */
   const MAX_TILT = (15 * Math.PI) / 180;
 
-  /** Цвета логотипа: приглушённая радуга и тёмно-серый. После каждого отскока — случайный другой */
+  /** Цвета логотипа: приглушённая радуга и тёмно-серый. На старте и после каждого отскока — случайный */
   const COLORS = ['#555555', '#c0625a', '#cf8a4f', '#c9a645', '#6c9a5e', '#5b9aae', '#5571b0', '#8566a8'];
 
   let cleanup: (() => void) | undefined;
@@ -40,6 +41,9 @@ import Base from '../layouts/Base.astro';
     const box = document.querySelector<HTMLElement>('[data-bounce-box]');
     const item = box?.querySelector<HTMLElement>('[data-bounce-item]');
     if (!box || !item) return;
+    // Стартовый цвет — случайный из всей палитры (и без анимации), серый тоже может выпасть
+    let color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    item.style.setProperty('--logo-color', color);
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     let maxX = 0;
@@ -65,7 +69,6 @@ import Base from '../layouts/Base.astro';
     const place = () => (item.style.transform = `translate(${x}px, ${y}px)`);
     place();
 
-    let color = COLORS[0];
     const recolor = () => {
       const others = COLORS.filter((c) => c !== color);
       color = others[Math.floor(Math.random() * others.length)];
@@ -123,8 +126,6 @@ import Base from '../layouts/Base.astro';
     border: 1px solid var(--color-frame-border);
     border-radius: var(--radius-tile);
     background: var(--color-surface);
-    /* Граница для mix-blend-mode подписи */
-    isolation: isolate;
   }
 
   .empty__caption {
@@ -132,10 +133,8 @@ import Base from '../layouts/Base.astro';
     top: 50%;
     right: 16px;
     left: 16px;
-    color: var(--color-bg);
+    color: var(--color-primary);
     text-align: center;
-    mix-blend-mode: difference;
-    pointer-events: none;
     transform: translateY(-50%);
   }
 
