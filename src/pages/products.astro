@@ -115,7 +115,8 @@ const lists = [
     }
 
     .content {
-      max-width: none;
+      /* Колонка не шире 640px плюс поля по 16px */
+      max-width: calc(640px + 2 * 16px);
       padding: 24px 16px 28px;
     }
 

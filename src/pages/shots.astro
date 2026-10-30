@@ -2,7 +2,8 @@
 import Base from '../layouts/Base.astro';
 import Media from '../components/Media.astro';
 import Lightbox from '../components/Lightbox.astro';
-import { shotSections, captionParts } from '../data/shots';
+import { shotSections } from '../data/shots';
+import LinkedText from '../components/LinkedText.astro';
 
 const COLUMNS = 6;
 const CONTENT_WIDTH = 960;
@@ -45,19 +46,7 @@ const CONTENT_WIDTH = 960;
                 ))}
                 {typeof shot.caption === 'string' && (
                   <figcaption class="body">
-                    {captionParts(shot.caption).map((part) =>
-                      typeof part === 'string' ? (
-                        part
-                      ) : (
-                        <a
-                          class="link link--accent"
-                          href={part.href}
-                          {...(part.href.startsWith('http') ? { target: '_blank', rel: 'noopener' } : {})}
-                        >
-                          {part.text}
-                        </a>
-                      ),
-                    )}
+                    <LinkedText text={shot.caption} />
                   </figcaption>
                 )}
                 {Array.isArray(shot.caption) && (
