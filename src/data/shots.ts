@@ -236,7 +236,7 @@ export const shotSections: ShotSection[] = [
       },
       {
         caption: [
-          { text: 'An educational mobile app.', span: 4 },
+          { text: 'An educational mobile app concept.', span: 4 },
           { text: 'Played around with Blender a bit.', span: 2 },
         ],
         rows: [

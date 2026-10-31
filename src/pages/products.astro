@@ -127,7 +127,7 @@ const lists = [
 
     .grid {
       display: flex;
-      gap: 20px;
+      gap: 16px;
       margin: 0 -16px;
       padding: 0 16px;
       overflow-x: auto;
@@ -138,9 +138,10 @@ const lists = [
       display: none;
     }
 
+    /* Узкие карточки, описание переносится */
     .grid > li {
-      flex: 1 0 0;
-      min-width: 160px;
+      flex: none;
+      width: 140px;
     }
   }
 </style>

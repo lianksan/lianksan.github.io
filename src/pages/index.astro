@@ -179,7 +179,7 @@ const softGroups = [
   }
 
   .softs {
-    --soft-scale: 1.3;
+    --soft-scale: 1.5;
     /* Высота ряда иконок — по самой высокой (Figma, 44px) */
     --soft-row: calc(44px * var(--soft-scale));
 
@@ -235,13 +235,14 @@ const softGroups = [
     display: flex;
     align-items: center;
     height: var(--soft-row);
-    color: var(--color-secondary);
+    /* Как заголовки в таймлайне */
+    color: var(--color-primary);
   }
 
   @media (max-width: 959px) {
     /* Листается от края до края экрана, как плитки с видео */
     .softs {
-      --soft-scale: 1.1;
+      --soft-scale: 1.3;
 
       gap: 12px;
       margin: 0 -16px;
