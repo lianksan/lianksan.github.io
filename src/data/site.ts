@@ -53,7 +53,7 @@ export const products: Product[] = [
   },
   {
     name: 'Brainy',
-    description: 'Note taking app',
+    description: 'Note taking in .md',
     category: 'ios',
     appIcon: brainyApp,
   },

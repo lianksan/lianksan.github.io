@@ -18,21 +18,18 @@ const linkProps = product.href ? { href: product.href, target: '_blank', rel: 'n
 ---
 
 <Tag class:list={['card', `card--${variant}`, { 'card--soon': !product.href, 'external-hover': product.href }]} {...linkProps}>
-  <span class="card__media">
-    {
-      typeof icon === 'string' ? (
-        // Векторная иконка уже со своим фоном и скруглением — без обводки
-        <span class="card__icon">
-          <img src={icon} alt="" width={size} height={size} />
-        </span>
-      ) : (
-        <span class="card__icon inner-border">
-          <Image src={icon} alt="" widths={[size, Math.min(size * 2, imageMeta(icon).width)]} sizes={`${size}px`} />
-        </span>
-      )
-    }
-    {!product.href && <span class="card__soon">Soon</span>}
-  </span>
+  {
+    typeof icon === 'string' ? (
+      // Векторная иконка уже со своим фоном и скруглением — без обводки
+      <span class="card__icon">
+        <img src={icon} alt="" width={size} height={size} />
+      </span>
+    ) : (
+      <span class="card__icon inner-border">
+        <Image src={icon} alt="" widths={[size, Math.min(size * 2, imageMeta(icon).width)]} sizes={`${size}px`} />
+      </span>
+    )
+  }
   <span class="card__texts">
     <span class:list={['card__name', { 'link external external--large': product.href }]}>{product.name}</span>
     <span class="card__description body">{product.description}</span>
@@ -56,29 +53,8 @@ const linkProps = product.href ? { href: product.href, target: '_blank', rel: 'n
     gap: 16px;
   }
 
-  /* Полупрозрачные иконка и текст, плашка Soon — нет */
-  .card--soon :is(.card__icon, .card__texts) {
+  .card--soon {
     opacity: 0.3;
-  }
-
-  .card__media {
-    position: relative;
-    display: block;
-    flex: none;
-  }
-
-  /* Плашка на правом верхнем углу иконки */
-  .card__soon {
-    position: absolute;
-    top: -6px;
-    right: -10px;
-    padding: 3px 8px;
-    border-radius: 999px;
-    background: var(--color-primary);
-    color: var(--color-bg);
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 1.21;
   }
 
   .card__icon {
