@@ -9,7 +9,7 @@ import MobileNav from '../components/MobileNav.astro';
 interface Props {
   title: string;
   description: string;
-  current: Page;
+  current?: Page;
 }
 
 const { title, description, current } = Astro.props;

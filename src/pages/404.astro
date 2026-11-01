@@ -1,0 +1,106 @@
+---
+import Base from '../layouts/Base.astro';
+import Avatar from '../components/Avatar.astro';
+import { nav } from '../data/site';
+---
+
+<Base title="Page not found — Paulik" description="This page doesn't exist. Maybe it's still a sketch in Figma.">
+  <!-- Рамка как у пустой страницы Cases; вместо нуля в «404» — аватар, наклоняется при наведении -->
+  <div class="lost">
+    <div class="lost__texts">
+      <h1 class="code" aria-label="404">
+        <span aria-hidden="true">4</span>
+        <span class="code__zero" aria-hidden="true"><Avatar size={96} persist="avatar-404" /></span>
+        <span aria-hidden="true">4</span>
+      </h1>
+      <p class="h3">This page is still a sketch in Figma</p>
+      <p class="lost__caption body">
+        Or it never existed. Go <a class="link link--accent" href={nav.home}>home</a>, or check out <br class="desktop-only" />
+        <a class="link link--accent" href={nav.shots}>Shots gallery</a> and <a class="link link--accent" href={nav.products}>Products</a>
+      </p>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .lost {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100dvh - 2 * 40px);
+    margin: 40px;
+    padding: 16px;
+    border: 1px solid var(--color-frame-border);
+    border-radius: var(--radius-tile);
+    background: var(--color-surface);
+    text-align: center;
+  }
+
+  .lost__texts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .code {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    font-size: 140px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  /* Аватар чуть наклонён, при наведении — сильнее, как в сайдбаре */
+  .code__zero :global(.avatar) {
+    border-radius: 32px;
+    transform: rotate(-6deg);
+  }
+
+  .code__zero:hover :global(.avatar) {
+    transform: rotate(6deg);
+  }
+
+  .lost__caption {
+    color: var(--color-secondary);
+  }
+
+  .lost__texts p {
+    text-wrap: balance;
+  }
+
+  /* 960-1279 */
+  @media (max-width: 1279px) {
+    .lost {
+      height: calc(100dvh - 2 * 28px);
+      margin: 28px;
+    }
+  }
+
+  /* 959-: рамка под меню по ширине экрана */
+  @media (max-width: 959px) {
+    .lost {
+      height: calc(100dvh - 44px - 2 * 16px);
+      min-height: 360px;
+      margin: 16px;
+    }
+
+    .code {
+      gap: 8px;
+      font-size: 96px;
+    }
+
+    .code__zero :global(.avatar) {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+    }
+
+    .desktop-only {
+      display: none;
+    }
+  }
+</style>

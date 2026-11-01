@@ -4,7 +4,7 @@ import type { Page } from './Sidebar.astro';
 import { nav, person } from '../data/site';
 
 interface Props {
-  current: Page;
+  current?: Page;
 }
 
 const { current } = Astro.props;

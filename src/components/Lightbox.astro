@@ -99,6 +99,15 @@
     dialog.querySelector('.lightbox__content')!.replaceChildren();
   }, true);
 
+  // Esc закрывает и сам <dialog>, но не во всех браузерах надёжно (Chrome пропускает повторный Esc без клика)
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    const dialog = document.querySelector<HTMLDialogElement>('dialog.lightbox');
+    if (!dialog?.open) return;
+    event.preventDefault();
+    dialog.close();
+  });
+
   // Полную версию картинки начинаем грузить уже при наведении
   document.addEventListener('pointerover', (event) => {
     const trigger = (event.target as Element).closest<HTMLElement>('[data-lightbox]');

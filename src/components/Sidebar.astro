@@ -6,7 +6,7 @@ import { nav, person, products } from '../data/site';
 export type Page = 'home' | 'shots' | 'cases' | 'products';
 
 interface Props {
-  current: Page;
+  current?: Page;
 }
 
 const { current } = Astro.props;
