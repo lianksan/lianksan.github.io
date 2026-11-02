@@ -8,7 +8,7 @@ import brainyApp from '../assets/products/brainy.png';
 export const person = {
   firstName: 'Paulik',
   lastName: 'Liankevich',
-  email: 'p_lenkevich@gmail.com',
+  email: 'lenkevich.pav@gmail.com',
 };
 
 export const nav = {
